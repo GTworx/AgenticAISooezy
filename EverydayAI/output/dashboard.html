@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Everyday AI - Pipeline Dashboard</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              900: '#4c1d95',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .neon-border-glow {
+      box-shadow: 0 0 15px rgba(139, 92, 246, 0.15);
+    }
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background: rgba(139, 92, 246, 0.3);
+      border-radius: 3px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+      background: rgba(139, 92, 246, 0.6);
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col font-sans antialiased overflow-hidden">
+  <!-- Top Navbar -->
+  <header class="glass-panel border-b border-slate-800 px-6 py-4 flex items-center justify-between z-10 shrink-0">
+    <div class="flex items-center space-x-3">
+      <div class="p-2 bg-gradient-to-tr from-brand-600 to-cyan-500 rounded-lg text-white shadow-lg">
+        <i data-lucide="cpu" class="w-6 h-6 animate-pulse"></i>
+      </div>
+      <div>
+        <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-violet-400 via-brand-400 to-cyan-400">
+          Everyday AI Operations
+        </h1>
+        <p class="text-xs text-slate-400">Multi-Agent Autonomic Orchestration Pipeline</p>
+      </div>
+    </div>
+    <div class="flex items-center space-x-4">
+      <div class="flex items-center space-x-2 text-xs bg-emerald-500/10 text-emerald-400 px-3 py-1.5 rounded-full border border-emerald-500/20">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <span class="font-medium">System Health: 100% OK</span>
+      </div>
+      <div class="text-xs text-slate-400">
+        Run Date: <span class="text-slate-200 font-semibold">2026-06-23</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 glass-panel border-r border-slate-800 p-4 shrink-0 flex flex-col justify-between overflow-y-auto">
+      <div class="space-y-6">
+        <div>
+          <span class="px-3 text-2xs uppercase tracking-wider text-slate-500 font-semibold">Theme of the Week</span>
+          <div class="mt-2 p-3 bg-brand-900/20 border border-brand-500/20 rounded-lg text-sm text-brand-300 font-medium">
+            Everyday Life Work/Home Productivity Tools
+          </div>
+        </div>
+        <nav class="space-y-1">
+          <button onclick="switchTab('overview')" id="btn-overview" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all bg-brand-600 text-white shadow-md">
+            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+            <span>Orchestration Hub</span>
+          </button>
+          <button onclick="switchTab('ranking')" id="btn-ranking" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:bg-slate-900 hover:text-slate-100">
+            <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+            <span>Tool Rankings</span>
+          </button>
+          <button onclick="switchTab('curriculum')" id="btn-curriculum" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:bg-slate-900 hover:text-slate-100">
+            <i data-lucide="book-open" class="w-4 h-4"></i>
+            <span>Curriculum Path</span>
+          </button>
+          <button onclick="switchTab('distribution')" id="btn-distribution" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:bg-slate-900 hover:text-slate-100">
+            <i data-lucide="share-2" class="w-4 h-4"></i>
+            <span>Marketing & Blog</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Agent Flow Info -->
+      <div class="pt-4 border-t border-slate-900 space-y-3">
+        <div class="flex items-center justify-between text-2xs text-slate-400">
+          <span>Active Agents: 12/12</span>
+          <span>Version 1.2.0</span>
+        </div>
+        <div class="p-2.5 bg-slate-950/80 rounded border border-slate-800 text-2xs space-y-1">
+          <div class="flex justify-between items-center text-slate-400">
+            <span>Research [01]</span>
+            <span class="text-emerald-400">✓ Done</span>
+          </div>
+          <div class="flex justify-between items-center text-slate-400">
+            <span>Ranking [02]</span>
+            <span class="text-emerald-400">✓ Done</span>
+          </div>
+          <div class="flex justify-between items-center text-slate-400">
+            <span>Curriculum [10]</span>
+            <span class="text-emerald-400">✓ Done</span>
+          </div>
+          <div class="flex justify-between items-center text-slate-400">
+            <span>Marketing [12]</span>
+            <span class="text-emerald-400">✓ Done</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Content Workspace -->
+    <main class="flex-1 p-6 overflow-y-auto scrollbar-thin bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900">
+      
+      <!-- TAB: OVERVIEW -->
+      <div id="tab-overview" class="space-y-6">
+        <!-- Dashboard Stats Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="glass-panel p-4 rounded-xl flex items-center justify-between">
+            <div>
+              <p class="text-xs text-slate-400 font-medium">Scouted AI Tools</p>
+              <h3 class="text-2xl font-bold text-slate-200 mt-1">7 Tools</h3>
+              <p class="text-2xs text-emerald-400 flex items-center mt-1">
+                <i data-lucide="check" class="w-3 h-3 mr-0.5"></i> 100% processing complete
+              </p>
+            </div>
+            <div class="p-3 bg-brand-500/10 text-brand-400 rounded-lg">
+              <i data-lucide="eye" class="w-6 h-6"></i>
+            </div>
+          </div>
+          <div class="glass-panel p-4 rounded-xl flex items-center justify-between">
+            <div>
+              <p class="text-xs text-slate-400 font-medium">Ranked Weekly Top</p>
+              <h3 class="text-2xl font-bold text-violet-400 mt-1">5 Tools</h3>
+              <p class="text-2xs text-slate-400 mt-1">Viable for home & office</p>
+            </div>
+            <div class="p-3 bg-violet-500/10 text-violet-400 rounded-lg">
+              <i data-lucide="award" class="w-6 h-6"></i>
+            </div>
+          </div>
+          <div class="glass-panel p-4 rounded-xl flex items-center justify-between">
+            <div>
+              <p class="text-xs text-slate-400 font-medium">Security Failures</p>
+              <h3 class="text-2xl font-bold text-rose-500 mt-1">1 Failed</h3>
+              <p class="text-2xs text-rose-400 flex items-center mt-1 font-semibold">
+                <i data-lucide="shield-alert" class="w-3 h-3 mr-0.5"></i> Security Policy Enforced
+              </p>
+            </div>
+            <div class="p-3 bg-rose-500/10 text-rose-400 rounded-lg">
+              <i data-lucide="shield-x" class="w-6 h-6"></i>
+            </div>
+          </div>
+          <div class="glass-panel p-4 rounded-xl flex items-center justify-between">
+            <div>
+              <p class="text-xs text-slate-400 font-medium">Estimated Time Saved</p>
+              <h3 class="text-2xl font-bold text-cyan-400 mt-1">~5.2 hrs</h3>
+              <p class="text-2xs text-slate-400 mt-1">Per week / per worker</p>
+            </div>
+            <div class="p-3 bg-cyan-500/10 text-cyan-400 rounded-lg">
+              <i data-lucide="clock-arrow-up" class="w-6 h-6"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pipeline Health and Alert Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          <!-- Security Alerts -->
+          <div class="lg:col-span-2 glass-panel p-5 rounded-xl border border-rose-500/20 shadow-lg relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-24 h-24 bg-rose-500/5 rounded-full filter blur-xl"></div>
+            <div class="flex items-center space-x-3 text-rose-400 mb-3">
+              <i data-lucide="shield-alert" class="w-5 h-5"></i>
+              <h4 class="font-bold text-sm uppercase tracking-wider">Gatekeeper Security Incident Log</h4>
+            </div>
+            <div class="bg-rose-950/20 border border-rose-500/30 rounded-lg p-4">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-rose-300">ScreenAutoAI</span>
+                <span class="text-2xs font-semibold px-2 py-0.5 bg-rose-500/20 text-rose-400 rounded">CRITICAL FAIL</span>
+              </div>
+              <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                <strong>Incident Description:</strong> During Phase A (Market Discovery), a browser extension tool named <em>ScreenAutoAI</em> (http://screenautoai-unknown-host.io) was flagged. The tool requests permission to harvest all keyboard stroke logs, read password vaults, and continuously stream desktop screen capture coordinates. No registered company, physical address, or valid privacy policy was provided. Data is transmitted in unencrypted HTTP plaintext.
+              </p>
+              <div class="mt-3 pt-3 border-t border-rose-500/20 flex items-center justify-between text-2xs text-rose-400 font-semibold">
+                <span>Action: Auto-failed during Stage B (Quantitative Evaluation).</span>
+                <span>Orchestrator Enforcement: 100% Blocked</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Charts / Stats -->
+          <div class="glass-panel p-5 rounded-xl flex flex-col justify-between">
+            <h4 class="text-sm font-semibold text-slate-300 mb-2 flex items-center justify-between">
+              <span>Departmental Suitability Fit</span>
+              <i data-lucide="pie-chart" class="w-4 h-4 text-brand-400"></i>
+            </h4>
+            <div class="h-44 flex items-center justify-center">
+              <canvas id="suitabilityChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Orchestrator Console / Logs -->
+        <div class="glass-panel p-5 rounded-xl">
+          <div class="flex items-center justify-between mb-3 border-b border-slate-900 pb-2">
+            <div class="flex items-center space-x-2 text-slate-300">
+              <i data-lucide="terminal" class="w-4 h-4 text-brand-400"></i>
+              <h4 class="font-bold text-sm">Everyday AI Orchestrator Execution Log</h4>
+            </div>
+            <span class="text-2xs text-slate-500">Pipeline completed in 12.4s</span>
+          </div>
+          <div class="bg-slate-950 p-4 rounded-lg font-mono text-xs text-brand-300 space-y-1.5 max-h-60 overflow-y-auto scrollbar-thin leading-relaxed">
+            <p><span class="text-slate-600">[21:16:42]</span> <span class="text-cyan-400">[Orchestrator 00]</span> Initializing Everyday AI Sequential Pipeline. Week 14 theme selected: 'AI based effectivity tools for every day life at work and at home usage'.</p>
+            <p><span class="text-slate-600">[21:16:43]</span> <span class="text-cyan-400">[Orchestrator 00]</span> Triggering Stage A: Market Discovery. Spawning Research Agent [01] and Market Analysis Agent [04].</p>
+            <p><span class="text-slate-600">[21:16:44]</span> <span class="text-brand-400">[Research 01]</span> Scanned 23 sources. Identified 7 unique productivity candidates. Compiled raw discovery logs.</p>
+            <p><span class="text-slate-600">[21:16:45]</span> <span class="text-brand-400">[Research 01]</span> WARNING: ScreenAutoAI flagged as high security risk (unsigned package, anonymous dev, plaintext credentials transmission).</p>
+            <p><span class="text-slate-600">[21:16:46]</span> <span class="text-amber-500">[Market Analysis 04]</span> Completed SWOT analyses comparing candidates against Microsoft 365, Google Workspace, and Todoist.</p>
+            <p><span class="text-slate-600">[21:16:47]</span> <span class="text-cyan-400">[Orchestrator 00]</span> Stage A Complete. Triggering Stage B: Evaluation. Spawning Ranking Agent [02], Segmentation Agent [05], and Reporting Agent [03].</p>
+            <p><span class="text-slate-600">[21:16:48]</span> <span class="text-rose-400">[Ranking 02]</span> Received Research Log. Executing policy filter. Auto-failed 'ScreenAutoAI' (Security score: 1/10).</p>
+            <p><span class="text-slate-600">[21:16:49]</span> <span class="text-violet-400">[Ranking 02]</span> Ranks calculated. Top 5 selected: 1. Goblin.tools (9.2), 2. Fathom (8.8), 3. Reclaim.ai (8.4), 4. Gamma App (8.4), 5. Trevor AI (8.0).</p>
+            <p><span class="text-slate-600">[21:16:50]</span> <span class="text-violet-400">[Segmentation 05]</span> Segmented top tools by business departments (HR, Legal, Finance, Marketing, Engineering) and calculated impact weights.</p>
+            <p><span class="text-slate-600">[21:16:51]</span> <span class="text-violet-400">[Reporting 03]</span> Created data structures for executive brief charts and radar comparison models.</p>
+            <p><span class="text-slate-600">[21:16:52]</span> <span class="text-cyan-400">[Orchestrator 00]</span> Stage B Complete. Gatekeeper quality check passed. Triggering Stage C: Content Creation (06, 07, 08, 09).</p>
+            <p><span class="text-slate-600">[21:16:53]</span> <span class="text-indigo-400">[Blog 06]</span> SEO thought leadership piece generated: 'Reclaiming Cognitive Space'. Focus: human-centric AI design.</p>
+            <p><span class="text-slate-600">[21:16:54]</span> <span class="text-indigo-400">[Material Writer 07]</span> Created step-by-step 'First 5 Minutes' mastering guide for Goblin.tools.</p>
+            <p><span class="text-slate-600">[21:16:55]</span> <span class="text-indigo-400">[Practice 08]</span> Authored '15-Minute Home-to-Work Context Switch Challenge' for target personas.</p>
+            <p><span class="text-slate-600">[21:16:56]</span> <span class="text-indigo-400">[Quiz 09]</span> Created 5 assessment items covering features, limit checks, and security caveats.</p>
+            <p><span class="text-slate-600">[21:16:57]</span> <span class="text-cyan-400">[Orchestrator 00]</span> Inputs validated from Agents 07, 08, and 09. Triggering Stage D: Packaging & Distribution (10, 11, 12).</p>
+            <p><span class="text-slate-600">[21:16:58]</span> <span class="text-sky-400">[Curriculum 10]</span> Assembled 5-day structured curriculum: Awareness -> Skill Building -> Practice -> Certification.</p>
+            <p><span class="text-slate-600">[21:16:59]</span> <span class="text-sky-400">[Advertisement 11]</span> Formulated CTA marketing headlines: 'Stop Planning, Start Doing'.</p>
+            <p><span class="text-slate-600">[21:17:00]</span> <span class="text-sky-400">[Marketing 12]</span> Rendered platform social templates (LinkedIn, X, Instagram) matching Blog facts and high-energy tone.</p>
+            <p><span class="text-slate-600">[21:17:01]</span> <span class="text-cyan-400">[Orchestrator 00]</span> Writing final output JSON to 'output/main.json'. Calling Dashboard Agent [13].</p>
+            <p><span class="text-slate-600">[21:17:02]</span> <span class="text-emerald-400">[Dashboard 13]</span> Generated HTML interactive browser panel. Pipeline execution successfully finished.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: RANKING -->
+      <div id="tab-ranking" class="hidden space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h3 class="text-lg font-bold text-slate-200">Quantitative Ranking Table</h3>
+            <p class="text-xs text-slate-400">Weighted evaluation matrix for the top productivity contenders.</p>
+          </div>
+          <div class="flex items-center space-x-2 text-2xs bg-slate-900 border border-slate-800 p-2 rounded-lg text-slate-400">
+            <span>Criteria weights: Security (30%), Ease of Use (25%), ROI Business Value (25%), Portability (10%), Stability (10%)</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Ranking Table -->
+          <div class="lg:col-span-2 glass-panel rounded-xl overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-900/60 border-b border-slate-850 text-slate-300 text-xs font-semibold">
+                    <th class="p-3">Rank</th>
+                    <th class="p-3">Tool Name</th>
+                    <th class="p-3 text-center">Security</th>
+                    <th class="p-3 text-center">Ease of Use</th>
+                    <th class="p-3 text-center">Value Score</th>
+                    <th class="p-3">Pricing</th>
+                    <th class="p-3 text-right">Overall Rating</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-900 text-xs text-slate-300">
+                  <tr class="hover:bg-slate-900/20 transition cursor-pointer" onclick="selectRankedTool(0)">
+                    <td class="p-3 font-bold text-brand-400">#1</td>
+                    <td class="p-3 font-semibold text-slate-100 flex items-center">
+                      Goblin.tools 
+                      <span class="ml-1.5 w-1.5 h-1.5 rounded-full bg-brand-400 animate-ping"></span>
+                    </td>
+                    <td class="p-3 text-center font-mono">9 / 10</td>
+                    <td class="p-3 text-center font-mono">10 / 10</td>
+                    <td class="p-3 text-center font-mono">9 / 10</td>
+                    <td class="p-3">Free Web</td>
+                    <td class="p-3 text-right font-bold text-brand-400 font-mono">9.2 / 10</td>
+                  </tr>
+                  <tr class="hover:bg-slate-900/20 transition cursor-pointer" onclick="selectRankedTool(1)">
+                    <td class="p-3 font-bold text-slate-400">#2</td>
+                    <td class="p-3 font-semibold text-slate-100">Fathom</td>
+                    <td class="p-3 text-center font-mono">9 / 10</td>
+                    <td class="p-3 text-center font-mono">9 / 10</td>
+                    <td class="p-3 text-center font-mono">9 / 10</td>
+                    <td class="p-3">Freemium</td>
+                    <td class="p-3 text-right font-bold text-slate-300 font-mono">8.8 / 10</td>
+                  </tr>
+                  <tr class="hover:bg-slate-900/20 transition cursor-pointer" onclick="selectRankedTool(2)">
+                    <td class="p-3 font-bold text-slate-400">#3</td>
+                    <td class="p-3 font-semibold text-slate-100">Reclaim.ai</td>
+                    <td class="p-3 text-center font-mono">8 / 10</td>
+                    <td class="p-3 text-center font-mono">8 / 10</td>
+                    <td class="p-3 text-center font-mono">9 / 10</td>
+                    <td class="p-3">Freemium</td>
+                    <td class="p-3 text-right font-bold text-slate-300 font-mono">8.4 / 10</td>
+                  </tr>
+                  <tr class="hover:bg-slate-900/20 transition cursor-pointer" onclick="selectRankedTool(3)">
+                    <td class="p-3 font-bold text-slate-400">#4</td>
+                    <td class="p-3 font-semibold text-slate-100">Gamma App</td>
+                    <td class="p-3 text-center font-mono">8 / 10</td>
+                    <td class="p-3 text-center font-mono">9 / 10</td>
+                    <td class="p-3 text-center font-mono">9 / 10</td>
+                    <td class="p-3">Freemium</td>
+                    <td class="p-3 text-right font-bold text-slate-300 font-mono">8.4 / 10</td>
+                  </tr>
+                  <tr class="hover:bg-slate-900/20 transition cursor-pointer" onclick="selectRankedTool(4)">
+                    <td class="p-3 font-bold text-slate-400">#5</td>
+                    <td class="p-3 font-semibold text-slate-100">Trevor AI</td>
+                    <td class="p-3 text-center font-mono">8 / 10</td>
+                    <td class="p-3 text-center font-mono">8 / 10</td>
+                    <td class="p-3 text-center font-mono">8 / 10</td>
+                    <td class="p-3">Freemium</td>
+                    <td class="p-3 text-right font-bold text-slate-300 font-mono">8.0 / 10</td>
+                  </tr>
+                  <tr class="bg-rose-950/10 border-t border-rose-500/20 text-rose-300">
+                    <td class="p-3 font-bold text-rose-500">-</td>
+                    <td class="p-3 font-semibold flex items-center">
+                      ScreenAutoAI
+                      <i data-lucide="shield-x" class="w-3.5 h-3.5 ml-1.5 text-rose-500"></i>
+                    </td>
+                    <td class="p-3 text-center font-mono text-rose-500 font-bold">1 / 10</td>
+                    <td class="p-3 text-center font-mono">-</td>
+                    <td class="p-3 text-center font-mono">-</td>
+                    <td class="p-3">Free Ext</td>
+                    <td class="p-3 text-right font-bold text-rose-500 font-mono">FAILED</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Radar Chart Comparison -->
+          <div class="glass-panel p-5 rounded-xl flex flex-col">
+            <h4 class="text-sm font-semibold text-slate-300 mb-3 flex items-center justify-between">
+              <span>Metric Dimensions Analysis</span>
+              <i data-lucide="radar" class="w-4 h-4 text-violet-400"></i>
+            </h4>
+            <div class="flex-1 flex items-center justify-center min-h-[220px]">
+              <canvas id="comparisonChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tool Detail Card -->
+        <div id="tool-detail-card" class="glass-panel p-6 rounded-xl border border-brand-500/20">
+          <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-900 pb-4">
+            <div>
+              <div class="flex items-center space-x-3">
+                <h3 id="detail-title" class="text-2xl font-bold text-slate-100">Goblin.tools</h3>
+                <a id="detail-url" href="https://goblin.tools" target="_blank" class="text-brand-400 hover:text-brand-300 text-xs flex items-center">
+                  Visit Site <i data-lucide="external-link" class="w-3 h-3 ml-1"></i>
+                </a>
+              </div>
+              <p id="detail-desc" class="text-sm text-slate-400 mt-1">AI-powered tasks organizer and tone editor designed to help users break down tasks and rephrase communications.</p>
+            </div>
+            <div class="mt-4 md:mt-0 flex items-center space-x-3 bg-brand-900/10 px-4 py-2 rounded-lg border border-brand-500/10">
+              <span class="text-xs text-slate-400 font-medium">Weekly Score:</span>
+              <span id="detail-score" class="text-xl font-bold text-brand-400 font-mono">9.2 / 10</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+            <div>
+              <h5 class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-2">Key Features</h5>
+              <ul id="detail-features" class="space-y-1.5 text-xs text-slate-300 list-disc list-inside">
+                <!-- Javascript will insert -->
+              </ul>
+            </div>
+            <div>
+              <h5 class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-2">Market Analysis (SWOT)</h5>
+              <div class="space-y-2 text-xs">
+                <div>
+                  <span class="font-bold text-emerald-400">Competitors:</span> 
+                  <span id="detail-competitors" class="text-slate-300">Todoist AI Assistant, Motion, Trevor AI, Microsoft To Do</span>
+                </div>
+                <div>
+                  <span class="font-bold text-cyan-400">Unique Selling Point:</span> 
+                  <span id="detail-usp" class="text-slate-300">Zero-friction, highly customizable task decomposition (Spiciness slider) paired with practical neurodivergent accommodation utilities.</span>
+                </div>
+                <div>
+                  <span class="font-bold text-brand-400">Target Segment:</span> 
+                  <span id="detail-segment" class="text-slate-300">Freelance/Individual/SMB/Neurodivergent Users</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h5 class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-2">Platform Support & Costs</h5>
+              <div class="space-y-2 text-xs">
+                <div>
+                  <span class="font-bold text-slate-400">Platforms:</span> 
+                  <span id="detail-platforms" class="text-slate-300">Web, iOS, Android</span>
+                </div>
+                <div>
+                  <span class="font-bold text-slate-400">Pricing Model:</span> 
+                  <span id="detail-pricing" class="text-slate-300">Free Web / One-time mobile app purchase</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: CURRICULUM -->
+      <div id="tab-curriculum" class="hidden space-y-6">
+        <div>
+          <h3 class="text-lg font-bold text-slate-200">Learning Path: Week 14 Everyday AI Curriculum</h3>
+          <p class="text-xs text-slate-400">A structured Monday-to-Friday training path optimized for office workers and personal usage.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
+          <!-- Mon -->
+          <div class="glass-panel p-4 rounded-xl relative overflow-hidden flex flex-col justify-between h-64 border-l-4 border-l-brand-500">
+            <div>
+              <span class="text-2xs font-bold uppercase text-brand-400">Day 1: Awareness</span>
+              <h4 class="font-bold text-sm text-slate-100 mt-1">Understanding Task Paralysis</h4>
+              <p class="text-xs text-slate-400 mt-2 leading-relaxed">Introduction to cognitive overload, context-switching metrics, and accessing Goblin.tools for the first time.</p>
+            </div>
+            <span class="text-2xs text-slate-500">Duration: 15 mins</span>
+          </div>
+          <!-- Tue -->
+          <div class="glass-panel p-4 rounded-xl relative overflow-hidden flex flex-col justify-between h-64 border-l-4 border-l-brand-400">
+            <div>
+              <span class="text-2xs font-bold uppercase text-brand-400">Day 2: Skill Building I</span>
+              <h4 class="font-bold text-sm text-slate-100 mt-1">Deconstructing with Magic ToDo</h4>
+              <p class="text-xs text-slate-400 mt-2 leading-relaxed">Learning to adjust the 'Spiciness' meter (levels 1-5) to break down personal goals or complex deliverables into manageable actions.</p>
+            </div>
+            <span class="text-2xs text-slate-500">Duration: 20 mins</span>
+          </div>
+          <!-- Wed -->
+          <div class="glass-panel p-4 rounded-xl relative overflow-hidden flex flex-col justify-between h-64 border-l-4 border-l-brand-400">
+            <div>
+              <span class="text-2xs font-bold uppercase text-brand-400">Day 3: Skill Building II</span>
+              <h4 class="font-bold text-sm text-slate-100 mt-1">Professional Tone Formatting</h4>
+              <p class="text-xs text-slate-400 mt-2 leading-relaxed">Utilizing the Compiler for random brain-dumps and the Formalizer tool to convert drafts into elegant professional emails.</p>
+            </div>
+            <span class="text-2xs text-slate-500">Duration: 20 mins</span>
+          </div>
+          <!-- Thu -->
+          <div class="glass-panel p-4 rounded-xl relative overflow-hidden flex flex-col justify-between h-64 border-l-4 border-l-cyan-500">
+            <div>
+              <span class="text-2xs font-bold uppercase text-cyan-400">Day 4: Practice Lab</span>
+              <h4 class="font-bold text-sm text-slate-100 mt-1">The 15-Minute Switch Challenge</h4>
+              <p class="text-xs text-slate-400 mt-2 leading-relaxed">Simulating a busy hybrid workday where users split a single heavy work task and a household planning logistics block into executable pipelines.</p>
+            </div>
+            <span class="text-2xs text-cyan-400 font-bold">15-Min Challenge</span>
+          </div>
+          <!-- Fri -->
+          <div class="glass-panel p-4 rounded-xl relative overflow-hidden flex flex-col justify-between h-64 border-l-4 border-l-emerald-500">
+            <div>
+              <span class="text-2xs font-bold uppercase text-emerald-400">Day 5: Evaluation</span>
+              <h4 class="font-bold text-sm text-slate-100 mt-1">Assessment & Certification</h4>
+              <p class="text-xs text-slate-400 mt-2 leading-relaxed">Reviewing limitations (such as Estimator defaults) and taking the 5-question multiple choice assessment to earn the badge.</p>
+            </div>
+            <span class="text-2xs text-emerald-400 font-bold">5-Question Quiz</span>
+          </div>
+        </div>
+
+        <!-- Instructional Guide & Quiz Details -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="glass-panel p-5 rounded-xl space-y-4">
+            <h4 class="font-bold text-sm text-slate-300 flex items-center space-x-2 border-b border-slate-900 pb-2">
+              <i data-lucide="book-marked" class="w-4 h-4 text-brand-400"></i>
+              <span>Step-by-Step Practical Guide</span>
+            </h4>
+            <div id="curriculum-guide-content" class="text-xs text-slate-300 space-y-3 leading-relaxed">
+              <!-- JS inserted guide -->
+            </div>
+          </div>
+
+          <div class="glass-panel p-5 rounded-xl space-y-4">
+            <h4 class="font-bold text-sm text-slate-300 flex items-center space-x-2 border-b border-slate-900 pb-2">
+              <i data-lucide="clipboard-check" class="w-4 h-4 text-emerald-400"></i>
+              <span>Interactive Practice Assessment (Self-Test)</span>
+            </h4>
+            <div id="quiz-container" class="space-y-4 text-xs">
+              <!-- JS Quiz inserted -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: DISTRIBUTION -->
+      <div id="tab-distribution" class="hidden space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-900 pb-3">
+          <div>
+            <h3 class="text-lg font-bold text-slate-200">Marketing & Content Distribution</h3>
+            <p class="text-xs text-slate-400">Pre-packaged distribution assets generated in alignment with Stage A facts.</p>
+          </div>
+        </div>
+
+        <!-- Blog Article -->
+        <div class="glass-panel p-5 rounded-xl space-y-3">
+          <div class="flex items-center justify-between border-b border-slate-900 pb-2">
+            <h4 class="font-bold text-sm text-slate-300 flex items-center space-x-2">
+              <i data-lucide="file-text" class="w-4 h-4 text-violet-400"></i>
+              <span>Thought Leadership Article (Markdown)</span>
+            </h4>
+            <button onclick="copyText('blog-article-text')" class="text-brand-400 hover:text-brand-300 text-xs flex items-center space-x-1 font-semibold">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              <span>Copy Markdown</span>
+            </button>
+          </div>
+          <div class="bg-slate-950 p-4 rounded-lg text-xs leading-relaxed text-slate-300 max-h-80 overflow-y-auto scrollbar-thin">
+            <pre id="blog-article-text" class="whitespace-pre-wrap font-sans">
+# Everyday AI: Reclaiming Cognitive Space at Work and Home
+
+We’ve all been there: staring at a desktop with 30 open tabs, a phone buzzing with notifications, and a mental checklist that looks less like a plan and more like a crime scene. In the modern office, we call this "cognitive overload." At home, we call it "Sunday evening panic."
+
+Context-switching—jumping between writing a marketing brief, answering a Slack message, planning dinner, and scheduling a dentist appointment—doesn't just waste time; it drains our limited supply of mental energy. Studies show it takes an average of 23 minutes to refocus after a single distraction. Multiply that across a 10-hour day of work-life balancing, and it's clear why we feel burned out before lunch.
+
+Enter the philosophy of **Human-Centric AI**. Far from replacing our creativity, AI can act as a cognitive shock absorber, absorbing the friction of administrative overhead and task planning.
+
+### The Star of the Week: Goblin.tools
+
+For anyone who has ever suffered from "task paralysis"—the state of feeling so overwhelmed by a project that you cannot take the first step—[Goblin.tools](https://goblin.tools) is a revelation. Built by a developer looking to solve their own task-planning challenges, this free suite of AI tools is designed to turn chaos into execution.
+
+Its most popular tool, **Magic ToDo**, features a customizable slider represented by chili peppers. This is the **'Spiciness' meter**. Type in a massive task like *\"Submit taxes and file expenses,\"* set the spiciness to 4, and click the wand. Instantly, the AI breaks it down into granular, non-intimidating sub-steps: gathering receipts, sorting by category, downloading forms, and filling out line items. If any subtask still feels too large? Click the wand *again* to break that specific step down into micro-steps. 
+
+Combined with the **Compiler** (which turns a late-night brain dump into a clean checklist) and the **Formalizer** (which rewrites raw, emotional, or chaotic thoughts into polite, professional emails), Goblin.tools is the ultimate tool for reclaiming your mental space.
+
+### Building the Balanced AI Ecosystem
+
+Of course, task management is only part of the battle. To build a complete work-life productivity stack, we also evaluate how other tools support us:
+
+*   **Fathom AI**: Solves meeting fatigue by auto-recording and highlighting Zoom, Google Meet, or Microsoft Teams sessions. Instead of scrambling to take notes during a call, you can actively engage in the conversation, knowing a perfect summary and list of action items will be in your inbox immediately after.
+*   **Reclaim.ai**: A smart calendar manager that automatically syncs your personal and work schedules, blocks out time for tasks, and preserves lunch breaks or focus hours before colleagues can book over them.
+*   **Gamma App**: Instantly drafts presentations and document structures, taking care of visual design so you can focus on the core narrative.
+*   **Trevor AI**: Uses visual time blocking to help you match your daily schedule to your realistic energy levels.
+
+### Reclaiming Your Time
+
+AI is not about delegating our critical thinking. It is about automating the planning phase so we have the mental bandwidth to do the actual thinking. By integrating these tools into your daily workflow, you can stop planning how to work—and start actually doing it, with energy left over for your life outside the screen.
+            </pre>
+          </div>
+        </div>
+
+        <!-- Social Posts Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="glass-panel p-5 rounded-xl flex flex-col justify-between space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-900 pb-2">
+              <span class="text-xs font-bold text-slate-350 flex items-center space-x-2">
+                <i data-lucide="linkedin" class="w-4 h-4 text-cyan-400"></i>
+                <span>LinkedIn (Professional)</span>
+              </span>
+              <button onclick="copyText('linkedin-text')" class="text-brand-400 hover:text-brand-300 text-2xs flex items-center space-x-1 font-semibold">
+                <i data-lucide="copy" class="w-3 h-3"></i>
+                <span>Copy</span>
+              </button>
+            </div>
+            <p id="linkedin-text" class="text-2xs text-slate-300 leading-relaxed bg-slate-950 p-3 rounded-lg flex-1 overflow-y-auto max-h-40">
+              🚀 Overwhelmed by your daily tasks at work and home? Context-switching and task paralysis are the silent productivity killers of modern professionals. This week, our Everyday AI program highlights Goblin.tools—a game-changing, free AI suite designed to break complex tasks into bite-sized, actionable steps. Whether you are coordinating a project launch or sorting through household clutter, Goblin.tools reduces the cognitive load so you can focus on execution. Read our full analysis of the Top 5 productivity tools of the week and check out our 5-minute mastering guide. #Productivity #ADHDSupport #WorkLifeBalance #EverydayAI #TaskManagement
+            </p>
+          </div>
+
+          <div class="glass-panel p-5 rounded-xl flex flex-col justify-between space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-900 pb-2">
+              <span class="text-xs font-bold text-slate-350 flex items-center space-x-2">
+                <i data-lucide="twitter" class="w-4 h-4 text-cyan-400"></i>
+                <span>X / Twitter (Punchy Thread)</span>
+              </span>
+              <button onclick="copyText('twitter-text')" class="text-brand-400 hover:text-brand-300 text-2xs flex items-center space-x-1 font-semibold">
+                <i data-lucide="copy" class="w-3 h-3"></i>
+                <span>Copy</span>
+              </button>
+            </div>
+            <p id="twitter-text" class="text-2xs text-slate-300 leading-relaxed bg-slate-950 p-3 rounded-lg flex-1 overflow-y-auto max-h-40">
+              Task paralysis is real. 🤯 Goblin.tools is a free, neurodivergent-friendly AI that breaks down any overwhelming project into micro-actions with one click. Adjust the 'spiciness' for more detail. Perfect for work + home life. 🧵 Here is how to master it in 5 mins:
+            </p>
+          </div>
+
+          <div class="glass-panel p-5 rounded-xl flex flex-col justify-between space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-900 pb-2">
+              <span class="text-xs font-bold text-slate-350 flex items-center space-x-2">
+                <i data-lucide="instagram" class="w-4 h-4 text-violet-400"></i>
+                <span>Instagram (Visual Copy)</span>
+              </span>
+              <button onclick="copyText('instagram-text')" class="text-brand-400 hover:text-brand-300 text-2xs flex items-center space-x-1 font-semibold">
+                <i data-lucide="copy" class="w-3 h-3"></i>
+                <span>Copy</span>
+              </button>
+            </div>
+            <p id="instagram-text" class="text-2xs text-slate-300 leading-relaxed bg-slate-950 p-3 rounded-lg flex-1 overflow-y-auto max-h-40">
+              Say goodbye to feeling overwhelmed. 👋 Goblin.tools uses AI to break down your biggest projects (or simplest chores) into manageable steps. Use the 'spiciness' slider to choose how detailed you want it, and use the Compiler to organize your chaotic brain dumps. Tap the link in bio for our quick guide! 🚀 #productivityhacks #neurodivergent #timeblocking #everydayai #smarthome #workspace
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-6 right-6 px-4 py-2.5 bg-brand-600 text-white text-xs font-medium rounded-lg shadow-xl translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center space-x-2 border border-brand-500/20">
+    <i data-lucide="clipboard" class="w-4 h-4"></i>
+    <span id="toast-message">Copied to clipboard!</span>
+  </div>
+
+  <!-- State & Chart Scripts -->
+  <script>
+    // Tab Management
+    function switchTab(tabName) {
+      // Hide all tabs
+      document.getElementById('tab-overview').classList.add('hidden');
+      document.getElementById('tab-ranking').classList.add('hidden');
+      document.getElementById('tab-curriculum').classList.add('hidden');
+      document.getElementById('tab-distribution').classList.add('hidden');
+
+      // Deactivate all buttons
+      document.getElementById('btn-overview').className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:bg-slate-900 hover:text-slate-100";
+      document.getElementById('btn-ranking').className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:bg-slate-900 hover:text-slate-100";
+      document.getElementById('btn-curriculum').className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:bg-slate-900 hover:text-slate-100";
+      document.getElementById('btn-distribution').className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:bg-slate-900 hover:text-slate-100";
+
+      // Show selected tab & button
+      document.getElementById('tab-' + tabName).classList.remove('hidden');
+      let activeBtn = document.getElementById('btn-' + tabName);
+      if (tabName === 'overview') {
+        activeBtn.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all bg-brand-600 text-white shadow-md";
+      } else {
+        activeBtn.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all bg-brand-900/40 text-brand-300 shadow-md border border-brand-500/20";
+      }
+    }
+
+    // Copy to clipboard helper
+    function copyText(elementId) {
+      const text = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("Copied to clipboard!");
+      });
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-message').innerText = message;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2500);
+    }
+
+    // Dynamic Tool Data for Card Switcher
+    const toolsData = [
+      {
+        name: "Goblin.tools",
+        url: "https://goblin.tools",
+        overall_score: "9.2 / 10",
+        description: "AI-powered tasks organizer and tone editor designed to help users break down tasks and rephrase communications.",
+        features: [
+          "Magic ToDo: Breaks down overwhelming tasks into bite-sized actionable steps with adjustable 'spiciness' levels.",
+          "Formalizer: Automatically rewrites text to shift tone (e.g. professional, casual, polite, or direct).",
+          "The Judge: Evaluates the tone and emotional undertone of any text input, helping neurodivergent users parse social contexts.",
+          "Compiler: Takes a chaotic brain dump of notes and organizes it into a structured, checkable task list.",
+          "The Chef: Recommends realistic recipes based on a list of ingredients, dietary preferences, and energy levels."
+        ],
+        competitors: "Todoist AI Assistant, Motion, Trevor AI, Microsoft To Do",
+        usp: "Zero-friction, highly customizable task decomposition (Spiciness slider) paired with practical neurodivergent accommodation utilities.",
+        segment: "Freelance/Individual/SMB/Neurodivergent Users",
+        platforms: "Web, iOS, Android",
+        pricing: "Free Web / One-time mobile app purchase"
+      },
+      {
+        name: "Fathom",
+        url: "https://fathom.video",
+        overall_score: "8.8 / 10",
+        description: "AI Meeting Assistant that automatically records, transcribes, and summarizes virtual meetings with key highlight capture.",
+        features: [
+          "Seamless Integration: Auto-joins Zoom, Google Meet, and Microsoft Teams rooms.",
+          "Instant Summarization: Delivers organized meeting briefs and action checklists seconds after completion.",
+          "Manual Highlights: Mark critical portions of a live call with a single hotkey click.",
+          "CRM Auto-sync: Integrates and uploads logs straight into Salesforce, HubSpot, and Close CRM."
+        ],
+        competitors: "Otter.ai, Fireflies.ai, Zoom AI Companion",
+        usp: "100% free transcription and summaries for individuals with zero duration limits and immediate processing.",
+        segment: "Sales Teams, Remote Managers, Freelancers",
+        platforms: "Windows, macOS, Web",
+        pricing: "Freemium"
+      },
+      {
+        name: "Reclaim.ai",
+        url: "https://reclaim.ai",
+        overall_score: "8.4 / 10",
+        description: "Smart calendar optimizer that manages time-blocking, auto-schedules habits, and syncs personal and work calendars.",
+        features: [
+          "Smart Time Blocking: Automatically finds slots for tasks and reschedules them if conflicts emerge.",
+          "Habit Protection: Schedules recurrent habits (e.g. lunch, exercise) and guards them from client bookings.",
+          "Calendar Synchronization: Merges and hides details of multiple calendars to protect user privacy.",
+          "1-on-1 Auto-scheduling: Matches parameters for two busy colleagues to secure meeting windows."
+        ],
+        competitors: "Clockwise, Motion, Calendly",
+        usp: "Prioritizes habits and task priorities dynamically, ensuring time allocation adapts to sudden schedule shifts.",
+        segment: "SMB Employees, Solo Entrepreneurs, Remote Staff",
+        platforms: "Web, Google Calendar, Outlook",
+        pricing: "Freemium"
+      },
+      {
+        name: "Gamma App",
+        url: "https://gamma.app",
+        overall_score: "8.4 / 10",
+        description: "Generative AI presentation and webpage designer that turns outlines or prompts into finished slide decks instantly.",
+        features: [
+          "One-Click Prompting: Provide a short outline and receive an 8-slide beautifully designed presentation.",
+          "Fluid Design Architecture: Formats card-based layouts dynamically rather than locked slides.",
+          "Web embedding: Publish or embed presentation decks as interactive web documents.",
+          "Analytics Tracking: Monitor views and engagement stats on shared documents."
+        ],
+        competitors: "Microsoft PowerPoint, beautiful.ai, Tome, Google Slides",
+        usp: "Modern card layouts that automatically adapt design tokens to avoid tedious PowerPoint pixel-pushing.",
+        segment: "Marketing, HR Trainers, Sales Pitch Creators",
+        platforms: "Web",
+        pricing: "Freemium"
+      },
+      {
+        name: "Trevor AI",
+        url: "https://trevorai.com",
+        overall_score: "8.0 / 10",
+        description: "Minimalist task planner using AI-assisted daily time blocking to map out work and personal objectives.",
+        features: [
+          "Visual Time Blocking: Drag tasks straight into a calendar board for planning.",
+          "Smart Suggestions: AI highlights optimal times based on estimated tasks length and active hours.",
+          "Todoist Native Sync: Directly connects and updates Todoist lists bidirectionally.",
+          "Actionable Analytics: Insights showing schedule execution accuracy and focus trends."
+        ],
+        competitors: "Sunsama, Akiflow, Motion",
+        usp: "Provides a lightweight visual interface focused strictly on individual daily planning and habit blocks.",
+        segment: "Freelancers, Students, Task-focused professionals",
+        platforms: "Web, Todoist Integration",
+        pricing: "Freemium"
+      }
+    ];
+
+    function selectRankedTool(index) {
+      const data = toolsData[index];
+      document.getElementById('detail-title').innerText = data.name;
+      document.getElementById('detail-url').href = data.url;
+      document.getElementById('detail-desc').innerText = data.description;
+      document.getElementById('detail-score').innerText = data.overall_score;
+      
+      const featuresUl = document.getElementById('detail-features');
+      featuresUl.innerHTML = "";
+      data.features.forEach(f => {
+        const li = document.createElement('li');
+        li.className = "mb-1";
+        li.innerText = f;
+        featuresUl.appendChild(li);
+      });
+
+      document.getElementById('detail-competitors').innerText = data.competitors;
+      document.getElementById('detail-usp').innerText = data.usp;
+      document.getElementById('detail-segment').innerText = data.segment;
+      document.getElementById('detail-platforms').innerText = data.platforms;
+      document.getElementById('detail-pricing').innerText = data.pricing;
+    }
+
+    // Load Default Tool details (Goblin.tools)
+    selectRankedTool(0);
+
+    // Load Guides & Quiz
+    const mainJsonData = {
+      guide: {
+        title: "Mastering Goblin.tools Magic ToDo in 5 Minutes",
+        steps: [
+          "Open your web browser and navigate to goblin.tools (no registration or sign-in required).",
+          "Type your overwhelming task into the input box (e.g., 'Organize my home office' or 'Draft quarterly performance reviews for the team').",
+          "Select the 'Spiciness' level by adjusting the chili pepper icons (1 chili for a high-level overview, 5 chilis for extremely detailed step-by-step tasks).",
+          "Click the magic wand icon to compile the list. The AI will immediately generate a clean list of subtasks.",
+          "If any subtask still looks too intimidating, click the magic wand icon next to that specific subtask to break it down further.",
+          "Use the clock icon next to any step to estimate the time it will take to complete.",
+          "Check off tasks as you go, or export the checklist using the top right options button."
+        ],
+        pro_tip: "If you are struggling to write a polite message to your boss about task deadlines, type your raw, unfiltered thoughts into the 'Formalizer' tool, choose 'Professional' or 'Polite' tone, and copy-paste the result."
+      },
+      quiz: [
+        {
+          q: "What does the 'Spiciness' setting on Goblin.tools control?",
+          opts: ["The emotional tone of the output text", "The granularity and detail level of the task breakdown", "The estimated difficulty of the generated recipes", "The priority ranking of your task list"],
+          ans: 1,
+          exp: "Adjusting the chili pepper rating (spiciness) changes how detailed and small the subtasks will be. A higher rating generates more granular, micro-steps."
+        },
+        {
+          q: "Which tool in the Goblin.tools suite should you use to convert a long, messy note of unsorted thoughts into a structured checklist?",
+          opts: ["The Judge", "Compiler", "The Professor", "Formalizer"],
+          ans: 1,
+          exp: "The Compiler tool takes a chaotic 'brain dump' of text and structures it into a clear, checkable list of items."
+        }
+      ]
+    };
+
+    function initCurriculum() {
+      const guideDiv = document.getElementById('curriculum-guide-content');
+      guideDiv.innerHTML = `
+        <h5 class="text-sm font-bold text-slate-200 mb-2">${mainJsonData.guide.title}</h5>
+        <ol class="list-decimal list-inside space-y-2 mt-2">
+          ${mainJsonData.guide.steps.map(s => `<li>${s}</li>`).join('')}
+        </ol>
+        <div class="mt-4 p-3 bg-brand-500/10 border border-brand-500/20 rounded-lg text-brand-300">
+          <strong>Pro-Tip:</strong> ${mainJsonData.guide.pro_tip}
+        </div>
+      `;
+
+      const quizDiv = document.getElementById('quiz-container');
+      quizDiv.innerHTML = mainJsonData.quiz.map((q, qidx) => `
+        <div class="p-4 bg-slate-900/60 border border-slate-800 rounded-lg space-y-2">
+          <p class="font-bold text-slate-200">Q${qidx + 1}: ${q.q}</p>
+          <div class="grid grid-cols-1 gap-2 mt-2">
+            ${q.opts.map((opt, oidx) => `
+              <button onclick="checkAnswer(${qidx}, ${oidx})" id="q-${qidx}-opt-${oidx}" class="w-full text-left p-2.5 bg-slate-950 border border-slate-850 hover:border-brand-500 rounded transition text-slate-350 hover:text-slate-100">
+                ${opt}
+              </button>
+            `).join('')}
+          </div>
+          <p id="q-${qidx}-exp" class="hidden text-2xs p-2 bg-slate-950 rounded border mt-2 leading-relaxed"></p>
+        </div>
+      `).join('');
+    }
+
+    const quizState = {};
+    function checkAnswer(qidx, oidx) {
+      const question = mainJsonData.quiz[qidx];
+      const explanationP = document.getElementById(`q-${qidx}-exp`);
+      
+      // Deactivate all options for this question
+      for (let i = 0; i < question.opts.length; i++) {
+        const btn = document.getElementById(`q-${qidx}-opt-${i}`);
+        btn.disabled = true;
+        if (i === question.ans) {
+          btn.className = "w-full text-left p-2.5 bg-emerald-500/10 border border-emerald-500/50 rounded text-emerald-400 font-medium";
+        } else if (i === oidx) {
+          btn.className = "w-full text-left p-2.5 bg-rose-500/10 border border-rose-500/50 rounded text-rose-400 font-medium";
+        } else {
+          btn.className = "w-full text-left p-2.5 bg-slate-950 border border-slate-900 rounded text-slate-650 opacity-40";
+        }
+      }
+      
+      explanationP.classList.remove('hidden');
+      if (oidx === question.ans) {
+        explanationP.className = "text-2xs p-2.5 bg-emerald-950/20 text-emerald-400 border border-emerald-500/20 rounded mt-2 leading-relaxed";
+        explanationP.innerHTML = `<strong>Correct!</strong> ${question.exp}`;
+      } else {
+        explanationP.className = "text-2xs p-2.5 bg-rose-950/20 text-rose-400 border border-rose-500/20 rounded mt-2 leading-relaxed";
+        explanationP.innerHTML = `<strong>Incorrect.</strong> ${question.exp}`;
+      }
+    }
+
+    initCurriculum();
+
+    // Charting Configurations
+    document.addEventListener("DOMContentLoaded", () => {
+      // Suitability Doughnut Chart
+      const ctxSuit = document.getElementById('suitabilityChart').getContext('2d');
+      new Chart(ctxSuit, {
+        type: 'doughnut',
+        data: {
+          labels: ['HR', 'Legal', 'Finance', 'Marketing', 'Engineering'],
+          datasets: [{
+            data: [9, 6, 5, 8, 7],
+            backgroundColor: [
+              'rgba(139, 92, 246, 0.7)',
+              'rgba(244, 63, 94, 0.7)',
+              'rgba(245, 158, 11, 0.7)',
+              'rgba(6, 182, 212, 0.7)',
+              'rgba(16, 185, 129, 0.7)'
+            ],
+            borderColor: '#020617',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: {
+                color: '#94a3b8',
+                font: { size: 10 },
+                boxWidth: 12
+              }
+            }
+          }
+        }
+      });
+
+      // Metric Comparison Radar Chart
+      const ctxComp = document.getElementById('comparisonChart').getContext('2d');
+      new Chart(ctxComp, {
+        type: 'radar',
+        data: {
+          labels: ['Security', 'Ease of Use', 'ROI Value', 'Portability', 'Pricing'],
+          datasets: [
+            {
+              label: 'Goblin.tools',
+              data: [9, 10, 9, 8, 10],
+              fill: true,
+              backgroundColor: 'rgba(139, 92, 246, 0.2)',
+              borderColor: 'rgba(139, 92, 246, 0.8)',
+              pointBackgroundColor: 'rgba(139, 92, 246, 1)',
+              pointBorderColor: '#fff',
+              pointHoverBackgroundColor: '#fff',
+              pointHoverBorderColor: 'rgba(139, 92, 246, 1)'
+            },
+            {
+              label: 'Fathom',
+              data: [9, 9, 9, 8, 9],
+              fill: true,
+              backgroundColor: 'rgba(6, 182, 212, 0.1)',
+              borderColor: 'rgba(6, 182, 212, 0.8)',
+              pointBackgroundColor: 'rgba(6, 182, 212, 1)',
+              pointBorderColor: '#fff',
+              pointHoverBackgroundColor: '#fff',
+              pointHoverBorderColor: 'rgba(6, 182, 212, 1)'
+            },
+            {
+              label: 'Reclaim.ai',
+              data: [8, 8, 9, 9, 8],
+              fill: true,
+              backgroundColor: 'rgba(16, 185, 129, 0.05)',
+              borderColor: 'rgba(16, 185, 129, 0.6)',
+              pointBackgroundColor: 'rgba(16, 185, 129, 1)',
+              pointBorderColor: '#fff',
+              pointHoverBackgroundColor: '#fff',
+              pointHoverBorderColor: 'rgba(16, 185, 129, 1)'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            r: {
+              angleLines: { color: 'rgba(255, 255, 255, 0.05)' },
+              grid: { color: 'rgba(255, 255, 255, 0.05)' },
+              pointLabels: {
+                color: '#94a3b8',
+                font: { size: 9 }
+              },
+              ticks: {
+                backdropColor: 'transparent',
+                color: '#475569',
+                font: { size: 8 },
+                stepSize: 2
+              },
+              min: 0,
+              max: 10
+            }
+          },
+          plugins: {
+            legend: {
+              labels: {
+                color: '#94a3b8',
+                font: { size: 9 },
+                boxWidth: 8
+              }
+            }
+          }
+        }
+      });
+    });
+
+    // Render Lucide Icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>

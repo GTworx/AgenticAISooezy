@@ -1,0 +1,261 @@
+{
+  "tool_metadata": {
+    "tool_id": "a8b9c0d1-e2f3-4a5b-6c7d-8e9f0a1b2c3d",
+    "timestamp": "2026-06-23T21:20:00Z",
+    "agent_version": "1.2.0"
+  },
+  "intelligence_data": {
+    "research": {
+      "name": "Goblin.tools",
+      "url": "https://goblin.tools",
+      "category": [
+        "Automation",
+        "Communication",
+        "Data"
+      ],
+      "key_features": [
+        "Magic ToDo: Breaks down overwhelming tasks into bite-sized actionable steps with adjustable 'spiciness' levels.",
+        "Formalizer: Automatically rewrites text to shift tone (e.g. professional, casual, polite, or direct).",
+        "The Judge: Evaluates the tone and emotional undertone of any text input, helping neurodivergent users parse social contexts.",
+        "Compiler: Takes a chaotic brain dump of notes and organizes it into a structured, checkable task list.",
+        "The Chef: Recommends realistic recipes based on a list of ingredients, dietary preferences, and energy levels."
+      ],
+      "last_update_notes": "Recently added support for exporting checklist tasks directly to Todoist, Google Tasks, or copy-pasting as markdown, along with stability improvements on the mobile apps."
+    },
+    "ranking": {
+      "overall_score": 9.2,
+      "metrics": {
+        "security": 9,
+        "ease_of_use": 10,
+        "pricing_score": 10,
+        "platform_support": [
+          "Web",
+          "iOS",
+          "Android"
+        ]
+      },
+      "pricing_model": "Freemium"
+    },
+    "market_analysis": {
+      "competitors": [
+        "Todoist AI Assistant",
+        "Motion",
+        "Trevor AI",
+        "Microsoft To Do"
+      ],
+      "unique_selling_point": "Zero-friction, highly customizable task decomposition (Spiciness slider) paired with practical neurodivergent accommodation utilities.",
+      "market_segment": "Freelance/Individual/SMB/Neurodivergent Users"
+    }
+  },
+  "educational_content": {
+    "curriculum_week": 14,
+    "guides": [
+      {
+        "title": "Mastering Goblin.tools Magic ToDo in 5 Minutes",
+        "steps": [
+          "Open your web browser and navigate to goblin.tools (no registration or sign-in required).",
+          "Type your overwhelming task into the input box (e.g., 'Organize my home office' or 'Draft quarterly performance reviews for the team').",
+          "Select the 'Spiciness' level by adjusting the chili pepper icons (1 chili for a high-level overview, 5 chilis for extremely detailed step-by-step tasks).",
+          "Click the magic wand icon to compile the list. The AI will immediately generate a clean list of subtasks.",
+          "If any subtask still looks too intimidating, click the magic wand icon next to that specific subtask to break it down further.",
+          "Use the clock icon next to any step to estimate the time it will take to complete.",
+          "Check off tasks as you go, or export the checklist using the top right options button."
+        ],
+        "pro_tip": "If you are struggling to write a polite message to your boss about task deadlines, type your raw, unfiltered thoughts into the 'Formalizer' tool, choose 'Professional' or 'Polite' tone, and copy-paste the result."
+      }
+    ],
+    "practice_cases": [
+      {
+        "scenario_name": "The 15-Minute Home-to-Work Context Switch Challenge",
+        "persona": "Hybrid Remote Project Manager balancing work tasks and home logistics",
+        "estimated_time_minutes": 15
+      }
+    ],
+    "assessment": {
+      "quiz_questions": [
+        {
+          "question": "What does the 'Spiciness' setting on Goblin.tools control?",
+          "options": [
+            "The emotional tone of the output text",
+            "The granularity and detail level of the task breakdown",
+            "The estimated difficulty of the generated recipes",
+            "The priority ranking of your task list"
+          ],
+          "correct_answer": "The granularity and detail level of the task breakdown",
+          "explanation": "Adjusting the chili pepper rating (spiciness) changes how detailed and small the subtasks will be. A higher rating generates more granular, micro-steps."
+        },
+        {
+          "question": "Which tool in the Goblin.tools suite should you use to convert a long, messy note of unsorted thoughts into a structured checklist?",
+          "options": [
+            "The Judge",
+            "Compiler",
+            "The Professor",
+            "Formalizer"
+          ],
+          "correct_answer": "Compiler",
+          "explanation": "The Compiler tool takes a chaotic 'brain dump' of text and structures it into a clear, checkable list of items."
+        },
+        {
+          "question": "How does 'The Judge' assist users with communication?",
+          "options": [
+            "It checks their code for syntactic errors",
+            "It grades their task completion speed",
+            "It interprets the emotional tone and intent of a written message",
+            "It automatically sends emails to their contacts"
+          ],
+          "correct_answer": "It interprets the emotional tone and intent of a written message",
+          "explanation": "The Judge parses text and gives a neutral, objective explanation of the writer's tone, which is highly beneficial for neurodivergent individuals navigating social contexts."
+        },
+        {
+          "question": "Which statement is true regarding the pricing model of Goblin.tools?",
+          "options": [
+            "It is free for individual personal use but requires a monthly subscription for business domains",
+            "It is completely free on the web with no ads, and only requires a small one-time purchase for the mobile apps to cover hosting",
+            "It requires an active credit card to start a 14-day trial",
+            "It is only available on iOS and Android as a paid app, with no web version"
+          ],
+          "correct_answer": "It is completely free on the web with no ads, and only requires a small one-time purchase for the mobile apps to cover hosting",
+          "explanation": "Goblin.tools is free on browsers, and does not require an account. The mobile apps cost a low, one-time fee to help fund the creator's server costs."
+        },
+        {
+          "question": "What is a key limitation of relying on the Goblin.tools 'Estimator' for task durations?",
+          "options": [
+            "It only outputs times in days, not hours or minutes",
+            "It requires integration with external timesheets to function",
+            "It uses general-purpose models that do not account for your specific work pace, disruptions, or focus level",
+            "It cannot estimate any tasks related to household chores"
+          ],
+          "correct_answer": "It uses general-purpose models that do not account for your specific work pace, disruptions, or focus level",
+          "explanation": "The Estimator provides general-purpose approximations. It cannot know a user's personal context, fatigue, or interruptions, so it should be used as a guide rather than a hard constraint."
+        }
+      ]
+    }
+  },
+  "distribution": {
+    "blog_article": "# Everyday AI: Reclaiming Cognitive Space at Work and Home\n\nWe’ve all been there: staring at a desktop with 30 open tabs, a phone buzzing with notifications, and a mental checklist that looks less like a plan and more like a crime scene. In the modern office, we call this \"cognitive overload.\" At home, we call it \"Sunday evening panic.\"\n\nContext-switching—jumping between writing a marketing brief, answering a Slack message, planning dinner, and scheduling a dentist appointment—doesn't just waste time; it drains our limited supply of mental energy. Studies show it takes an average of 23 minutes to refocus after a single distraction. Multiply that across a 10-hour day of work-life balancing, and it's clear why we feel burned out before lunch.\n\nEnter the philosophy of **Human-Centric AI**. Far from replacing our creativity, AI can act as a cognitive shock absorber, absorbing the friction of administrative overhead and task planning.\n\n### The Star of the Week: Goblin.tools\n\nFor anyone who has ever suffered from \"task paralysis\"—the state of feeling so overwhelmed by a project that you cannot take the first step—[Goblin.tools](https://goblin.tools) is a revelation. Built by a developer looking to solve their own task-planning challenges, this free suite of AI tools is designed to turn chaos into execution.\n\nIts most popular tool, **Magic ToDo**, features a customizable slider represented by chili peppers. This is the **'Spiciness' meter**. Type in a massive task like *\"Submit taxes and file expenses,\"* set the spiciness to 4, and click the wand. Instantly, the AI breaks it down into granular, non-intimidating sub-steps: gathering receipts, sorting by category, downloading forms, and filling out line items. If any subtask still feels too large? Click the wand *again* to break that specific step down into micro-steps. \n\nCombined with the **Compiler** (which turns a late-night brain dump into a clean checklist) and the **Formalizer** (which rewrites raw, emotional, or chaotic thoughts into polite, professional emails), Goblin.tools is the ultimate tool for reclaiming your mental space.\n\n### Building the Balanced AI Ecosystem\n\nOf course, task management is only part of the battle. To build a complete work-life productivity stack, we also evaluate how other tools support us:\n\n*   **Fathom AI**: Solves meeting fatigue by auto-recording and highlighting Zoom, Google Meet, or Microsoft Teams sessions. Instead of scrambling to take notes during a call, you can actively engage in the conversation, knowing a perfect summary and list of action items will be in your inbox immediately after.\n*   **Reclaim.ai**: A smart calendar manager that automatically syncs your personal and work schedules, blocks out time for tasks, and preserves lunch breaks or focus hours before colleagues can book over them.\n*   **Gamma App**: Instantly drafts presentations and document structures, taking care of visual design so you can focus on the core narrative.\n*   **Trevor AI**: Uses visual time blocking to help you match your daily schedule to your realistic energy levels.\n\n### Reclaiming Your Time\n\nAI is not about delegating our critical thinking. It is about automating the planning phase so we have the mental bandwidth to do the actual thinking. By integrating these tools into your daily workflow, you can stop planning how to work—and start actually doing it, with energy left over for your life outside the screen.",
+    "ad_copy": {
+      "one_pager_headline": "Stop Planning Your Work, Start Doing It. Reclaim 5 Hours of Weekly Focus with Goblin.tools.",
+      "cta": "Explore the Free Week 14 Everyday AI Curriculum & Master Goblin.tools Today"
+    },
+    "social_posts": {
+      "linkedin": "🚀 Overwhelmed by your daily tasks at work and home? Context-switching and task paralysis are the silent productivity killers of modern professionals. This week, our Everyday AI program highlights Goblin.tools—a game-changing, free AI suite designed to break complex tasks into bite-sized, actionable steps. Whether you are coordinating a project launch or sorting through household clutter, Goblin.tools reduces the cognitive load so you can focus on execution. Read our full analysis of the Top 5 productivity tools of the week and check out our 5-minute mastering guide. #Productivity #ADHDSupport #WorkLifeBalance #EverydayAI #TaskManagement",
+      "twitter_x": "Task paralysis is real. 🤯 Goblin.tools is a free, neurodivergent-friendly AI that breaks down any overwhelming project into micro-actions with one click. Adjust the 'spiciness' for more detail. Perfect for work + home life. 🧵 Here is how to master it in 5 mins:",
+      "instagram_caption": "Say goodbye to feeling overwhelmed. 👋 Goblin.tools uses AI to break down your biggest projects (or simplest chores) into manageable steps. Use the 'spiciness' slider to choose how detailed you want it, and use the Compiler to organize your chaotic brain dumps. Tap the link in bio for our quick guide! 🚀 #productivityhacks #neurodivergent #timeblocking #everydayai #smarthome #workspace"
+    }
+  },
+  "pipeline_run_metadata": {
+    "weekly_theme": "AI based effectivity tools for every day life at work and at home usage",
+    "run_date": "2026-06-23",
+    "system_health": {
+      "status": "Completed",
+      "progress_percentage": 100,
+      "summary": "Successfully coordinated 12-agent pipeline. 7 raw tools identified during Market Discovery, 1 rejected during evaluation due to High Security Risks. Created curriculum, marketing copy, and live dashboard."
+    },
+    "ranked_tools": [
+      {
+        "rank": 1,
+        "name": "Goblin.tools",
+        "url": "https://goblin.tools",
+        "overall_score": 9.2,
+        "security": 9,
+        "ease_of_use": 10,
+        "pricing_score": 10,
+        "platform_support": ["Web", "iOS", "Android"],
+        "pricing_model": "Free Web / One-time mobile app purchase",
+        "department_fit": {
+          "HR": 9,
+          "Legal": 6,
+          "Finance": 5,
+          "Marketing": 8,
+          "Engineering": 7
+        },
+        "description": "AI-powered tasks organizer and tone editor designed to help users break down tasks and rephrase communications."
+      },
+      {
+        "rank": 2,
+        "name": "Fathom",
+        "url": "https://fathom.video",
+        "overall_score": 8.8,
+        "security": 9,
+        "ease_of_use": 9,
+        "pricing_score": 9,
+        "platform_support": ["Windows", "macOS", "Web"],
+        "pricing_model": "Freemium",
+        "department_fit": {
+          "HR": 9,
+          "Legal": 8,
+          "Finance": 8,
+          "Marketing": 9,
+          "Engineering": 9
+        },
+        "description": "AI Meeting Assistant that automatically records, transcribes, and summarizes virtual meetings with key highlight capture."
+      },
+      {
+        "rank": 3,
+        "name": "Reclaim.ai",
+        "url": "https://reclaim.ai",
+        "overall_score": 8.4,
+        "security": 8,
+        "ease_of_use": 8,
+        "pricing_score": 8,
+        "platform_support": ["Web", "Google Calendar", "Outlook"],
+        "pricing_model": "Freemium",
+        "department_fit": {
+          "HR": 8,
+          "Legal": 7,
+          "Finance": 8,
+          "Marketing": 9,
+          "Engineering": 9
+        },
+        "description": "Smart calendar optimizer that manages time-blocking, auto-schedules habits, and syncs personal and work calendars."
+      },
+      {
+        "rank": 4,
+        "name": "Gamma App",
+        "url": "https://gamma.app",
+        "overall_score": 8.4,
+        "security": 8,
+        "ease_of_use": 9,
+        "pricing_score": 8,
+        "platform_support": ["Web"],
+        "pricing_model": "Freemium",
+        "department_fit": {
+          "HR": 8,
+          "Legal": 5,
+          "Finance": 7,
+          "Marketing": 10,
+          "Engineering": 7
+        },
+        "description": "Generative AI presentation and webpage designer that turns outlines or prompts into finished slide decks instantly."
+      },
+      {
+        "rank": 5,
+        "name": "Trevor AI",
+        "url": "https://trevorai.com",
+        "overall_score": 8.0,
+        "security": 8,
+        "ease_of_use": 8,
+        "pricing_score": 8,
+        "platform_support": ["Web", "Todoist Integration"],
+        "pricing_model": "Freemium",
+        "department_fit": {
+          "HR": 7,
+          "Legal": 7,
+          "Finance": 7,
+          "Marketing": 8,
+          "Engineering": 8
+        },
+        "description": "Minimalist task planner using AI-assisted daily time blocking to map out work and personal objectives."
+      }
+    ],
+    "security_alerts": [
+      {
+        "name": "ScreenAutoAI",
+        "url": "http://screenautoai-unknown-host.io",
+        "severity": "CRITICAL / HIGH SECURITY RISK",
+        "issue_description": "Anonymous developer team with no registered address. Zero privacy policy document. Requests complete browser cookie access, keyboard logs, and full desktop screen capture. Transmits captured credentials and screen data in unencrypted plaintext to an unverified cloud server.",
+        "action_taken": "Auto-failed during Stage B. Completely excluded from the weekly content pipeline."
+      }
+    ]
+  }
+}
