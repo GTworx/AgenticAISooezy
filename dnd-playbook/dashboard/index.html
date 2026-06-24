@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D 5e Playbook & Dashboard</title>
+    <!-- Google Fonts: Cinzel for headers, Inter for UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for RPG Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fa-solid fa-dice-d20 logo-icon"></i>
+                    <span class="logo-text">DnD Playbook</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="#dashboard" class="menu-item active" data-view="dashboard">
+                    <i class="fa-solid fa-chart-simple"></i> <span>Dashboard</span>
+                </a>
+                <a href="#rules" class="menu-item" data-view="rules">
+                    <i class="fa-solid fa-scroll"></i> <span>Rules Book</span>
+                </a>
+                <a href="#classes" class="menu-item" data-view="classes">
+                    <i class="fa-solid fa-shield-halved"></i> <span>Classes</span>
+                </a>
+                <a href="#spells" class="menu-item" data-view="spells">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Spells</span>
+                </a>
+                <a href="#races" class="menu-item" data-view="races">
+                    <i class="fa-solid fa-users"></i> <span>Races</span>
+                </a>
+                <a href="#monsters" class="menu-item" data-view="monsters">
+                    <i class="fa-solid fa-dragon"></i> <span>Monsters</span>
+                </a>
+                <a href="#equipment" class="menu-item" data-view="equipment">
+                    <i class="fa-solid fa-bag-shopping"></i> <span>Equipment</span>
+                </a>
+                <div class="menu-divider"><span>Tools</span></div>
+                <a href="#dice" class="menu-item" data-view="dice">
+                    <i class="fa-solid fa-dice"></i> <span>Dice Roller</span>
+                </a>
+                <a href="#draft" class="menu-item" data-view="draft">
+                    <i class="fa-solid fa-user-plus"></i> <span>Draft Sheet</span>
+                </a>
+                <a href="#bookmarks" class="menu-item" data-view="bookmarks">
+                    <i class="fa-solid fa-bookmark"></i> <span>Favorites</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="connection-status">
+                    <span class="status-dot online"></span>
+                    <span class="status-text">Connected to SRD API</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header bar -->
+            <header class="top-bar">
+                <div class="page-title-container">
+                    <h1 id="current-view-title" class="page-title">Dashboard</h1>
+                </div>
+                <div class="header-actions">
+                    <!-- Global Search Bar -->
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="global-search" placeholder="Quick search spells, monsters, classes...">
+                        <div id="quick-search-results" class="quick-results-dropdown hidden"></div>
+                    </div>
+                    <button class="action-btn" id="theme-btn" title="Toggle Aesthetic Theme">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Container for all swap-able views -->
+            <div class="view-wrapper">
+                
+                <!-- VIEW 1: DASHBOARD -->
+                <section id="view-dashboard" class="view-section active">
+                    <div class="hero-banner">
+                        <div class="hero-content">
+                            <h2>Welcome, Adventurer</h2>
+                            <p>Access your spells, study rules, look up monsters, roll dice, and draft characters from this premium D&D 5e Playbook Dashboard.</p>
+                        </div>
+                        <div class="d20-floating">
+                            <i class="fa-solid fa-dice-d20"></i>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <!-- Quick Stats Grid -->
+                        <div class="stat-cards-container">
+                            <div class="stat-card" onclick="location.hash='#classes'">
+                                <div class="stat-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                                <div class="stat-info">
+                                    <span class="stat-value" id="stat-classes">12</span>
+                                    <span class="stat-label">Classes</span>
+                                </div>
+                            </div>
+                            <div class="stat-card" onclick="location.hash='#spells'">
+                                <div class="stat-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                                <div class="stat-info">
+                                    <span class="stat-value" id="stat-spells">319</span>
+                                    <span class="stat-label">Spells</span>
+                                </div>
+                            </div>
+                            <div class="stat-card" onclick="location.hash='#monsters'">
+                                <div class="stat-icon"><i class="fa-solid fa-dragon"></i></div>
+                                <div class="stat-info">
+                                    <span class="stat-value" id="stat-monsters">325</span>
+                                    <span class="stat-label">Monsters</span>
+                                </div>
+                            </div>
+                            <div class="stat-card" onclick="location.hash='#races'">
+                                <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                                <div class="stat-info">
+                                    <span class="stat-value" id="stat-races">9</span>
+                                    <span class="stat-label">Races</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Left Panel: Favorites Panel -->
+                        <div class="dash-panel favorites-panel">
+                            <h3><i class="fa-solid fa-bookmark gold-icon"></i> Bookmarked References</h3>
+                            <div id="dashboard-favorites" class="favorites-grid">
+                                <!-- Populated dynamically -->
+                                <p class="empty-state">No bookmarks saved yet. Click the bookmark icon <i class="fa-regular fa-bookmark"></i> on spells, rules, or monsters to save them here!</p>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: Dice Widget & Tips -->
+                        <div class="dash-panel side-panel">
+                            <div class="mini-dice-widget">
+                                <h3><i class="fa-solid fa-dice-d20 gold-icon"></i> Quick Roll d20</h3>
+                                <div class="dice-roller-mini-ui">
+                                    <button class="roll-d20-btn" id="quick-d20-btn">Roll d20</button>
+                                    <div class="mini-roll-result" id="quick-d20-result">-</div>
+                                </div>
+                            </div>
+                            <div class="tip-of-the-day-widget">
+                                <h3><i class="fa-solid fa-wand-magic gold-icon"></i> Adventurer Tip</h3>
+                                <p id="tip-text">"Always keep a 50-foot hempen rope. You never know when you'll need to climb, bind, or trip your foes."</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 2: RULES BOOK -->
+                <section id="view-rules" class="view-section hidden">
+                    <div class="split-view">
+                        <div class="split-sidebar">
+                            <h3>Categories</h3>
+                            <ul class="rule-categories-list" id="rule-categories">
+                                <!-- Populated dynamically -->
+                            </ul>
+                        </div>
+                        <div class="split-main">
+                            <div class="rule-details-container" id="rule-content-pane">
+                                <div class="empty-state">Select a rule category from the list to view sections.</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 3: CLASSES -->
+                <section id="view-classes" class="view-section hidden">
+                    <div class="classes-grid" id="classes-container">
+                        <!-- Populated dynamically -->
+                    </div>
+                </section>
+
+                <!-- VIEW 4: SPELLS -->
+                <section id="view-spells" class="view-section hidden">
+                    <div class="filter-bar">
+                        <div class="filter-group search">
+                            <label for="spell-search">Search Spells</label>
+                            <input type="text" id="spell-search" placeholder="Type spell name...">
+                        </div>
+                        <div class="filter-group">
+                            <label for="spell-level">Level</label>
+                            <select id="spell-level">
+                                <option value="all">All Levels</option>
+                                <option value="0">Cantrip</option>
+                                <option value="1">1st Level</option>
+                                <option value="2">2nd Level</option>
+                                <option value="3">3rd Level</option>
+                                <option value="4">4th Level</option>
+                                <option value="5">5th Level</option>
+                                <option value="6">6th Level</option>
+                                <option value="7">7th Level</option>
+                                <option value="8">8th Level</option>
+                                <option value="9">9th Level</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="spell-school">School</label>
+                            <select id="spell-school">
+                                <option value="all">All Schools</option>
+                                <option value="abjuration">Abjuration</option>
+                                <option value="conjuration">Conjuration</option>
+                                <option value="divination">Divination</option>
+                                <option value="enchantment">Enchantment</option>
+                                <option value="evocation">Evocation</option>
+                                <option value="illusion">Illusion</option>
+                                <option value="necromancy">Necromancy</option>
+                                <option value="transmutation">Transmutation</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="items-grid" id="spells-container">
+                        <!-- Loaded dynamically -->
+                    </div>
+                    
+                    <!-- Loader / Spinner -->
+                    <div class="loading-spinner hidden" id="spells-loader">
+                        <i class="fa-solid fa-spinner fa-spin"></i> Loading Spells...
+                    </div>
+                </section>
+
+                <!-- VIEW 5: RACES -->
+                <section id="view-races" class="view-section hidden">
+                    <div class="races-grid" id="races-container">
+                        <!-- Populated dynamically -->
+                    </div>
+                </section>
+
+                <!-- VIEW 6: MONSTERS -->
+                <section id="view-monsters" class="view-section hidden">
+                    <div class="filter-bar">
+                        <div class="filter-group search">
+                            <label for="monster-search">Search Monsters</label>
+                            <input type="text" id="monster-search" placeholder="Type monster name...">
+                        </div>
+                        <div class="filter-group">
+                            <label for="monster-cr">Challenge Rating (CR)</label>
+                            <select id="monster-cr">
+                                <option value="all">All CRs</option>
+                                <option value="0">CR 0</option>
+                                <option value="0.125">CR 1/8</option>
+                                <option value="0.25">CR 1/4</option>
+                                <option value="0.5">CR 1/2</option>
+                                <option value="1">CR 1</option>
+                                <option value="2">CR 2</option>
+                                <option value="3">CR 3</option>
+                                <option value="4">CR 4</option>
+                                <option value="5">CR 5</option>
+                                <option value="6">CR 6</option>
+                                <option value="7">CR 7</option>
+                                <option value="8">CR 8</option>
+                                <option value="9">CR 9</option>
+                                <option value="10">CR 10</option>
+                                <option value="11">CR 11</option>
+                                <option value="12">CR 12</option>
+                                <option value="13">CR 13</option>
+                                <option value="14">CR 14</option>
+                                <option value="15">CR 15</option>
+                                <option value="16">CR 16</option>
+                                <option value="17">CR 17</option>
+                                <option value="18">CR 18</option>
+                                <option value="19">CR 19</option>
+                                <option value="20">CR 20</option>
+                                <option value="21">CR 21+</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="monster-type">Type</label>
+                            <select id="monster-type">
+                                <option value="all">All Types</option>
+                                <option value="aberration">Aberration</option>
+                                <option value="beast">Beast</option>
+                                <option value="celestial">Celestial</option>
+                                <option value="construct">Construct</option>
+                                <option value="dragon">Dragon</option>
+                                <option value="elemental">Elemental</option>
+                                <option value="fey">Fey</option>
+                                <option value="fiend">Fiend</option>
+                                <option value="giant">Giant</option>
+                                <option value="humanoid">Humanoid</option>
+                                <option value="monstrosity">Monstrosity</option>
+                                <option value="ooze">Ooze</option>
+                                <option value="plant">Plant</option>
+                                <option value="undead">Undead</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="items-grid" id="monsters-container">
+                        <!-- Loaded dynamically -->
+                    </div>
+                    
+                    <div class="loading-spinner hidden" id="monsters-loader">
+                        <i class="fa-solid fa-spinner fa-spin"></i> Loading Monsters...
+                    </div>
+                </section>
+
+                <!-- VIEW 7: EQUIPMENT -->
+                <section id="view-equipment" class="view-section hidden">
+                    <div class="filter-bar">
+                        <div class="filter-group search">
+                            <label for="equipment-search">Search Gear</label>
+                            <input type="text" id="equipment-search" placeholder="Search weapons, armor, shields...">
+                        </div>
+                        <div class="filter-group">
+                            <label for="equipment-category">Category</label>
+                            <select id="equipment-category">
+                                <option value="all">All Categories</option>
+                                <option value="weapon">Weapons</option>
+                                <option value="armor">Armor</option>
+                                <option value="adventuring-gear">Adventuring Gear</option>
+                                <option value="tools">Tools</option>
+                                <option value="mounts-and-vehicles">Mounts & Vehicles</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="items-grid" id="equipment-container">
+                        <!-- Loaded dynamically -->
+                    </div>
+                    
+                    <div class="loading-spinner hidden" id="equipment-loader">
+                        <i class="fa-solid fa-spinner fa-spin"></i> Loading Equipment...
+                    </div>
+                </section>
+
+                <!-- VIEW 8: DICE ROLLER -->
+                <section id="view-dice" class="view-section hidden">
+                    <div class="dice-layout">
+                        <!-- Left: Dice Tray -->
+                        <div class="dice-card dice-tray">
+                            <h3>Select Dice to Roll</h3>
+                            
+                            <div class="dice-selector">
+                                <div class="die-select-btn" data-die="4">
+                                    <div class="die-shape d4"><span class="die-number">d4</span></div>
+                                    <div class="die-counter">
+                                        <button class="dec-die">-</button>
+                                        <span class="count-val">0</span>
+                                        <button class="inc-die">+</button>
+                                    </div>
+                                </div>
+                                <div class="die-select-btn" data-die="6">
+                                    <div class="die-shape d6"><span class="die-number">d6</span></div>
+                                    <div class="die-counter">
+                                        <button class="dec-die">-</button>
+                                        <span class="count-val">0</span>
+                                        <button class="inc-die">+</button>
+                                    </div>
+                                </div>
+                                <div class="die-select-btn" data-die="8">
+                                    <div class="die-shape d8"><span class="die-number">d8</span></div>
+                                    <div class="die-counter">
+                                        <button class="dec-die">-</button>
+                                        <span class="count-val">0</span>
+                                        <button class="inc-die">+</button>
+                                    </div>
+                                </div>
+                                <div class="die-select-btn" data-die="10">
+                                    <div class="die-shape d10"><span class="die-number">d10</span></div>
+                                    <div class="die-counter">
+                                        <button class="dec-die">-</button>
+                                        <span class="count-val">0</span>
+                                        <button class="inc-die">+</button>
+                                    </div>
+                                </div>
+                                <div class="die-select-btn" data-die="12">
+                                    <div class="die-shape d12"><span class="die-number">d12</span></div>
+                                    <div class="die-counter">
+                                        <button class="dec-die">-</button>
+                                        <span class="count-val">0</span>
+                                        <button class="inc-die">+</button>
+                                    </div>
+                                </div>
+                                <div class="die-select-btn" data-die="20">
+                                    <div class="die-shape d20"><span class="die-number">d20</span></div>
+                                    <div class="die-counter">
+                                        <button class="dec-die">-</button>
+                                        <span class="count-val">0</span>
+                                        <button class="inc-die">+</button>
+                                    </div>
+                                </div>
+                                <div class="die-select-btn" data-die="100">
+                                    <div class="die-shape d100"><span class="die-number">d100</span></div>
+                                    <div class="die-counter">
+                                        <button class="dec-die">-</button>
+                                        <span class="count-val">0</span>
+                                        <button class="inc-die">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="dice-modifier-container">
+                                <label for="dice-mod">Modifier</label>
+                                <div class="modifier-input-wrapper">
+                                    <button id="dec-mod">-</button>
+                                    <input type="number" id="dice-mod" value="0">
+                                    <button id="inc-mod">+</button>
+                                </div>
+                            </div>
+
+                            <div class="dice-formula" id="current-roll-formula">0 Dice Selected</div>
+
+                            <div class="dice-actions">
+                                <button class="dice-action-btn roll" id="roll-clear-btn">Clear Selection</button>
+                                <button class="dice-action-btn primary roll" id="roll-btn">ROLL DICE</button>
+                            </div>
+                        </div>
+
+                        <!-- Right: Results & History -->
+                        <div class="dice-card dice-results-board">
+                            <h3>Roll Results</h3>
+                            <div class="current-roll-display" id="roll-display">
+                                <span class="total-result-placeholder">Ready to Roll</span>
+                            </div>
+                            
+                            <h3>Roll History</h3>
+                            <div class="roll-history-container">
+                                <ul class="roll-history-list" id="roll-history">
+                                    <!-- Populated dynamically -->
+                                    <li class="empty-history">No rolls yet. Let's see if luck is on your side!</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 9: DRAFT SHEET -->
+                <section id="view-draft" class="view-section hidden">
+                    <div class="draft-container">
+                        <!-- Configuration Sidebar -->
+                        <div class="draft-config">
+                            <h3>Character Draft Planner</h3>
+                            
+                            <div class="form-group">
+                                <label for="draft-name">Character Name</label>
+                                <input type="text" id="draft-name" placeholder="Enter name..." value="Adran Galanodel">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="draft-race">Race Selection</label>
+                                <select id="draft-race">
+                                    <!-- Populated dynamically -->
+                                    <option value="human">Human</option>
+                                    <option value="elf">Elf</option>
+                                    <option value="dwarf">Dwarf</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="draft-class">Class Selection</label>
+                                <select id="draft-class">
+                                    <!-- Populated dynamically -->
+                                    <option value="fighter">Fighter</option>
+                                    <option value="wizard">Wizard</option>
+                                    <option value="cleric">Cleric</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Ability Score Generation</label>
+                                <button class="dice-action-btn primary roll" id="draft-roll-stats-btn" style="width:100%; margin-top: 5px;">
+                                    <i class="fa-solid fa-dice-d20"></i> Roll Stats (4d6 drop lowest)
+                                </button>
+                                <small style="display: block; margin-top: 5px; color: var(--gold-color);">
+                                    Or manually assign rolled stats below.
+                                </small>
+                            </div>
+
+                            <div class="draft-rolls-holder hidden" id="draft-rolls-holder">
+                                <strong>Rolled Stats:</strong>
+                                <div id="draft-rolled-values" class="rolled-values-list"></div>
+                            </div>
+                        </div>
+
+                        <!-- Preview Canvas: Character Sheet -->
+                        <div class="draft-preview">
+                            <div class="character-sheet-card">
+                                <div class="sheet-header">
+                                    <div class="sheet-field name-field">
+                                        <div class="field-value" id="sheet-char-name">Adran Galanodel</div>
+                                        <div class="field-label">Character Name</div>
+                                    </div>
+                                    <div class="sheet-fields-row">
+                                        <div class="sheet-field">
+                                            <div class="field-value" id="sheet-char-class">Fighter</div>
+                                            <div class="field-label">Class</div>
+                                        </div>
+                                        <div class="sheet-field">
+                                            <div class="field-value" id="sheet-char-race">Elf</div>
+                                            <div class="field-label">Race</div>
+                                        </div>
+                                        <div class="sheet-field">
+                                            <div class="field-value">1</div>
+                                            <div class="field-label">Level</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="sheet-body">
+                                    <!-- Stats Columns -->
+                                    <div class="sheet-stats-column">
+                                        <div class="ability-score-box">
+                                            <span class="ability-name">Strength</span>
+                                            <div class="ability-modifier" id="sheet-str-mod">+0</div>
+                                            <input type="number" class="ability-value" id="sheet-str-val" value="10">
+                                        </div>
+                                        <div class="ability-score-box">
+                                            <span class="ability-name">Dexterity</span>
+                                            <div class="ability-modifier" id="sheet-dex-mod">+0</div>
+                                            <input type="number" class="ability-value" id="sheet-dex-val" value="10">
+                                        </div>
+                                        <div class="ability-score-box">
+                                            <span class="ability-name">Constitution</span>
+                                            <div class="ability-modifier" id="sheet-con-mod">+0</div>
+                                            <input type="number" class="ability-value" id="sheet-con-val" value="10">
+                                        </div>
+                                        <div class="ability-score-box">
+                                            <span class="ability-name">Intelligence</span>
+                                            <div class="ability-modifier" id="sheet-int-mod">+0</div>
+                                            <input type="number" class="ability-value" id="sheet-int-val" value="10">
+                                        </div>
+                                        <div class="ability-score-box">
+                                            <span class="ability-name">Wisdom</span>
+                                            <div class="ability-modifier" id="sheet-wis-mod">+0</div>
+                                            <input type="number" class="ability-value" id="sheet-wis-val" value="10">
+                                        </div>
+                                        <div class="ability-score-box">
+                                            <span class="ability-name">Charisma</span>
+                                            <div class="ability-modifier" id="sheet-cha-mod">+0</div>
+                                            <input type="number" class="ability-value" id="sheet-cha-val" value="10">
+                                        </div>
+                                    </div>
+
+                                    <!-- Details Block -->
+                                    <div class="sheet-details-pane">
+                                        <div class="sheet-panel-row">
+                                            <div class="sheet-stat-bubble">
+                                                <span class="bubble-value" id="sheet-ac-val">10</span>
+                                                <span class="bubble-label">Armor Class</span>
+                                            </div>
+                                            <div class="sheet-stat-bubble">
+                                                <span class="bubble-value" id="sheet-hp-val">10</span>
+                                                <span class="bubble-label">Max Hit Points</span>
+                                            </div>
+                                            <div class="sheet-stat-bubble">
+                                                <span class="bubble-value" id="sheet-speed-val">30 ft.</span>
+                                                <span class="bubble-label">Speed</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="sheet-traits-box">
+                                            <h4>Racial Traits</h4>
+                                            <ul id="sheet-race-traits">
+                                                <li>No traits loaded.</li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="sheet-traits-box">
+                                            <h4>Proficiencies & Starting Equipment</h4>
+                                            <ul id="sheet-class-traits">
+                                                <li>No traits loaded.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="sheet-actions">
+                                    <button class="sheet-btn" id="draft-save-btn"><i class="fa-solid fa-floppy-disk"></i> Save Draft Character</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 10: FAVORITES -->
+                <section id="view-bookmarks" class="view-section hidden">
+                    <div class="favorites-full-view">
+                        <div class="favorites-categories">
+                            <button class="fav-cat-btn active" data-cat="all">All Saved</button>
+                            <button class="fav-cat-btn" data-cat="rules">Rules</button>
+                            <button class="fav-cat-btn" data-cat="classes">Classes</button>
+                            <button class="fav-cat-btn" data-cat="spells">Spells</button>
+                            <button class="fav-cat-btn" data-cat="races">Races</button>
+                            <button class="fav-cat-btn" data-cat="monsters">Monsters</button>
+                        </div>
+                        
+                        <div id="bookmarks-grid" class="favorites-grid wide">
+                            <!-- Populated dynamically -->
+                            <p class="empty-state">No favorites saved in this category.</p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- DETAIL MODAL OVERLAY (DARK FANTASY CODEX STYLE) -->
+    <div id="detail-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <button class="modal-close" id="modal-close-btn">&times;</button>
+            <button class="modal-bookmark" id="modal-bookmark-btn" title="Bookmark this Item">
+                <i class="fa-regular fa-bookmark"></i>
+            </button>
+            <div class="modal-content" id="modal-content-area">
+                <!-- Dynamically loaded detail views -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript code -->
+    <script src="app.js"></script>
+</body>
+</html>
