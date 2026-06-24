@@ -1,0 +1,330 @@
+{
+  "stockholm": [
+    {
+      "date": "2026-06-23",
+      "artist": "Pitbull",
+      "venue": "3Arena",
+      "genre": "Pop / Rap",
+      "price": "650-1500 SEK",
+      "min_price": 650,
+      "currency": "SEK",
+      "link": "https://www.stockholmlive.com"
+    },
+    {
+      "date": "2026-06-24",
+      "artist": "Joost Klein",
+      "venue": "Förbindelsehallen",
+      "genre": "Electropop / Rap",
+      "price": "400-800 SEK",
+      "min_price": 400,
+      "currency": "SEK",
+      "link": "https://www.ticketmaster.se"
+    },
+    {
+      "date": "2026-06-26",
+      "artist": "Fairplay Chamber Music",
+      "venue": "Konserthuset",
+      "genre": "Classical",
+      "price": "150-450 SEK",
+      "min_price": 150,
+      "currency": "SEK",
+      "link": "https://www.konserthuset.se"
+    },
+    {
+      "date": "2026-06-27",
+      "artist": "Alesso",
+      "venue": "Sollidenscenen, Skansen",
+      "genre": "Electronic / EDM",
+      "price": "500-1100 SEK",
+      "min_price": 500,
+      "currency": "SEK",
+      "link": "https://www.livenation.se"
+    },
+    {
+      "date": "2026-06-27",
+      "artist": "Mästerbotten",
+      "venue": "Förbindelsehallen",
+      "genre": "Pop / Rock",
+      "price": "300-600 SEK",
+      "min_price": 300,
+      "currency": "SEK",
+      "link": "https://www.ticketmaster.se"
+    },
+    {
+      "date": "2026-06-28",
+      "artist": "Major Lazer SOUNDSYSTEM",
+      "venue": "Förbindelsehallen",
+      "genre": "Electronic / EDM",
+      "price": "600-1200 SEK",
+      "min_price": 600,
+      "currency": "SEK",
+      "link": "https://www.livenation.se"
+    },
+    {
+      "date": "2026-06-29",
+      "artist": "System Of A Down",
+      "venue": "Strawberry Arena",
+      "genre": "Metal / Rock",
+      "price": "800-2200 SEK",
+      "min_price": 800,
+      "currency": "SEK",
+      "link": "https://www.strawberryarena.se"
+    },
+    {
+      "date": "2026-07-02",
+      "artist": "Seinabo Sey, Amanda Bergman, Sunnan",
+      "venue": "Förbindelsehallen",
+      "genre": "Pop / Indie",
+      "price": "450-950 SEK",
+      "min_price": 450,
+      "currency": "SEK",
+      "link": "https://www.ticketmaster.se"
+    },
+    {
+      "date": "2026-07-03",
+      "artist": "Salvatore Ganacci",
+      "venue": "Electronic / House",
+      "genre": "Electronic / House",
+      "price": "400-900 SEK",
+      "min_price": 400,
+      "currency": "SEK",
+      "link": "https://www.livenation.se"
+    },
+    {
+      "date": "2026-07-10",
+      "artist": "Sina Bathaie",
+      "venue": "Södra Teatern (Kägelbanan)",
+      "genre": "World Music",
+      "price": "250-550 SEK",
+      "min_price": 250,
+      "currency": "SEK",
+      "link": "https://www.stockholmlive.com"
+    },
+    {
+      "date": "2026-07-10",
+      "artist": "Bad Bunny",
+      "venue": "Strawberry Arena",
+      "genre": "Reggaeton / Latin",
+      "price": "900-3000 SEK",
+      "min_price": 900,
+      "currency": "SEK",
+      "link": "https://www.strawberryarena.se"
+    },
+    {
+      "date": "2026-07-24",
+      "artist": "Lenny Kravitz",
+      "venue": "Avicii Arena",
+      "genre": "Rock",
+      "price": "700-1800 SEK",
+      "min_price": 700,
+      "currency": "SEK",
+      "link": "https://www.stockholmlive.com"
+    }
+  ],
+  "berlin": [
+    {
+      "date": "2026-06-26",
+      "artist": "Bruno Mars",
+      "venue": "Olympiastadion Berlin",
+      "genre": "Pop / R&B",
+      "price": "95-280 EUR",
+      "min_price": 95,
+      "currency": "EUR",
+      "link": "https://www.olympiastadion.berlin/"
+    },
+    {
+      "date": "2026-06-27",
+      "artist": "Berliner Philharmoniker",
+      "venue": "Waldbühne Berlin",
+      "genre": "Classical",
+      "price": "45-120 EUR",
+      "min_price": 45,
+      "currency": "EUR",
+      "link": "https://www.waldbuehne-berlin.de/"
+    },
+    {
+      "date": "2026-06-30",
+      "artist": "Nick Cave & The Bad Seeds",
+      "venue": "Waldbühne Berlin",
+      "genre": "Alternative Rock",
+      "price": "75-160 EUR",
+      "min_price": 75,
+      "currency": "EUR",
+      "link": "https://www.waldbuehne-berlin.de/"
+    },
+    {
+      "date": "2026-07-01",
+      "artist": "Foo Fighters",
+      "venue": "Olympiastadion Berlin",
+      "genre": "Rock",
+      "price": "85-200 EUR",
+      "min_price": 85,
+      "currency": "EUR",
+      "link": "https://www.olympiastadion.berlin/"
+    },
+    {
+      "date": "2026-07-08",
+      "artist": "System of a Down & Queens of the Stone Age",
+      "venue": "Olympiastadion Berlin",
+      "genre": "Metal / Rock",
+      "price": "90-240 EUR",
+      "min_price": 90,
+      "currency": "EUR",
+      "link": "https://www.olympiastadion.berlin/"
+    },
+    {
+      "date": "2026-07-09",
+      "artist": "Mumford & Sons",
+      "venue": "Waldbühne Berlin",
+      "genre": "Indie Folk",
+      "price": "65-140 EUR",
+      "min_price": 65,
+      "currency": "EUR",
+      "link": "https://www.waldbuehne-berlin.de/"
+    },
+    {
+      "date": "2026-07-09",
+      "artist": "Classic Open Air",
+      "venue": "Gendarmenmarkt",
+      "genre": "Classical",
+      "price": "35-95 EUR",
+      "min_price": 35,
+      "currency": "EUR",
+      "link": "https://www.eventim.de/"
+    },
+    {
+      "date": "2026-07-11",
+      "artist": "Pet Shop Boys",
+      "venue": "Waldbühne Berlin",
+      "genre": "Synth-pop",
+      "price": "70-150 EUR",
+      "min_price": 70,
+      "currency": "EUR",
+      "link": "https://www.waldbuehne-berlin.de/"
+    },
+    {
+      "date": "2026-07-18",
+      "artist": "Lollapalooza Berlin",
+      "venue": "Olympic site",
+      "genre": "Festival",
+      "price": "189-350 EUR",
+      "min_price": 189,
+      "currency": "EUR",
+      "link": "https://www.lollapaloozade.com/"
+    },
+    {
+      "date": "2026-07-24",
+      "artist": "Gaswerk Music Days",
+      "venue": "Gaswerk",
+      "genre": "Experimental",
+      "price": "30-80 EUR",
+      "min_price": 30,
+      "currency": "EUR",
+      "link": "https://www.eventim.de/"
+    }
+  ],
+  "london": [
+    {
+      "date": "2026-07-03",
+      "artist": "Coldplay",
+      "venue": "Wembley Stadium",
+      "genre": "Pop / Rock",
+      "price": "75-190 GBP",
+      "min_price": 75,
+      "currency": "GBP",
+      "link": "https://www.wembleystadium.com"
+    },
+    {
+      "date": "2026-07-10",
+      "artist": "Billie Eilish",
+      "venue": "O2 Arena",
+      "genre": "Alt-Pop",
+      "price": "80-220 GBP",
+      "min_price": 80,
+      "currency": "GBP",
+      "link": "https://www.theo2.co.uk"
+    },
+    {
+      "date": "2026-07-15",
+      "artist": "Hans Zimmer",
+      "venue": "Wembley Arena",
+      "genre": "Film Score",
+      "price": "60-180 GBP",
+      "min_price": 60,
+      "currency": "GBP",
+      "link": "https://www.ssearena.co.uk"
+    },
+    {
+      "date": "2026-07-20",
+      "artist": "Taylor Swift",
+      "venue": "Wembley Stadium",
+      "genre": "Pop",
+      "price": "110-450 GBP",
+      "min_price": 110,
+      "currency": "GBP",
+      "link": "https://www.wembleystadium.com"
+    },
+    {
+      "date": "2026-07-25",
+      "artist": "Adele",
+      "venue": "Hyde Park",
+      "genre": "Soul / Pop",
+      "price": "95-350 GBP",
+      "min_price": 95,
+      "currency": "GBP",
+      "link": "https://www.bst-hydepark.com"
+    }
+  ],
+  "paris": [
+    {
+      "date": "2026-06-29",
+      "artist": "Ed Sheeran",
+      "venue": "Stade de France",
+      "genre": "Pop",
+      "price": "80-180 EUR",
+      "min_price": 80,
+      "currency": "EUR",
+      "link": "https://www.stadefrance.com"
+    },
+    {
+      "date": "2026-07-04",
+      "artist": "Daft Punk Tribute",
+      "venue": "Philharmonie de Paris",
+      "genre": "Electronic",
+      "price": "35-90 EUR",
+      "min_price": 35,
+      "currency": "EUR",
+      "link": "https://philharmoniedeparis.fr"
+    },
+    {
+      "date": "2026-07-12",
+      "artist": "David Guetta",
+      "venue": "Accor Arena",
+      "genre": "Electronic / EDM",
+      "price": "70-160 EUR",
+      "min_price": 70,
+      "currency": "EUR",
+      "link": "https://www.accorarena.com"
+    },
+    {
+      "date": "2026-07-18",
+      "artist": "Iron Maiden",
+      "venue": "Paris La Défense Arena",
+      "genre": "Metal / Rock",
+      "price": "90-220 EUR",
+      "min_price": 90,
+      "currency": "EUR",
+      "link": "https://www.parisladefensearena.com"
+    },
+    {
+      "date": "2026-07-28",
+      "artist": "Stromae",
+      "venue": "Stade de France",
+      "genre": "Pop / Electronic",
+      "price": "65-150 EUR",
+      "min_price": 65,
+      "currency": "EUR",
+      "link": "https://www.stadefrance.com"
+    }
+  ]
+}

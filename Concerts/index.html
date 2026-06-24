@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeatSync | Interactive Concert Dashboard</title>
+    <meta name="description" content="Explore ongoing and upcoming concerts in Stockholm, Berlin, London, and Paris with live pricing, genres, and ticket links.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="glow-bg"></div>
+    
+    <div class="app-container">
+        <!-- Sidebar Navigation / Filters -->
+        <aside class="sidebar">
+            <div class="brand">
+                <i class="fa-solid fa-waveform-lines logo-icon"></i>
+                <h1>BeatSync</h1>
+            </div>
+            
+            <div class="filter-section">
+                <h2><i class="fa-solid fa-map-location-dot"></i> Select City</h2>
+                <div class="city-selector" id="city-selector">
+                    <button class="city-btn active" data-city="stockholm">Stockholm</button>
+                    <button class="city-btn" data-city="berlin">Berlin</button>
+                    <button class="city-btn" data-city="london">London</button>
+                    <button class="city-btn" data-city="paris">Paris</button>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h2><i class="fa-solid fa-magnifying-glass"></i> Search</h2>
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Search artist, venue...">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h2><i class="fa-solid fa-sliders"></i> Filters</h2>
+                
+                <div class="filter-group">
+                    <label for="price-range">Max Price</label>
+                    <div class="price-slider-container">
+                        <input type="range" id="price-range" min="0" max="3000" step="50" value="3000">
+                        <div class="price-labels">
+                            <span>0 <span class="currency-label">SEK</span></span>
+                            <span id="price-val">3000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Genres</label>
+                    <div class="genre-list" id="genre-filters">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <p>&copy; 2026 BeatSync Dashboard</p>
+                <p>Updated in real-time</p>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Stats Dashboard -->
+            <header class="dashboard-header">
+                <div class="welcome-text">
+                    <h2 id="dashboard-title">Live Concerts in Stockholm</h2>
+                    <p>Discover and filter ongoing concerts, gigs, and festivals.</p>
+                </div>
+                <div class="dashboard-stats">
+                    <div class="stat-card" id="stat-total">
+                        <div class="stat-icon"><i class="fa-solid fa-calendar-days"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Total Events</span>
+                            <span class="stat-number" id="total-events-num">-</span>
+                        </div>
+                    </div>
+                    <div class="stat-card" id="stat-avg-price">
+                        <div class="stat-icon"><i class="fa-solid fa-ticket-val"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Average Price</span>
+                            <span class="stat-number" id="avg-price-num">-</span>
+                        </div>
+                    </div>
+                    <div class="stat-card" id="stat-genres">
+                        <div class="stat-icon"><i class="fa-solid fa-music"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Unique Genres</span>
+                            <span class="stat-number" id="unique-genres-num">-</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Chart / Analytics Section -->
+            <section class="analytics-card">
+                <div class="card-header">
+                    <h3><i class="fa-solid fa-chart-simple"></i> Genre Distribution</h3>
+                    <p>Number of concerts by music genre in the selected city</p>
+                </div>
+                <div class="genre-chart-container">
+                    <div class="genre-chart" id="genre-chart">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Concert Grid -->
+            <section class="events-section">
+                <div class="section-header">
+                    <h3><i class="fa-solid fa-list"></i> Scheduled Concerts</h3>
+                    <div class="sort-selector">
+                        <label for="sort-select">Sort by</label>
+                        <select id="sort-select">
+                            <option value="date-asc">Date (Earliest First)</option>
+                            <option value="price-asc">Price (Lowest First)</option>
+                            <option value="price-desc">Price (Highest First)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="events-grid" id="events-grid">
+                    <!-- Cards populated by JS -->
+                </div>
+                
+                <!-- No Results fallback -->
+                <div class="no-results hidden" id="no-results">
+                    <i class="fa-solid fa-face-frown-open"></i>
+                    <h4>No concerts match your filters</h4>
+                    <p>Try resetting the search or adjusting the price slider.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- App JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
