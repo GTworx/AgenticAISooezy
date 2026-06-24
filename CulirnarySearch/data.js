@@ -464,7 +464,7 @@ const PRESET_LOCATIONS = {
   },
   "paris": {
     name: "7th Arrondissement, Paris",
-    coordinates: "48.8566,2.3522", // center coordinates adjusted to Paris 7th area (around Eiffel/Invalides)
+    coordinates: "48.8566,2.3522",
     restaurants: [
       {
         name: "L'Ami Jean",
@@ -745,8 +745,8 @@ function generateCustomRestaurants(locationQuery, random) {
   };
 }
 
-// High-fidelity Agent Pipeline Simulator
-export function simulatePipeline(locationInput, cuisinePref, occasion, targetTime) {
+// Global scope initialization for simulator without ES modules
+window.simulatePipeline = function(locationInput, cuisinePref, occasion, targetTime) {
   const seedString = `${locationInput}-${cuisinePref}-${occasion}`.toLowerCase();
   const random = createRandom(seedString);
 
@@ -812,7 +812,6 @@ export function simulatePipeline(locationInput, cuisinePref, occasion, targetTim
     radius += 1.0;
     addLog("00_orchestrator_agent", `QC GATEKEEPER ALERT: Scout discovered only ${validatedScoutList.length} venues. Instructing Scout to widen search radius to ${radius} km and re-run...`);
     addLog("01_scout_agent", `Re-scanning landscape with expanded radius: ${radius} km...`);
-    // Add extra mocked venues to fulfill radius expansion
     if (filterCuisine) {
       addLog("01_scout_agent", `Found 2 additional matching venues under expanded radius.`);
     } else {
@@ -841,8 +840,7 @@ export function simulatePipeline(locationInput, cuisinePref, occasion, targetTim
 
   addLog("02_ranking_agent", `Analyzing local sentiment from latest reviews for ${filteredRankList.length} venues...`);
   
-  // Score restaurants using custom ranking algorithm:
-  // Composite = (rating * 0.5) + (log10(reviews) * 0.2) + (velocity * 0.2) + (intentRelevance * 0.1)
+  // Score restaurants using custom ranking algorithm
   const rankedList = filteredRankList.map(v => {
     const overallRating = v.average_rating;
     const reviewVelocity = v.review_velocity;
@@ -862,7 +860,7 @@ export function simulatePipeline(locationInput, cuisinePref, occasion, targetTim
       }
     }
 
-    const normRating = (overallRating / 5.0) * 10; // score out of 10
+    const normRating = (overallRating / 5.0) * 10;
     const normVelocity = (reviewVelocity / 15.0) * 10;
     const normRelevance = (intentRelevance / 5.0) * 10;
     
@@ -892,14 +890,12 @@ export function simulatePipeline(locationInput, cuisinePref, occasion, targetTim
         intent_relevance: intentRelevance
       },
       rationale: rationale,
-      raw_details: v // carry details to next stage
+      raw_details: v
     };
   });
 
-  // Sort descending by composite score
   rankedList.sort((a, b) => b.composite_score - a.composite_score);
   
-  // Assign rank index
   rankedList.forEach((v, index) => {
     v.rank = index + 1;
   });
@@ -911,11 +907,6 @@ export function simulatePipeline(locationInput, cuisinePref, occasion, targetTim
   
   const logisticsOutput = rankedList.map(item => {
     const raw = item.raw_details;
-    
-    // Compute travel times based on distance
-    // Average walking speed: 5 km/h -> 12 min per km
-    // Driving: 25 km/h -> 2.4 min per km + traffic
-    // Transit: 15 km/h -> 4 min per km + wait time
     const dist = raw.distance_km;
     const walking_minutes = Math.max(1, Math.round(dist * 12));
     const driving_minutes = Math.max(1, Math.round(dist * 3 + 2));
@@ -948,18 +939,15 @@ export function simulatePipeline(locationInput, cuisinePref, occasion, targetTim
 
   addLog("03_logistics_agent", `Successfully calculated logistics, travel vectors, accessibility flags, and reservation parameters.`);
 
-  // --- AGENT 00: ORCHESTRATOR AGENT (Synthesis & Writing) ---
+  // --- AGENT 00: ORCHESTRATOR AGENT ---
   addLog("00_orchestrator_agent", `All backend logs received. Commencing final guide synthesis.`);
-  addLog("00_orchestrator_agent", `Synthesizing ranked scores with transit and dining timing tips.`);
   
-  // Select Scout's Pick (usually rank 1, or highest rating)
   const scoutsPickItem = rankedList[0];
   const scoutsPick = {
     name: scoutsPickItem ? scoutsPickItem.name : "None",
     reason: scoutsPickItem ? `Highest composite score (${scoutsPickItem.composite_score}/10) combining superior food quality, local review velocity, and matching dining intent. Try the signature dish: ${scoutsPickItem.signature_dish}!` : "No matching venues found."
   };
 
-  // Generate markdown dining guide content
   let toneText = "a polished, informative style";
   if (occasion && (occasion.toLowerCase().includes("quick") || occasion.toLowerCase().includes("casual"))) {
     toneText = "a casual, bullet-oriented style";
@@ -995,10 +983,9 @@ export function simulatePipeline(locationInput, cuisinePref, occasion, targetTim
   addLog("04_dashboard_agent", `Created Cuisine Distribution data & Price vs. Rating scatter coordinates.`);
   addLog("04_dashboard_agent", `Dashboard rendering complete. Deliver final output to user.`);
 
-  // Construct complete payload conforming to schema
   const payload = {
     pipeline_metadata: {
-      run_id: crypto.randomUUID ? crypto.randomUUID() : "sim-uuid-" + Math.floor(Math.random() * 1000000),
+      run_id: "sim-uuid-" + Math.floor(Math.random() * 1000000),
       timestamp: new Date().toISOString(),
       epicenter: {
         coordinates: epicenterCoords,
@@ -1048,4 +1035,4 @@ export function simulatePipeline(locationInput, cuisinePref, occasion, targetTim
     logs,
     payload
   };
-}
+};

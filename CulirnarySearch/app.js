@@ -1,5 +1,3 @@
-import { simulatePipeline } from './data.js';
-
 // Application State
 let appState = {
   currentPayload: null,
@@ -151,8 +149,8 @@ document.getElementById("pipeline-form").addEventListener("submit", async (e) =>
   logConsole("SYSTEM", `Starting sequential agent handshake pipeline for "${locationVal}"...`);
 
   try {
-    // Generate pipeline content synchronously first, but play it out asynchronously for the UX simulation
-    const result = simulatePipeline(locationVal, cuisineVal, occasionVal, timeVal);
+    // Generate pipeline content using the global simulatePipeline
+    const result = window.simulatePipeline(locationVal, cuisineVal, occasionVal, timeVal);
     
     // Asynchronous step simulator to wow the user
     await runAgentStepSimulation("step-01", result.logs.filter(l => l.agent === "01_scout_agent"), 900);
@@ -537,7 +535,7 @@ function drawMap() {
 
   const ctx = appState.mapCtx;
   const canvas = appState.mapCanvas;
-  const centerLat = 40.7308; // dummy coordinates center for visual mapping
+  const centerLat = 40.7308;
   const centerLng = -74.0028;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -582,13 +580,11 @@ function drawMap() {
   ctx.strokeStyle = "rgba(138, 43, 226, 0.4)";
   ctx.lineWidth = 2;
   ctx.beginPath();
-  // Draw organic squiggly polygon based on travel speeds
   const points = 12;
   const seedString = appState.currentPayload.pipeline_metadata.epicenter.neighborhood;
   let angleStep = (Math.PI * 2) / points;
   for (let i = 0; i < points; i++) {
     const angle = i * angleStep;
-    // Walk radius is approx 1km (10 mins) with street vectors stretching it
     const walkDist = 0.95 + Math.sin(angle * 3 + seedString.length) * 0.25; 
     const px = cx + walkDist * appState.mapScale * Math.cos(angle);
     const py = cy + walkDist * appState.mapScale * Math.sin(angle);
@@ -606,11 +602,10 @@ function drawMap() {
   ctx.beginPath();
   ctx.arc(cx, cy, 6, 0, Math.PI * 2);
   ctx.fill();
-  ctx.shadowBlur = 0; // reset
+  ctx.shadowBlur = 0;
 
   // Draw Restaurant pins
   appState.filteredRestaurants.forEach(item => {
-    // Calculate simulated offset from center based on item distance coordinates
     const seed = item.name.charCodeAt(0) + item.name.charCodeAt(item.name.length - 1);
     const angle = (seed % 360) * Math.PI / 180;
     const px = cx + item.scout.distance_km * appState.mapScale * Math.cos(angle);
@@ -621,7 +616,6 @@ function drawMap() {
     ctx.save();
     
     if (item.isPick) {
-      // Gold Star pin for Scout's Pick
       ctx.fillStyle = "gold";
       ctx.shadowColor = "gold";
       ctx.shadowBlur = isSelected ? 15 : 6;
@@ -629,7 +623,6 @@ function drawMap() {
       ctx.arc(px, py, isSelected ? 8 : 6, 0, Math.PI * 2);
       ctx.fill();
     } else {
-      // Regular pin
       ctx.fillStyle = isSelected ? "#00f2fe" : "#9ea2c0";
       ctx.shadowColor = isSelected ? "#00f2fe" : "transparent";
       ctx.shadowBlur = isSelected ? 12 : 0;
@@ -638,12 +631,10 @@ function drawMap() {
       ctx.fill();
     }
 
-    // Outline
     ctx.strokeStyle = "#14151f";
     ctx.lineWidth = 1.5;
     ctx.stroke();
 
-    // Text name label if selected or scout's pick
     if (isSelected || item.isPick) {
       ctx.fillStyle = "#f5f6f9";
       ctx.font = "bold 9px var(--font-title)";
@@ -674,7 +665,6 @@ function renderCuisineDistributionChart() {
     return;
   }
 
-  // Count cuisines
   const counts = {};
   list.forEach(r => {
     counts[r.scout.cuisine_type] = (counts[r.scout.cuisine_type] || 0) + 1;
@@ -682,14 +672,9 @@ function renderCuisineDistributionChart() {
 
   const keys = Object.keys(counts);
   const data = keys.map(k => ({ label: k, count: counts[k] }));
-
-  // Color mapping
   const colors = ["#00f2fe", "#ff007f", "#ff8c00", "#00ffcc", "#8a2be2", "#4facfe", "#e100ff"];
 
-  // Render HTML / SVG layout
   let svgContent = `<svg viewBox="0 0 200 200" class="chart-svg">`;
-  
-  // Draw Donut
   let cumulativePercent = 0;
   const total = list.length;
   
@@ -697,7 +682,6 @@ function renderCuisineDistributionChart() {
     const percent = d.count / total;
     const color = colors[idx % colors.length];
     
-    // Draw paths for values
     if (percent === 1) {
       svgContent += `<circle cx="100" cy="100" r="60" fill="transparent" stroke="${color}" stroke-width="24"></circle>`;
     } else {
@@ -722,7 +706,6 @@ function renderCuisineDistributionChart() {
     }
   });
 
-  // Middle cutout circle
   svgContent += `
     <circle cx="100" cy="100" r="48" fill="#14151f"></circle>
     <text x="100" y="98" text-anchor="middle" fill="#f5f6f9" font-size="16" font-family="Outfit" font-weight="700">${total}</text>
@@ -730,7 +713,6 @@ function renderCuisineDistributionChart() {
   `;
   svgContent += `</svg>`;
 
-  // Create Legend
   let legendHtml = `<div class="chart-legend-box" style="margin-left: 20px; font-size: 0.7rem; display: flex; flex-direction: column; gap: 8px;">`;
   data.forEach((d, idx) => {
     const color = colors[idx % colors.length];
@@ -760,10 +742,6 @@ function renderScatterPlot() {
     container.textContent = "No data to display";
     return;
   }
-
-  // Draw Scatter plot in SVG
-  // X axis: Price Level ($ to $$$$ -> mapping to values 1 to 4)
-  // Y axis: Composite score (ranging 5.0 to 10.0)
   
   const width = 280;
   const height = 160;
@@ -771,33 +749,26 @@ function renderScatterPlot() {
 
   let svgContent = `<svg width="100%" height="100%" viewBox="0 0 ${width} ${height}">`;
   
-  // Axes
   svgContent += `
-    <!-- Grid Y lines -->
     <line x1="${padding}" y1="${padding}" x2="${width - padding}" y2="${padding}" stroke="rgba(255,255,255,0.03)" stroke-width="1"></line>
     <line x1="${padding}" y1="${(height - padding + padding) / 2}" x2="${width - padding}" y2="${(height - padding + padding) / 2}" stroke="rgba(255,255,255,0.03)" stroke-width="1"></line>
-    <!-- Axis lines -->
     <line x1="${padding}" y1="${height - padding}" x2="${width - padding}" y2="${height - padding}" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"></line>
     <line x1="${padding}" y1="${padding}" x2="${padding}" y2="${height - padding}" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"></line>
   `;
 
-  // X ticks ($ to $$$$)
   const priceVals = { "$": 1, "$$": 2, "$$$": 3, "$$$$": 4 };
   const getX = (priceStr) => {
     const level = priceVals[priceStr] || 2;
-    // Map 1-4 range to pixels
     return padding + ((level - 1) / 3) * (width - padding * 2);
   };
 
   const getY = (score) => {
-    // Composite rating runs from 0.0 to 10.0. Zoom in on 6.0 to 10.0.
     const minS = 5.0;
     const maxS = 10.0;
     const val = Math.max(minS, Math.min(maxS, score));
     return (height - padding) - ((val - minS) / (maxS - minS)) * (height - padding * 2);
   };
 
-  // Render points
   list.forEach(item => {
     const px = getX(item.scout.price_range);
     const py = getY(item.composite_score);
@@ -815,7 +786,6 @@ function renderScatterPlot() {
     `;
   });
 
-  // Label ticks
   svgContent += `
     <text x="${getX('$')}" y="${height - 8}" fill="#676b8a" font-size="8" text-anchor="middle" font-family="Space Grotesk">$</text>
     <text x="${getX('$$')}" y="${height - 8}" fill="#676b8a" font-size="8" text-anchor="middle" font-family="Space Grotesk">$$</text>
@@ -838,13 +808,11 @@ surpriseBtn.addEventListener("click", () => {
     return;
   }
 
-  // Prep spinner UI modal
   rouletteModal.style.display = "flex";
   spinResultPanel.classList.add("hidden");
   spinnerWheel.style.transform = "rotate(0deg)";
   spinnerWheel.innerHTML = "";
 
-  // Render slices onto the spinner canvas
   const sliceAngle = 360 / options.length;
   const colors = ["#ff007f", "#8a2be2", "#00ffcc", "#00f2fe", "#ff8c00", "#e100ff"];
 
@@ -854,10 +822,8 @@ surpriseBtn.addEventListener("click", () => {
     slice.style.backgroundColor = colors[idx % colors.length];
     slice.style.transform = `rotate(${idx * sliceAngle}deg) skewY(${90 - sliceAngle}deg)`;
     
-    // Add text holder
     const textNode = document.createElement("span");
     textNode.textContent = opt.name.length > 15 ? opt.name.substring(0, 15) + "..." : opt.name;
-    // Undo skewing for text labels
     textNode.style.transform = `skewY(${-(90 - sliceAngle)}deg) rotate(${sliceAngle / 2} - 10deg) translate(25px, 20px)`;
     textNode.style.display = "inline-block";
     textNode.style.position = "absolute";
@@ -867,13 +833,11 @@ surpriseBtn.addEventListener("click", () => {
     spinnerWheel.appendChild(slice);
   });
 
-  // Attach execution button event once
   spinStartBtn.onclick = () => {
     spinStartBtn.disabled = true;
     
-    const randomRotations = 10 + Math.floor(Math.random() * 5); // 10 to 15 full spins
+    const randomRotations = 10 + Math.floor(Math.random() * 5);
     const winningIndex = Math.floor(Math.random() * options.length);
-    // Align selection offset pointer at standard top point (which is angle 270 deg)
     const targetDeg = (randomRotations * 360) - (winningIndex * sliceAngle) - (sliceAngle / 2);
     
     spinnerWheel.style.transform = `rotate(${targetDeg}deg)`;
@@ -884,7 +848,6 @@ surpriseBtn.addEventListener("click", () => {
       const winner = options[winningIndex];
       logConsole("04_dashboard_agent", `Roulette Winner Surfaced: "${winner.name}"!`);
       
-      // Render winner visual card
       spinResultPanel.classList.remove("hidden");
       rouletteWinnerCard.innerHTML = `
         <div class="restaurant-card highlighted" style="background-color: rgba(255,255,255,0.03); margin-top:10px;">
@@ -899,11 +862,9 @@ surpriseBtn.addEventListener("click", () => {
         </div>
       `;
 
-      // Select that restaurant card behind modal
       appState.selectedRestaurantId = winner.name;
       applyFiltersAndRender();
       
-      // Scroll to that element in list
       const targetEl = document.querySelector(`.restaurant-card[data-name="${winner.name}"]`);
       if (targetEl) {
         targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -928,7 +889,6 @@ pollBtn.addEventListener("click", () => {
 
 function renderPollNominees(list) {
   pollNomineesContainer.innerHTML = "";
-  
   const totalVotes = appState.pollVotes.reduce((a, b) => a + b, 0);
 
   list.forEach((item, idx) => {
@@ -958,7 +918,6 @@ simulateVotesBtn.onclick = () => {
   logConsole("SYSTEM", "Simulating group poll votes incoming from friends...");
 
   const interval = setInterval(() => {
-    // Add random votes to indices
     const randIdx = Math.floor(Math.random() * list.length);
     appState.pollVotes[randIdx]++;
     
@@ -1009,7 +968,6 @@ document.getElementById("copy-json-btn").addEventListener("click", () => {
   }
 });
 
-// Close modals when clicking background
 window.onclick = function(e) {
   if (e.target === rouletteModal) {
     rouletteModal.style.display = "none";
