@@ -1,0 +1,15 @@
+{
+  "name": "culinary-search-dashboard",
+  "version": "1.0.0",
+  "description": "Interactive visual dashboard and agent pipeline simulator for CulinarySearch",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}

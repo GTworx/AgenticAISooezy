@@ -1,0 +1,6 @@
+[2026-06-24T21:30:10Z] HYGIENE GATE VIOLATION REPORT
+Restaurant Name: Sluskiga Skeden (The Dirty Spoon)
+Address: Frösundavägen 12, Solna
+Issue Class: CRITICAL HYGIENE RISK
+Reason: Municipal health inspectors issued a temporary closure order on 2026-06-20 due to severe sanitary violations, including critical cross-contamination hazards in cold meat storage, lack of temperature logging for raw poultry, and non-functional handwashing stations in the main prep area.
+Action: AUTO-REJECTED. Pipeline execution completely bypassed for this venue.

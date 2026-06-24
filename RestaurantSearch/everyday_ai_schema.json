@@ -1,0 +1,70 @@
+{
+  "tool_metadata": {
+    "tool_id": "UUID-string",
+    "timestamp": "ISO-8601-date",
+    "agent_version": "1.2.0"
+  },
+  "intelligence_data": {
+    "research": {
+      "name": "string",
+      "url": "url",
+      "category": ["Content", "Data", "Automation", "Communication"],
+      "key_features": ["list"],
+      "last_update_notes": "string"
+    },
+    "ranking": {
+      "overall_score": 0.0,
+      "metrics": {
+        "security": 10,
+        "ease_of_use": 10,
+        "pricing_score": 10,
+        "platform_support": ["Web", "iOS", "Windows"]
+      },
+      "pricing_model": "Freemium/Subscription/Enterprise"
+    },
+    "market_analysis": {
+      "competitors": ["string"],
+      "unique_selling_point": "string",
+      "market_segment": "SMB/Enterprise/Freelance"
+    }
+  },
+  "educational_content": {
+    "curriculum_week": 0,
+    "guides": [
+      {
+        "title": "string",
+        "steps": ["string"],
+        "pro_tip": "string"
+      }
+    ],
+    "practice_cases": [
+      {
+        "scenario_name": "string",
+        "persona": "string",
+        "estimated_time_minutes": 15
+      }
+    ],
+    "assessment": {
+      "quiz_questions": [
+        {
+          "question": "string",
+          "options": ["string"],
+          "correct_answer": "string",
+          "explanation": "string"
+        }
+      ]
+    }
+  },
+  "distribution": {
+    "blog_article": "markdown_string",
+    "ad_copy": {
+      "one_pager_headline": "string",
+      "cta": "string"
+    },
+    "social_posts": {
+      "linkedin": "string",
+      "twitter_x": "string",
+      "instagram_caption": "string"
+    }
+  }
+}

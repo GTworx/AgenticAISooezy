@@ -1,0 +1,6 @@
+[2026-06-24T21:21:00Z] SECURITY VIOLATION REPORT
+Tool Name: CodeGrabber
+URL: https://codegrabber-unverified-site.io
+Security Score: 2.5/10 (Threshold is 7.0)
+Reason: Developer team identity is anonymous. Requires full read/write authorization to private GitHub accounts, downloads keychain secrets, and transmits raw workspace files over unencrypted HTTP requests to a remote site. Completely lacks a Privacy Policy, Terms of Service, or basic SOC 2 certifications.
+Action: AUTO-REJECTED. Pipeline execution bypassed for this tool.

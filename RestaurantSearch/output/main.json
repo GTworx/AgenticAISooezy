@@ -1,0 +1,251 @@
+{
+  "tool_metadata": {
+    "tool_id": "rest-8f7e-4b3c-2a1f-0e9d8c7b6a5f",
+    "timestamp": "2026-06-24T21:30:00Z",
+    "agent_version": "1.3.0"
+  },
+  "intelligence_data": {
+    "research": {
+      "name": "Emberlin",
+      "url": "https://emberlin-restaurant.se",
+      "category": [
+        "Contemporary Grill & Raw Bar",
+        "Stockholm Fine Dining",
+        "Stureplan"
+      ],
+      "key_features": [
+        "High-energy open-fire cooking and raw bar led by the Frantzén Group in Stureplan.",
+        "Featuring an exclusive wood-fired grill setup using birch-wood flames.",
+        "Sleek raw bar highlighting local Baltic and Norwegian seafood.",
+        "Custom cocktail pairings featuring Nordic botanicals."
+      ],
+      "last_update_notes": "Newly opened in 2026. Rapidly ascending the culinary charts as the buzziest grill house."
+    },
+    "ranking": {
+      "overall_score": 9.42,
+      "metrics": {
+        "security": 10,
+        "ease_of_use": 10,
+        "pricing_score": 8,
+        "platform_support": [
+          "Date Night",
+          "Group Celebration",
+          "Business Lunch"
+        ]
+      },
+      "pricing_model": "Tasting Menu (2400 SEK) & Premium A La Carte"
+    },
+    "market_analysis": {
+      "competitors": [
+        "Brasserie Astrid",
+        "Sturehof",
+        "Ekstedt"
+      ],
+      "unique_selling_point": "High-energy open-fire cooking and raw bar led by the Frantzén Group in Stureplan.",
+      "market_segment": "Upscale Diners / Gastronomes"
+    }
+  },
+  "educational_content": {
+    "curriculum_week": 1,
+    "guides": [
+      {
+        "title": "First Visit Guide for Emberlin",
+        "steps": [
+          "Step through the discrete entrance on Stureplan into a dimly lit, high-energy foyer. You will be escorted to either the counter surrounding the open-fire grill or a velvet banquette. The music is upbeat and curated. Your host will offer a signature welcome cocktail before explaining the structure of the open-fire menu.",
+          "Order the Smoked Bone Marrow with langoustine from the fire section.",
+          "Explore the raw bar menu for oysters and seasonal crudo.",
+          "Ask the sommelier for the custom beverage pairing tailored to birch smoke profiles."
+        ],
+        "pro_tip": "Book the 'Grill Counter' seats to watch the chefs cook over open birch-wood flames. Ask for the off-menu grilled sourdough with butter whipped with chicken drippings. Visit during early weekday slots (5:30 PM) for the best chance of scoring a walk-in at the raw bar."
+      }
+    ],
+    "practice_cases": [
+      {
+        "scenario_name": "The Ultimate Anniversary Celebration",
+        "persona": "A couple looking for a memorable, sensory-rich culinary milestone dinner.",
+        "estimated_time_minutes": 120
+      }
+    ],
+    "assessment": {
+      "quiz_questions": [
+        {
+          "question": "Which world-famous culinary organization is behind the creation of Emberlin?",
+          "options": [
+            "The Redzepi Group",
+            "The Frantzén Group",
+            "The Dacosta Organization",
+            "Svenska Brasserier"
+          ],
+          "correct_answer": "The Frantzén Group",
+          "explanation": "Emberlin is the highly anticipated 2026 opening from the Frantzén Group, famous for their multi-Michelin-starred venues in Stockholm and London."
+        },
+        {
+          "question": "What is the primary cooking technique that defines the menu at Emberlin?",
+          "options": [
+            "Molecular gastronomy and spherification",
+            "Sous-vide and low-temperature water baths",
+            "Open-fire cooking over birch wood and charcoal",
+            "Traditional raw vegan prep and fermentation"
+          ],
+          "correct_answer": "Open-fire cooking over birch wood and charcoal",
+          "explanation": "Emberlin focuses on open-fire cooking, grilling premium meats and seafood over curated birch wood to impart a deep, smoke-infused flavor profile."
+        }
+      ]
+    }
+  },
+  "distribution": {
+    "blog_article": "# Feasting on Fire: How Emberlin Redefines Modern Stockholm Gastronomy\n\nThe Stockholm culinary scene has always danced between the clean, minimal lines of Nordic classicism and the bold rustic traditions of open-fire cooking. In 2026, a new titan has emerged at Stureplan that merges these two philosophies into a high-energy dining performance: **Emberlin** (https://emberlin-restaurant.se).\n\nConceived by the world-renowned **Frantzén Group**, Emberlin is not just another restaurant; it is a sensory theater. Centered around a massive, custom-built copper hearth, the kitchen cooks exclusively over birch wood and charcoal, bringing ancient smoke profiles to refined modern plates.\n\n### The Star of Stockholm's Culinary Week\n\nDuring our Phase A and B pipeline reviews, Emberlin scored an unprecedented **9.42 out of 10** in our quantitative rating matrix, leading in food quality and ambiance. The signature dish — **Smoked bone marrow with grilled langoustine and charred beef fat vinaigrette** — encapsulates the entire ethos. It is rich, smoky, delicate, and deeply rooted in Swedish culinary heritage.\n\nBut Solna and Stockholm are seeing a broader culinary revival. Our top five selections for the week showcase a diverse food ecosystem:\n\n*   **Restaurang Asplund (Solna):** Delivering Swedish-Asian fusion inside an architectural landmark, proving corporate lunches can be both high-design and delicious.\n*   **Ulriksdals Trädgårdscafé (Solna):** Serving outstanding organic, vegetarian farm-to-table dishes inside a historic greenhouse, surrounded by the gardens where the vegetables were picked hours prior.\n*   **Brasserie Astrid (Stockholm):** Combining French brasserie comfort with gorgeous waterfront sunset views over the Slussen canal.\n*   **Ateljéns Pizza (Solna):** Fermenting sourdough for 48 hours to create the ultimate airy, crispy neighborhood pizza in Haga Norra.\n\n### Raising the Bar on Quality\n\nThe pipeline maintains a strict quality standard. During this run, the operations team auto-failed and bypassed **Sluskiga Skeden (The Dirty Spoon)** in Solna due to critical hygiene violations. By enforcing these gates, the Everyday Dining Guide guarantees that every recommendation is safe, sanitary, and of the highest caliber.",
+    "ad_copy": {
+      "one_pager_headline": "Dine over open embers. Experience Emberlin, the Frantzén Group's newest Stureplan sensation. Reclaim your weekend with Stockholm's top dining guides.",
+      "cta": "Book the ultimate wood-fired culinary experience today at Emberlin"
+    },
+    "social_posts": {
+      "linkedin": "🚀 Stockholm's restaurant scene continues to innovate. In our latest Operations Guide, we highlight the buzziest new openings and neighborhood gems in Stockholm & Solna. From Emberlin (the Frantzén Group's stunning new wood-fired theater in Stureplan) to organic vegetarian buffets in historic greenhouses, and functionalist architectural dining spots, we evaluate them across food quality, value, ambiance, service, and accessibility. Check out our comprehensive dining curriculum and interactive culinary quiz to plan your team's next client dinner or weekend celebration. #StockholmDining #FoodTech #EverydayDining #B2BDining #SwedishGastronomy",
+      "twitter_x": "Wood-fire cooking meets modern luxury. 🪵🔥 Emberlin is Stockholm's hottest new grill by the Frantzén Group. Scoring 9.4/10 in our weekly matrix. 🧵 Here is our first-visit dining guide and our top 5 Stockholm & Solna picks: [link] #StockholmFood #FineDining",
+      "instagram_caption": "Sizzling over birch wood. 🥩🔥 Emberlin at Stureplan takes the top spot in this week's dining guide with its incredible wood-fired grill and raw bar. Check out our bio link for our first-visit tips, local Solna favorites, and our interactive culinary quiz! 🇸🇪🥂 #stockholmeats #solnafood #grillhouse #sourdoughpizza #greenhousecafe #foodtravels"
+    }
+  },
+  "pipeline_run_metadata": {
+    "weekly_theme": "Stockholm & Solna Culinary Discoveries, Local Bistros, and Open-Fire Gastronomy",
+    "run_date": "2026-06-24",
+    "system_health": {
+      "status": "Completed",
+      "progress_percentage": 100.0,
+      "summary": "Coordinated 12-agent dining discovery pipeline. 6 venues scanned, 1 auto-rejected due to health inspection failures. Created 5 detailed guides, scenarios, and cuisine quizzes."
+    },
+    "ranked_tools": [
+      {
+        "rank": 1,
+        "name": "Emberlin",
+        "url": "https://emberlin-restaurant.se",
+        "overall_score": 9.42,
+        "security": 9.8,
+        "ease_of_use": 10.0,
+        "pricing_score": 8.5,
+        "platform_support": [
+          "Date Night",
+          "Group Celebration",
+          "Business Lunch",
+          "Late Night"
+        ],
+        "pricing_model": "Tasting Menu & Premium A La Carte",
+        "status": "DISTRIBUTED",
+        "department_fit": {
+          "Date Night": 9,
+          "Family Friendly": 3,
+          "Business Lunch": 8,
+          "Solo Dining": 7,
+          "Weekend Brunch": 4
+        },
+        "description": "High-energy open-fire cooking and raw bar led by the Frantzén Group in Stureplan."
+      },
+      {
+        "rank": 2,
+        "name": "Restaurang Asplund",
+        "url": "https://restaurangasplund.se",
+        "overall_score": 9.0,
+        "security": 9.0,
+        "ease_of_use": 8.8,
+        "pricing_score": 9.5,
+        "platform_support": [
+          "Business Lunch",
+          "Solo Dining",
+          "Weekend Brunch",
+          "Group Celebration font-bold"
+        ],
+        "pricing_model": "Lunch (135-155 SEK) & Weekend Brunch (325 SEK)",
+        "status": "DISTRIBUTED",
+        "department_fit": {
+          "Date Night": 6,
+          "Family Friendly": 8,
+          "Business Lunch": 9,
+          "Solo Dining": 8,
+          "Weekend Brunch": 9
+        },
+        "description": "Chic, global fusion lunch and weekend brunch in an iconic architectural heritage building in Solna."
+      },
+      {
+        "rank": 3,
+        "name": "Ulriksdals Trädgårdscafé",
+        "url": "https://slottstradgardenulriksdal.se",
+        "overall_score": 8.86,
+        "security": 8.5,
+        "ease_of_use": 9.8,
+        "pricing_score": 8.5,
+        "platform_support": [
+          "Weekend Brunch",
+          "Family Friendly",
+          "Special Dietary"
+        ],
+        "pricing_model": "Vegetarian Lunch Buffet (209 SEK), Weekend A La Carte & Bakery",
+        "status": "DISTRIBUTED",
+        "department_fit": {
+          "Date Night": 7,
+          "Family Friendly": 9,
+          "Business Lunch": 7,
+          "Solo Dining": 8,
+          "Weekend Brunch": 9
+        },
+        "description": "Freshly-harvested vegetarian lunches served inside a historic greenhouse at Ulriksdal Palace."
+      },
+      {
+        "rank": 4,
+        "name": "Brasserie Astrid",
+        "url": "https://brasserieastrid.se",
+        "overall_score": 8.6,
+        "security": 8.0,
+        "ease_of_use": 9.5,
+        "pricing_score": 8.0,
+        "platform_support": [
+          "Date Night",
+          "Group Celebration",
+          "Weekend Brunch",
+          "Late Night"
+        ],
+        "pricing_model": "A La Carte (Mains 195 - 395 SEK)",
+        "status": "DISTRIBUTED",
+        "department_fit": {
+          "Date Night": 9,
+          "Family Friendly": 6,
+          "Business Lunch": 8,
+          "Solo Dining": 7,
+          "Weekend Brunch": 8
+        },
+        "description": "Multi-level waterfront dining with panoramic sunset views over the Slussen canal."
+      },
+      {
+        "rank": 5,
+        "name": "Ateljéns Pizza",
+        "url": "https://ateljenspizza.se",
+        "overall_score": 8.36,
+        "security": 8.5,
+        "ease_of_use": 8.0,
+        "pricing_score": 8.5,
+        "platform_support": [
+          "Solo Dining",
+          "Family Friendly",
+          "Date Night"
+        ],
+        "pricing_model": "Artisanal Sourdough Pizza (145 - 195 SEK)",
+        "status": "DISTRIBUTED",
+        "department_fit": {
+          "Date Night": 8,
+          "Family Friendly": 9,
+          "Business Lunch": 6,
+          "Solo Dining": 9,
+          "Weekend Brunch": 6
+        },
+        "description": "Cozy, slow-fermented sourdough pizza joint and neighborhood bistro in Haga Norra, Solna."
+      }
+    ],
+    "security_alerts": [
+      {
+        "name": "Sluskiga Skeden (The Dirty Spoon)",
+        "url": "N/A",
+        "severity": "CRITICAL HYGIENE RISK",
+        "issue_description": "Municipal inspectors found severe sanitary violations, including critical cross-contamination hazards in cold meat storage, lack of temperature logging for raw poultry, and non-functional handwashing stations in the main prep area. Temporary closure order issued on 2026-06-20.",
+        "action_taken": "Auto-failed during Stage B quantitative gate. Bypassed and excluded from all guides."
+      }
+    ]
+  }
+}

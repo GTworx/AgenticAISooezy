@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stockholm & Solna Dining Operations - Pipeline Dashboard</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              900: '#4c1d95',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .neon-border-glow {
+      box-shadow: 0 0 15px rgba(139, 92, 246, 0.15);
+    }
+    .scrollbar-thin::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+      background: rgba(139, 92, 246, 0.3);
+      border-radius: 3px;
+    }
+    .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+      background: rgba(139, 92, 246, 0.6);
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col font-sans antialiased overflow-hidden">
+  <!-- Top Navbar -->
+  <header class="glass-panel border-b border-slate-800 px-6 py-4 flex items-center justify-between z-10 shrink-0">
+    <div class="flex items-center space-x-3">
+      <div class="p-2 bg-gradient-to-tr from-brand-600 to-cyan-500 rounded-lg text-white shadow-lg">
+        <i data-lucide="chef-hat" class="w-6 h-6 animate-pulse"></i>
+      </div>
+      <div>
+        <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-violet-400 via-brand-400 to-cyan-400">
+          Stockholm & Solna Culinary Operations
+        </h1>
+        <p class="text-xs text-slate-400">Multi-Agent Dining Recommendation Pipeline</p>
+      </div>
+    </div>
+    <div class="flex items-center space-x-4">
+      <div class="flex items-center space-x-2 text-xs bg-emerald-500/10 text-emerald-400 px-3 py-1.5 rounded-full border border-emerald-500/20">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <span class="font-medium">System Health: 100% OK</span>
+      </div>
+      <div class="text-xs text-slate-400">
+        Run Date: <span class="text-slate-200 font-semibold">2026-06-24</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 glass-panel border-r border-slate-800 p-4 shrink-0 flex flex-col justify-between overflow-y-auto font-medium">
+      <div class="space-y-6">
+        <div>
+          <span class="px-3 text-2xs uppercase tracking-wider text-slate-500 font-bold">Theme of the Week</span>
+          <div class="mt-2 p-3 bg-brand-900/20 border border-brand-500/20 rounded-lg text-xs text-brand-300 font-semibold">
+            Stockholm & Solna Culinary Discoveries, Local Bistros, and Open-Fire Gastronomy
+          </div>
+        </div>
+        <nav class="space-y-1">
+          <button onclick="switchTab('overview')" id="btn-overview" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm transition-all bg-brand-600 text-white shadow-md">
+            <i data-lucide="layout-dashboard" class="w-4 h-4 font-bold"></i>
+            <span>Orchestration Hub</span>
+          </button>
+          <button onclick="switchTab('ranking')" id="btn-ranking" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm transition-all text-slate-400 hover:bg-slate-900 hover:text-slate-100">
+            <i data-lucide="award" class="w-4 h-4"></i>
+            <span>Restaurant Rankings</span>
+          </button>
+          <button onclick="switchTab('curriculum')" id="btn-curriculum" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm transition-all text-slate-400 hover:bg-slate-900 hover:text-slate-100">
+            <i data-lucide="calendar-range" class="w-4 h-4"></i>
+            <span>Weekly Dining Guide</span>
+          </button>
+          <button onclick="switchTab('marketing')" id="btn-marketing" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm transition-all text-slate-400 hover:bg-slate-900 hover:text-slate-100">
+            <i data-lucide="megaphone" class="w-4 h-4"></i>
+            <span>Marketing & Social</span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="pt-4 border-t border-slate-900 space-y-2">
+        <div class="flex items-center justify-between text-2xs text-slate-500 px-3">
+          <span>PIPELINE ENGINE</span>
+          <span class="text-brand-400 font-bold">v1.3.0</span>
+        </div>
+        <div class="px-3 py-2 bg-slate-950/60 rounded-lg text-slate-400 space-y-1">
+          <div class="flex justify-between text-2xs">
+            <span>Scanned:</span>
+            <span class="font-bold text-slate-200">6</span>
+          </div>
+          <div class="flex justify-between text-2xs">
+            <span>Rejected:</span>
+            <span class="font-bold text-rose-400">1</span>
+          </div>
+          <div class="flex justify-between text-2xs">
+            <span>Approved:</span>
+            <span class="font-bold text-emerald-400">5</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 p-6 overflow-y-auto scrollbar-thin bg-slate-950/40">
+      
+      <!-- TAB: OVERVIEW (Orchestration Hub) -->
+      <div id="tab-overview" class="space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-bold text-slate-100 flex items-center">
+              <span>Orchestration Control Room</span>
+              <span class="ml-2 px-2 py-0.5 text-2xs bg-brand-500/20 text-brand-300 rounded font-normal border border-brand-500/30">Stockholm / Solna Area</span>
+            </h2>
+            <p class="text-xs text-slate-400">Manage real-time state, quality filters, and pipeline flow triggers.</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button class="bg-brand-600 hover:bg-brand-700 active:scale-95 transition px-3 py-1.5 rounded-lg text-xs font-semibold shadow-md flex items-center space-x-1.5 text-white">
+              <i data-lucide="play" class="w-3.5 h-3.5"></i>
+              <span>Trigger Pipeline Run</span>
+            </button>
+            <button class="bg-slate-900 border border-slate-800 hover:bg-slate-800 transition px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5">
+              <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+              <span>Reset State</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Metric Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div class="glass-panel p-5 rounded-xl flex items-center justify-between">
+            <div class="space-y-1">
+              <span class="text-2xs font-semibold text-slate-400 uppercase tracking-wider font-bold">Active Stage</span>
+              <p class="text-lg font-bold text-white flex items-center">
+                <span>Completed</span>
+                <span class="ml-1.5 w-2 h-2 rounded-full bg-emerald-400"></span>
+              </p>
+              <p class="text-2xs text-emerald-400">Pipeline Finished</p>
+            </div>
+            <div class="p-3 bg-amber-500/10 text-amber-400 rounded-lg">
+              <i data-lucide="send" class="w-6 h-6"></i>
+            </div>
+          </div>
+          <div class="glass-panel p-5 rounded-xl flex items-center justify-between">
+            <div class="space-y-1">
+              <span class="text-2xs font-semibold text-slate-400 uppercase tracking-wider font-bold">Active Agent</span>
+              <p class="text-lg font-bold text-white">None</p>
+              <p class="text-2xs text-slate-400">Orchestrator Idle</p>
+            </div>
+            <div class="p-3 bg-brand-500/10 text-brand-400 rounded-lg">
+              <i data-lucide="user-cog" class="w-6 h-6"></i>
+            </div>
+          </div>
+          <div class="glass-panel p-5 rounded-xl flex items-center justify-between">
+            <div class="space-y-1">
+              <span class="text-2xs font-semibold text-slate-400 uppercase tracking-wider font-bold">Completion Status</span>
+              <p class="text-lg font-bold text-white">100.0%</p>
+              <p class="text-2xs text-emerald-400 flex items-center">
+                <i data-lucide="check-circle-2" class="w-3 h-3 mr-0.5 text-emerald-400"></i>
+                <span class="text-emerald-400">PUBLISHED / ACTIVE</span>
+              </p>
+            </div>
+            <div class="p-3 bg-emerald-500/10 text-emerald-400 rounded-lg">
+              <i data-lucide="activity" class="w-6 h-6"></i>
+            </div>
+          </div>
+          <div class="glass-panel p-5 rounded-xl flex items-center justify-between">
+            <div class="space-y-1">
+              <span class="text-2xs font-semibold text-slate-400 uppercase tracking-wider">Quality Violations</span>
+              <p class="text-lg font-bold text-rose-400">1 Rejected</p>
+              <p class="text-2xs text-rose-300">Hygiene Risk Gate Blocked</p>
+            </div>
+            <div class="p-3 bg-rose-500/10 text-rose-400 rounded-lg">
+              <i data-lucide="shield-alert" class="w-6 h-6"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Main Action Panel -->
+          <div class="lg:col-span-2 space-y-6">
+            
+            <!-- Target Center Specs -->
+            <div class="glass-panel p-5 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div class="flex items-center space-x-3">
+                <div class="p-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-300">
+                  <i data-lucide="map-pin" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-sm text-slate-200">Neighborhood Epicenter</h4>
+                  <p class="text-xs text-slate-400">Solna / Stockholm Central Area (Radius: 5 km)</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="text-2xs text-slate-500 block uppercase font-bold">Coordinates</span>
+                <span class="text-xs font-mono text-brand-300">59.3601° N, 18.0012° E</span>
+              </div>
+            </div>
+
+            <!-- Pipeline Status Timeline -->
+            <div class="glass-panel p-5 rounded-xl space-y-4">
+              <h4 class="text-sm font-bold text-slate-200 flex items-center justify-between">
+                <span>Multi-Agent Pipeline Progression</span>
+                <span class="text-2xs font-normal text-slate-400">Sequenced execution</span>
+              </h4>
+              <div class="relative pl-6 border-l-2 border-brand-500/30 space-y-6">
+                <!-- Phase A -->
+                <div class="relative">
+                  <span class="absolute -left-9 top-0.5 w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold ring-4 ring-slate-950 shadow-md">A</span>
+                  <div class="space-y-1">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-slate-200">Phase A: Restaurant Intelligence</span>
+                      <span class="text-2xs font-semibold px-2 py-0.5 bg-emerald-500/10 text-emerald-400 rounded-full border border-emerald-500/20">Completed</span>
+                    </div>
+                    <p class="text-2xs text-slate-400 leading-relaxed">
+                      Culinary Scout (Agent 1) scanned local channels, discovered 6 candidates. Scoring matrix applied by Quantitative Analyst (Agent 2). Direct competitor mapping by Competitive Intelligence (Agent 4) & occasion breakdown mapped by Segment Specialist (Agent 5).
+                    </p>
+                  </div>
+                </div>
+                <!-- Phase B -->
+                <div class="relative">
+                  <span class="absolute -left-9 top-0.5 w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold ring-4 ring-slate-950 shadow-md">B</span>
+                  <div class="space-y-1">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-slate-200">Phase B: Content & Scenario Design</span>
+                      <span class="text-2xs font-semibold px-2 py-0.5 bg-emerald-500/10 text-emerald-400 rounded-full border border-emerald-500/20">Completed</span>
+                    </div>
+                    <p class="text-2xs text-slate-400 leading-relaxed">
+                      Content Creator (Agent 6) drafted narrative articles. Guide Writer (Agent 7) and Scenario Designer (Agent 8) mapped first-visit guides and anniversary/corporate dining scenarios. Culinary Quiz (Agent 9) drafted assessment. Curated Monday-to-Friday timeline bundled by Guide Architect (Agent 10).
+                    </p>
+                  </div>
+                </div>
+                <!-- Phase C -->
+                <div class="relative">
+                  <span class="absolute -left-9 top-0.5 w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold ring-4 ring-slate-950 shadow-md">C</span>
+                  <div class="space-y-1">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-slate-200">Phase C: Marketing & Distribution</span>
+                      <span class="text-2xs font-semibold px-2 py-0.5 bg-emerald-500/10 text-emerald-400 rounded-full border border-emerald-500/20">Completed</span>
+                    </div>
+                    <p class="text-2xs text-slate-400 leading-relaxed font-semibold">
+                      Spotlight Copywriter (Agent 11) and Social Media Manager (Agent 12) finalized dining spotlights and platform-specific captions. Human-in-the-Loop approval was successfully granted by the operations manager.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quality Alert & Mini suitability -->
+          <div class="space-y-6">
+            <!-- Quality violation console -->
+            <div class="glass-panel p-5 rounded-xl border border-rose-500/20 bg-rose-950/5">
+              <div class="flex items-center space-x-3 text-rose-400 mb-3">
+                <i data-lucide="shield-alert" class="w-5 h-5 animate-bounce"></i>
+                <h4 class="font-bold text-sm uppercase tracking-wider">Quality Gate Incidents</h4>
+              </div>
+              <div class="bg-rose-950/20 border border-rose-500/30 rounded-lg p-4 space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-rose-300">Sluskiga Skeden</span>
+                  <span class="text-2xs font-semibold px-2 py-0.5 bg-rose-500/20 text-rose-400 rounded">REJECTED</span>
+                </div>
+                <p class="text-2xs text-slate-350 leading-relaxed">
+                  <strong>Reason:</strong> Municipal health inspectors issued a temporary closure order on 2026-06-20 due to severe sanitary violations, including critical cross-contamination hazards in cold meat storage, lack of temperature logging, and broken hand washing sinks.
+                </p>
+                <div class="pt-2 border-t border-rose-500/20 flex items-center justify-between text-2xs text-rose-400 font-semibold">
+                  <span>Action: Auto-failed in Stage A</span>
+                  <span>Orchestrator Enforcement: 100%</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Occasion Pie Chart -->
+            <div class="glass-panel p-5 rounded-xl flex flex-col justify-between">
+              <h4 class="text-sm font-semibold text-slate-300 mb-2 flex items-center justify-between">
+                <span>Occasion Segment Alignment</span>
+                <i data-lucide="pie-chart" class="w-4 h-4 text-brand-400"></i>
+              </h4>
+              <div class="h-44 flex items-center justify-center">
+                <canvas id="occasionChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Orchestrator Console / Logs -->
+        <div class="glass-panel p-5 rounded-xl">
+          <div class="flex items-center justify-between mb-3 border-b border-slate-900 pb-2">
+            <div class="flex items-center space-x-2 text-slate-300">
+              <i data-lucide="terminal" class="w-4 h-4 text-brand-400"></i>
+              <h4 class="font-bold text-sm">Dining Pipeline Execution Log</h4>
+            </div>
+            <span class="text-2xs text-emerald-400 font-bold">Pipeline completed successfully</span>
+          </div>
+          <div class="bg-slate-950 p-4 rounded-lg font-mono text-xs text-brand-300 space-y-1.5 max-h-60 overflow-y-auto scrollbar-thin leading-relaxed">
+            <p><span class="text-slate-600">[21:30:00]</span> <span class="text-cyan-400">[Orchestrator 00]</span> Initializing Stockholm-Solna Dining Discovery Sequential Pipeline. Radius set to 5.0 km.</p>
+            <p><span class="text-slate-600">[21:30:02]</span> <span class="text-cyan-400">[Orchestrator 00]</span> Spawning Culinary Scout Agent [01] for location research.</p>
+            <p><span class="text-slate-600">[21:30:06]</span> <span class="text-brand-400">[Culinary Scout 01]</span> Scanned Thatsup, maps, and restaurant registers. Discovered 6 candidate venues in Stockholm/Solna.</p>
+            <p><span class="text-slate-600">[21:30:08]</span> <span class="text-brand-400">[Culinary Scout 01]</span> ALERT: 'Sluskiga Skeden (The Dirty Spoon)' flagged with a critical municipal closure report.</p>
+            <p><span class="text-slate-600">[21:30:10]</span> <span class="text-cyan-400">[Orchestrator 00]</span> Quality Gate check failed for Sluskiga Skeden. Bypassing remaining pipeline, written to data/quality_violations.log.</p>
+            <p><span class="text-slate-600">[21:30:12]</span> <span class="text-cyan-400">[Orchestrator 00]</span> Spawning Analyst [02] and Occasion Specialist [05] for Phase A ranking.</p>
+            <p><span class="text-slate-600">[21:30:15]</span> <span class="text-violet-400">[Analyst 02]</span> Applied weighted scoring matrix across food, value, ambiance, service, and accessibility.</p>
+            <p><span class="text-slate-600">[21:30:18]</span> <span class="text-violet-400">[Analyst 02]</span> Top 5 verified: 1. Emberlin (9.42), 2. Asplund (9.00), 3. Ulriksdals (8.86), 4. Astrid (8.60), 5. Ateljens Pizza (8.36).</p>
+            <p><span class="text-slate-600">[21:30:20]</span> <span class="text-violet-400">[Occasion 05]</span> Segmented candidates. Ulriksdals hits 10/10 for dietary and 9.5/10 for families; Emberlin scores 9.8/10 for Date Night.</p>
+            <p><span class="text-slate-600">[21:30:22]</span> <span class="text-cyan-400">[Orchestrator 00]</span> Dashboard Checkpoint 1: Writing data to main.json. Spawning Phase B content agents.</p>
+            <p><span class="text-slate-600">[21:30:25]</span> <span class="text-indigo-400">[Content Creator 06]</span> Written sensory thought leadership article: 'Feasting on Fire in Stockholm'.</p>
+            <p><span class="text-slate-600">[21:30:30]</span> <span class="text-indigo-400">[Guide Writer 07]</span> Drafted 'First Visit Guides' for the 5 venues, highlighting booking and counter seating strategies.</p>
+            <p><span class="text-slate-600">[21:30:33]</span> <span class="text-indigo-400">[Scenario Designer 08]</span> Created occasion-specific plans (Date Night, solo dining, corporate networking).</p>
+            <p><span class="text-slate-600">[21:30:36]</span> <span class="text-indigo-400">[Culinary Quiz 09]</span> Designed 10-question assessment covering ingredients and sourdough secrets.</p>
+            <p><span class="text-slate-600">[21:30:40]</span> <span class="text-sky-400">[Architect 10]</span> Bundled materials into a Monday-Friday structured culinary path.</p>
+            <p><span class="text-slate-600">[21:30:43]</span> <span class="text-cyan-400">[Orchestrator 00]</span> Dashboard Checkpoint 2: Educational Content compiled. Spawning Phase C marketing agents.</p>
+            <p><span class="text-slate-600">[21:30:46]</span> <span class="text-indigo-400">[Spotlight Copy 11]</span> Generated ad headers highlighting wood-fired marrow and garden greenhouse buffets.</p>
+            <p><span class="text-slate-600">[21:30:48]</span> <span class="text-indigo-400">[Social Media 12]</span> Generated platform captions for LinkedIn, X threads, and Instagram hashtags.</p>
+            <p class="text-amber-400"><span class="text-slate-600">[21:30:50]</span> <span class="text-cyan-400">[Orchestrator 00]</span> PAUSED at Human-in-the-Loop approval gate. Awaiting console response to publish copy package.</p>
+            <p class="text-emerald-400"><span class="text-slate-600">[21:55:34]</span> <span class="text-cyan-400">[Orchestrator 00]</span> HITL Gate approved. Writing final outputs to main.json. Tagging restaurants as DISTRIBUTED.</p>
+            <p class="text-emerald-400"><span class="text-slate-600">[21:55:36]</span> <span class="text-emerald-400">[Dashboard 13]</span> Refreshing all dashboard cards. Pipeline run successfully completed and assets distributed.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: RANKING -->
+      <div id="tab-ranking" class="hidden space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h3 class="text-lg font-bold text-slate-200">Quantitative Restaurant Evaluation</h3>
+            <p class="text-xs text-slate-400">Weighted evaluation matrix for the top 5 Stockholm/Solna restaurants of the week.</p>
+          </div>
+          <div class="flex items-center space-x-2 text-2xs bg-slate-900 border border-slate-800 p-2 rounded-lg text-slate-400 font-bold">
+            <span>Criteria: Food Quality (30%), Value (20%), Ambiance (20%), Service (15%), Accessibility (15%)</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Ranking Table -->
+          <div class="lg:col-span-2 glass-panel rounded-xl overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-900/60 border-b border-slate-850 text-slate-300 text-xs font-bold">
+                    <th class="p-3">Rank</th>
+                    <th class="p-3">Restaurant</th>
+                    <th class="p-3">Cuisine</th>
+                    <th class="p-3 text-center">Food (30%)</th>
+                    <th class="p-3 text-center">Value (20%)</th>
+                    <th class="p-3 text-center">Ambiance (20%)</th>
+                    <th class="p-3 text-right">Overall</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-900 text-xs text-slate-350" id="ranking-table-body">
+                  <!-- Generated by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Radar Chart Comparison -->
+          <div class="glass-panel p-5 rounded-xl flex flex-col justify-between">
+            <h4 class="text-sm font-semibold text-slate-300 mb-2 flex items-center justify-between">
+              <span>Metric Comparison</span>
+              <i data-lucide="radar" class="w-4 h-4 text-brand-400"></i>
+            </h4>
+            <div class="h-60">
+              <canvas id="comparisonChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- SWOT / Deep Dive Panel -->
+        <div class="glass-panel p-6 rounded-xl space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-900 pb-3">
+            <div>
+              <h4 class="font-bold text-sm text-slate-200" id="deep-dive-title">Emberlin Deep Dive</h4>
+              <p class="text-2xs text-slate-400" id="deep-dive-address">Stureplan, Stockholm</p>
+            </div>
+            <span class="text-2xs bg-brand-500/20 text-brand-300 border border-brand-500/30 px-2 py-0.5 rounded font-bold" id="deep-dive-uvp">High-energy open-fire cooking</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- SWOT Analysis -->
+            <div class="md:col-span-2 space-y-3">
+              <h5 class="text-xs font-bold uppercase tracking-wider text-slate-400">SWOT Analysis</h5>
+              <div class="grid grid-cols-2 gap-3">
+                <div class="bg-emerald-950/10 border border-emerald-500/10 rounded p-3 text-2xs">
+                  <strong class="text-emerald-400 block mb-1">Strengths</strong>
+                  <span class="text-slate-300" id="swot-strengths">World-class pedigree (Frantzén Group), open-fire hearth, service.</span>
+                </div>
+                <div class="bg-rose-950/10 border border-rose-500/10 rounded p-3 text-2xs">
+                  <strong class="text-rose-400 block mb-1">Weaknesses</strong>
+                  <span class="text-slate-300" id="swot-weaknesses">Extremely expensive, very hard to book.</span>
+                </div>
+                <div class="bg-cyan-950/10 border border-cyan-500/10 rounded p-3 text-2xs">
+                  <strong class="text-cyan-400 block mb-1">Opportunities</strong>
+                  <span class="text-slate-300" id="swot-opportunities">Premium B2B lunches, culinary tourist packages.</span>
+                </div>
+                <div class="bg-amber-950/10 border border-amber-500/10 rounded p-3 text-2xs">
+                  <strong class="text-amber-400 block mb-1">Threats</strong>
+                  <span class="text-slate-300" id="swot-threats">Economic changes impacting luxury fine dining.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Segment Info -->
+            <div class="space-y-4 bg-slate-900/30 border border-slate-900 rounded-lg p-4">
+              <h5 class="text-xs font-bold uppercase tracking-wider text-slate-400">Pricing & Neighborhood Fit</h5>
+              <div class="space-y-2 text-2xs">
+                <div>
+                  <span class="text-slate-500 block uppercase font-bold">Pricing Model</span>
+                  <span class="text-slate-200 font-semibold" id="deep-dive-pricing">Tasting Menu & Premium A La Carte</span>
+                </div>
+                <div>
+                  <span class="text-slate-500 block uppercase font-bold">Neighborhood Fit</span>
+                  <span class="text-slate-250 block leading-relaxed" id="deep-dive-fit">Fits Stureplan's high-income corporate and luxury nightlife.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: CURRICULUM (Weekly Dining Guide) -->
+      <div id="tab-curriculum" class="hidden space-y-6">
+        <div>
+          <h3 class="text-lg font-bold text-slate-200">The Weekly Dining Exploration Path</h3>
+          <p class="text-xs text-slate-400">A structured Monday-to-Friday schedule mapping the week's best dining experiences.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
+          <!-- Mon -->
+          <div class="glass-panel p-4 rounded-xl flex flex-col justify-between cursor-pointer hover:border-brand-500/50 transition bg-brand-900/5 border-brand-500/20" onclick="selectDay(1)" id="day-card-1">
+            <div class="space-y-2">
+              <div class="flex justify-between items-center">
+                <span class="text-2xs text-brand-400 font-bold uppercase">Day 1</span>
+                <span class="text-3xs text-slate-500">Mon</span>
+              </div>
+              <h4 class="font-bold text-sm text-slate-200">Discovery Highlights</h4>
+              <p class="text-3xs text-slate-400 leading-normal">Introducing the Stockholm / Solna culinary path and top-ranked picks.</p>
+            </div>
+            <span class="text-2xs text-brand-300 font-semibold mt-4 block">View Plan &rarr;</span>
+          </div>
+
+          <!-- Tue-Wed -->
+          <div class="glass-panel p-4 rounded-xl flex flex-col justify-between cursor-pointer hover:border-brand-500/30 transition bg-slate-900/10" onclick="selectDay(2)" id="day-card-2">
+            <div class="space-y-2">
+              <div class="flex justify-between items-center">
+                <span class="text-2xs text-slate-500 font-bold uppercase">Day 2-3</span>
+                <span class="text-3xs text-slate-500">Tue-Wed</span>
+              </div>
+              <h4 class="font-bold text-sm text-slate-200">First Visit Guides</h4>
+              <p class="text-3xs text-slate-400 leading-normal">Detailed exploration of Restaurang Asplund and sourdough secrets.</p>
+            </div>
+            <span class="text-2xs text-slate-450 mt-4 block">View Plan &rarr;</span>
+          </div>
+
+          <!-- Thu -->
+          <div class="glass-panel p-4 rounded-xl flex flex-col justify-between cursor-pointer hover:border-brand-500/30 transition bg-slate-900/10" onclick="selectDay(3)" id="day-card-3">
+            <div class="space-y-2">
+              <div class="flex justify-between items-center">
+                <span class="text-2xs text-slate-500 font-bold uppercase">Day 4</span>
+                <span class="text-3xs text-slate-500">Thu</span>
+              </div>
+              <h4 class="font-bold text-sm text-slate-200">Dining Scenarios</h4>
+              <p class="text-3xs text-slate-400 leading-normal">Anniversary plans, greenhouse family fikas, corporate lunches.</p>
+            </div>
+            <span class="text-2xs text-slate-450 mt-4 block">View Plan &rarr;</span>
+          </div>
+
+          <!-- Fri -->
+          <div class="glass-panel p-4 rounded-xl flex flex-col justify-between cursor-pointer hover:border-brand-500/30 transition bg-slate-900/10" onclick="selectDay(4)" id="day-card-4">
+            <div class="space-y-2">
+              <div class="flex justify-between items-center">
+                <span class="text-2xs text-slate-500 font-bold uppercase">Day 5</span>
+                <span class="text-3xs text-slate-500">Fri</span>
+              </div>
+              <h4 class="font-bold text-sm text-slate-200">Culinary Quiz</h4>
+              <p class="text-3xs text-slate-400 leading-normal">Culinary assessment, correct order selections, correct answers.</p>
+            </div>
+            <span class="text-2xs text-slate-450 mt-4 block">View Plan &rarr;</span>
+          </div>
+
+          <!-- Weekend -->
+          <div class="glass-panel p-4 rounded-xl flex flex-col justify-between cursor-pointer hover:border-brand-500/30 transition bg-slate-900/10" onclick="selectDay(5)" id="day-card-5">
+            <div class="space-y-2">
+              <div class="flex justify-between items-center">
+                <span class="text-2xs text-slate-500 font-bold uppercase">Weekend</span>
+                <span class="text-3xs text-slate-500">Sat-Sun</span>
+              </div>
+              <h4 class="font-bold text-sm text-slate-200">Weekend Must-Visits</h4>
+              <p class="text-3xs text-slate-400 leading-normal">Ulriksdals greenhouse café fika and waterfront Astrid sunsets.</p>
+            </div>
+            <span class="text-2xs text-slate-450 mt-4 block">View Plan &rarr;</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Guide / Text panel -->
+          <div class="lg:col-span-2 glass-panel p-6 rounded-xl space-y-4" id="curriculum-main-content">
+            <!-- Dynamically populated -->
+          </div>
+
+          <!-- Quiz Interactive Panel -->
+          <div class="glass-panel p-6 rounded-xl space-y-4">
+            <h4 class="font-bold text-sm text-slate-200 flex items-center justify-between">
+              <span>Culinary Assessment Quiz</span>
+              <i data-lucide="help-circle" class="w-4 h-4 text-brand-400"></i>
+            </h4>
+            <div class="space-y-4 max-h-[400px] overflow-y-auto pr-2 scrollbar-thin" id="quiz-container">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: MARKETING (Marketing & Social) -->
+      <div id="tab-marketing" class="hidden space-y-6">
+        <div>
+          <h3 class="text-lg font-bold text-slate-200">Social Media & Spotlight Copy</h3>
+          <p class="text-xs text-slate-400">Generated spotlights and multi-platform promotional captions.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Blog Article Markdown -->
+          <div class="lg:col-span-2 glass-panel p-6 rounded-xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-900 pb-3">
+              <div class="flex items-center space-x-2">
+                <i data-lucide="file-text" class="w-4 h-4 text-brand-400"></i>
+                <h4 class="font-bold text-sm text-slate-200">Feature Dining Article (Markdown)</h4>
+              </div>
+              <button class="bg-slate-900 border border-slate-800 hover:bg-slate-800 px-2 py-1 rounded text-2xs flex items-center space-x-1" onclick="navigator.clipboard.writeText(document.getElementById('blog-text').innerText)">
+                <i data-lucide="copy" class="w-3 h-3"></i>
+                <span>Copy</span>
+              </button>
+            </div>
+            <div class="bg-slate-950 p-4 rounded-lg text-slate-350 text-xs max-h-96 overflow-y-auto scrollbar-thin font-mono leading-relaxed" id="blog-text">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Social Promos -->
+          <div class="space-y-6">
+            <!-- Ad spotlight card -->
+            <div class="glass-panel p-5 rounded-xl space-y-4 bg-brand-900/10 border-brand-500/20">
+              <h4 class="font-bold text-xs uppercase tracking-wider text-brand-300">Spotlight Copy Headline</h4>
+              <p class="text-sm font-bold text-slate-100" id="ad-headline"></p>
+              <div class="pt-3 border-t border-slate-900 flex items-center justify-between">
+                <span class="text-3xs text-slate-500 uppercase font-semibold">CTA</span>
+                <span class="text-xs text-brand-400 font-bold" id="ad-cta"></span>
+              </div>
+            </div>
+
+            <!-- Social Captions Tabs -->
+            <div class="glass-panel p-5 rounded-xl space-y-4">
+              <div class="flex items-center justify-between border-b border-slate-900 pb-2">
+                <span class="font-bold text-xs uppercase tracking-wider text-slate-400 font-bold">Social Captions</span>
+                <div class="flex space-x-1" id="social-tab-buttons">
+                  <button onclick="switchSocialTab('linkedin')" id="btn-social-linkedin" class="text-3xs font-bold px-2 py-1 rounded bg-slate-900 text-brand-400 border border-brand-500/30">LinkedIn</button>
+                  <button onclick="switchSocialTab('x')" id="btn-social-x" class="text-3xs font-bold px-2 py-1 rounded bg-slate-950 text-slate-450 hover:bg-slate-900">X (Twitter)</button>
+                  <button onclick="switchSocialTab('instagram')" id="btn-social-instagram" class="text-3xs font-bold px-2 py-1 rounded bg-slate-950 text-slate-450 hover:bg-slate-900">Instagram</button>
+                </div>
+              </div>
+              <div class="bg-slate-950 p-4 rounded text-xs text-slate-300 min-h-36 leading-relaxed select-all font-sans" id="social-text">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    // Embedded Restaurant Data
+    const restaurants = [
+      {
+        "rank": 1,
+        "name": "Emberlin",
+        "url": "https://emberlin-restaurant.se",
+        "cuisine": "Contemporary Grill & Raw Bar",
+        "price_range": "$$$$",
+        "address": "Stureplan, Stockholm",
+        "distance": "3.8 km",
+        "rating": 4.8,
+        "review_count": 342,
+        "signature_dish": "Smoked bone marrow with grilled langoustine and charred beef fat vinaigrette.",
+        "uvp": "High-energy open-fire cooking and raw bar led by the Frantzén Group in Stureplan.",
+        "metrics": {
+          "food_quality": 9.8,
+          "value": 8.5,
+          "ambiance": 10.0,
+          "service": 9.8,
+          "accessibility": 9.0,
+          "overall": 9.42
+        },
+        "swot": {
+          "strengths": "World-class pedigree (Frantzén Group), unmatched open-fire grill precision, premium ingredients, outstanding service.",
+          "weaknesses": "Extremely high price point, reservation availability is low (books out months in advance).",
+          "opportunities": "Target high-end business dinners and tourists looking for elite Nordic gastronomy.",
+          "threats": "Changing economic conditions impacting fine-dining spending, upcoming luxury competitors in Norrmalm."
+        },
+        "pricing_model": "Tasting Menu (2400 SEK) & Premium A La Carte",
+        "neighborhood_fit": "Fits perfectly with Stureplan's high-income, trend-focused corporate and luxury nightlife demographic.",
+        "occasions": {
+          "Date Night": 9.8,
+          "Group Celebration": 9.5,
+          "Business Lunch": 8.5,
+          "Solo Dining": 7.5,
+          "Family Friendly": 3.0,
+          "Quick Lunch": 2.0,
+          "Weekend Brunch": 4.0,
+          "Late Night": 9.0,
+          "Special Dietary": 8.0
+        },
+        "guide": {
+          "title": "First Visit Guide for Emberlin",
+          "first_5_minutes": "Step through the discrete entrance on Stureplan into a dimly lit, high-energy foyer. You will be escorted to either the counter surrounding the open-fire grill or a velvet banquette. The music is upbeat and curated. Your host will offer a signature welcome cocktail before explaining the structure of the open-fire menu.",
+          "insider_tips": "Book the 'Grill Counter' seats to watch the chefs cook over open birch-wood flames. Ask for the off-menu grilled sourdough with butter whipped with chicken drippings. Visit during early weekday slots (5:30 PM) for the best chance of scoring a walk-in at the raw bar."
+        },
+        "scenario": {
+          "name": "The Ultimate Anniversary Celebration",
+          "persona": "A couple looking for a memorable, sensory-rich culinary milestone dinner.",
+          "plan": "Book a Grill Counter seat for 8:00 PM. Start with the raw bar selection (oysters with wild apple mignonette) paired with champagne. Let the kitchen guide you through the fire-cooked dishes, highlighting the grilled langoustines, and finish with wood-fired milk ice cream."
+        },
+        "quizzes": [
+          {
+            "question": "Which world-famous culinary organization is behind the creation of Emberlin?",
+            "options": ["The Redzepi Group", "The Frantzén Group", "The Dacosta Organization", "Svenska Brasserier"],
+            "correct": 1,
+            "explanation": "Emberlin is the highly anticipated 2026 opening from the Frantzén Group, famous for their multi-Michelin-starred venues in Stockholm and London."
+          },
+          {
+            "question": "What is the primary cooking technique that defines the menu at Emberlin?",
+            "options": ["Molecular gastronomy and spherification", "Sous-vide and low-temperature water baths", "Open-fire cooking over birch wood and charcoal", "Traditional raw vegan prep and fermentation"],
+            "correct": 2,
+            "explanation": "Emberlin focuses on open-fire cooking, grilling premium meats and seafood over curated birch wood to impart a deep, smoke-infused flavor profile."
+          }
+        ]
+      },
+      {
+        "rank": 2,
+        "name": "Restaurang Asplund",
+        "url": "https://restaurangasplund.se",
+        "cuisine": "Modern Swedish-Asian Bistro",
+        "price_range": "$$",
+        "address": "Gunnar Asplunds allé 2-4, Solna",
+        "distance": "1.2 km",
+        "rating": 4.7,
+        "review_count": 512,
+        "signature_dish": "Gochujang-glazed pork belly bowl with pickled turnip, ginger rice, and organic herbs.",
+        "uvp": "Chic, global fusion lunch and weekend brunch in an iconic architectural heritage building in Solna.",
+        "metrics": {
+          "food_quality": 9.2,
+          "value": 9.5,
+          "ambiance": 8.8,
+          "service": 9.0,
+          "accessibility": 8.5,
+          "overall": 9.00
+        },
+        "swot": {
+          "strengths": "High value for money, architectural setting, rotating menus that keep locals returning, excellent vegetarian range.",
+          "weaknesses": "Primarily focused on lunch and morning hours, dinner service is limited to private bookings or catering.",
+          "opportunities": "Expand weekday early evening services for local office workers doing after-work social hours.",
+          "threats": "New lunchtime cafes opening in the Solna Ingenting district, remote work patterns reducing corporate lunch traffic."
+        },
+        "pricing_model": "Weekly rotating Lunch (135-155 SEK) & Weekend Brunch (325 SEK)",
+        "neighborhood_fit": "Perfectly situated for Solna's corporate offices and growing residential community looking for casual but high-quality dining.",
+        "occasions": {
+          "Date Night": 6.0,
+          "Group Celebration": 8.5,
+          "Business Lunch": 9.5,
+          "Solo Dining": 8.5,
+          "Family Friendly": 8.0,
+          "Quick Lunch": 9.0,
+          "Weekend Brunch": 9.5,
+          "Late Night": 2.0,
+          "Special Dietary": 8.5
+        },
+        "guide": {
+          "title": "First Visit Guide for Restaurang Asplund",
+          "first_5_minutes": "Enter the beautifully preserved, modernist brick building designed by Gunnar Asplund. The space features high ceilings, clean lines, and an open buffet setup. Grab a tray if you are there for the popular lunch hour, select your main dish at the counter, and help yourself to the fresh salad selection and sourdough bread.",
+          "insider_tips": "The weekend brunch is highly popular and requires booking at least a week ahead. During weekdays, arrive around 11:15 AM or after 12:45 PM to bypass the peak corporate rush. Don't skip the freshly brewed Swedish fika coffee included with lunch."
+        },
+        "scenario": {
+          "name": "The Smart Corporate Networking Lunch",
+          "persona": "A project manager hosting a collaborative lunch with clients from nearby Solna office hubs.",
+          "plan": "Meet at 11:30 AM to secure a spacious window table. Order the signature Swedish-Asian fusion bowl of the week, enjoy the self-serve fresh salad buffet, and discuss business over premium fika in a bright, modern setting."
+        },
+        "quizzes": [
+          {
+            "question": "What is the architectural significance of Restaurang Asplund's location?",
+            "options": ["It is housed in a medieval castle dungeon", "It is located in a functionalist building designed by Gunnar Asplund", "It is built inside a former railway terminal hangar", "It occupies an old royal greenhouse greenhouse"],
+            "correct": 1,
+            "explanation": "Restaurang Asplund is named after and situated in the architectural complex designed by Gunnar Asplund, a pioneer of Swedish functionalist architecture."
+          }
+        ]
+      },
+      {
+        "rank": 3,
+        "name": "Ulriksdals Trädgårdscafé",
+        "url": "https://slottstradgardenulriksdal.se",
+        "cuisine": "Organic Vegetarian & Farm-to-Table",
+        "price_range": "$$",
+        "address": "Slottsträdgårdsvägen 8, 170 79 Solna",
+        "distance": "2.5 km",
+        "rating": 4.5,
+        "review_count": 890,
+        "signature_dish": "Harvest garden salad with wood-baked goat cheese, heirloom beets, and wild herb dressing.",
+        "uvp": "Freshly-harvested vegetarian lunches served inside a historic greenhouse at Ulriksdal Palace.",
+        "metrics": {
+          "food_quality": 9.5,
+          "value": 8.5,
+          "ambiance": 9.8,
+          "service": 8.5,
+          "accessibility": 8.0,
+          "overall": 8.86
+        },
+        "swot": {
+          "strengths": "Stunning greenhouse setting, farm-to-table freshness, family-friendly outdoor areas, high-quality organic bakery.",
+          "weaknesses": "Can get extremely crowded on sunny weekends, parking is limited, dependent on weather for optimal outdoor seats.",
+          "opportunities": "Develop summer culinary workshops and evening greenhouse dinners.",
+          "threats": "Unfavorable weather during peak summer season reducing overall visitor numbers."
+        },
+        "pricing_model": "Vegetarian Lunch Buffet (209 SEK), Weekend A La Carte & Bakery",
+        "neighborhood_fit": "A major destination spot in Solna, attracting green-minded residents, families, and tourists visiting the Ulriksdal Palace grounds.",
+        "occasions": {
+          "Date Night": 7.0,
+          "Group Celebration": 8.0,
+          "Business Lunch": 7.0,
+          "Solo Dining": 8.0,
+          "Family Friendly": 9.5,
+          "Quick Lunch": 6.0,
+          "Weekend Brunch": 9.8,
+          "Late Night": 1.0,
+          "Special Dietary": 10.0
+        },
+        "guide": {
+          "title": "First Visit Guide for Ulriksdals Trädgårdscafé",
+          "first_5_minutes": "Walk through the sprawling plant nursery and enter the massive glass greenhouse café. The air is warm and smells of fresh basil, pastries, and damp soil. Head to the central serving counter to purchase the vegetarian garden buffet or order artisan baked goods from the glass counter.",
+          "insider_tips": "Sit in the rear section of the greenhouse under the grapevines for the best atmosphere. During the summer, you can head out to the fields to pick your own flowers and vegetables (Självplock) before lunch."
+        },
+        "scenario": {
+          "name": "Cozy Weekend Family Gathering",
+          "persona": "A family group looking for a relaxed, nature-infused weekend brunch and walk.",
+          "plan": "Arrive at 10:30 AM to stroll around the palace gardens and greenhouse nursery. Head to the café at 11:30 AM when the fresh vegetarian buffet starts. Enjoy organic soups, warm garden quiches, and seasonal salads under the glass roof."
+        },
+        "quizzes": [
+          {
+            "question": "Where are the vegetables and herbs used in the café's dishes primarily sourced from?",
+            "options": ["Imported organic farms in southern Europe", "Grown directly on-site in the palace greenhouses and fields", "Stockholm central commercial food markets", "Unused portions from Solna school lunch programs"],
+            "correct": 1,
+            "explanation": "Ulriksdals Trädgårdscafé leverages its location in Slottsträdgården Ulriksdal to grow its own organic produce, which is harvested daily and featured directly in the buffet."
+          }
+        ]
+      },
+      {
+        "rank": 4,
+        "name": "Brasserie Astrid",
+        "url": "https://brasserieastrid.se",
+        "cuisine": "French-Swedish Waterfront Brasserie",
+        "price_range": "$$$",
+        "address": "Mälartrappan 5, Stockholm",
+        "distance": "4.2 km",
+        "rating": 4.3,
+        "review_count": 274,
+        "signature_dish": "Classic moules frites cooked in dry Swedish apple cider with fresh tarragon aioli.",
+        "uvp": "Multi-level waterfront dining with panoramic sunset views over the Slussen canal.",
+        "metrics": {
+          "food_quality": 8.5,
+          "value": 8.0,
+          "ambiance": 9.5,
+          "service": 8.0,
+          "accessibility": 9.0,
+          "overall": 8.60
+        },
+        "swot": {
+          "strengths": "Prime waterfront location in Slussen, large multi-level terrace, vibrant evening bar scene with music.",
+          "weaknesses": "Service can be slow during peak evening patio hours, cooking quality can be slightly inconsistent during busy shifts.",
+          "opportunities": "Host sunset DJ sessions and corporate cocktail mixers on the top-level terrace.",
+          "threats": "Construction and traffic detours around the Slussen hub impacting foot traffic accessibility."
+        },
+        "pricing_model": "A La Carte (Mains 195 - 395 SEK)",
+        "neighborhood_fit": "Appeals to the trendy Slussen and Södermalm demographic looking for a lively, scenic dining and drinking spot.",
+        "occasions": {
+          "Date Night": 9.0,
+          "Group Celebration": 9.0,
+          "Business Lunch": 8.0,
+          "Solo Dining": 7.0,
+          "Family Friendly": 6.0,
+          "Quick Lunch": 5.0,
+          "Weekend Brunch": 8.5,
+          "Late Night": 8.5,
+          "Special Dietary": 7.0
+        },
+        "guide": {
+          "title": "First Visit Guide for Brasserie Astrid",
+          "first_5_minutes": "Descend the stairs at Mälartrappan near Slussen. The brasserie opens up over three levels with large glass windows overlooking the water. Check in with the host on the mid-level. If it is summer, request a table on the outdoor terrace to catch the sunset over the water.",
+          "insider_tips": "Order the cider-steamed mussels which are a local favorite. The cocktails are highly creative — try the 'Nordic Summer' featuring dill-infused aquavit and elderflower. Sit at the top bar for a quick drink if waiting for a table."
+        },
+        "scenario": {
+          "name": "Romantic Sunset Date Night",
+          "persona": "A couple looking for a lively atmosphere, good music, and scenic views over dinner.",
+          "plan": "Book a terrace table for 7:30 PM. Start with a signature aquavit cocktail as the sun goes down. Order the moules frites and the grilled Swedish dry-aged ribeye, and stay for the late-night DJ set with drinks."
+        },
+        "quizzes": [
+          {
+            "question": "What is the unique geographic feature of Brasserie Astrid's location?",
+            "options": ["It sits inside an active subway station tunnel", "It spans three levels overlooking the Slussen canal water", "It is built on a floating wooden barge in Lake Mälaren", "It is located at the highest altitude peak in Solna"],
+            "correct": 1,
+            "explanation": "Brasserie Astrid is built directly into Mälartrappan in Slussen, offering a unique multi-level design that overlooks the water where Lake Mälaren meets the Baltic Sea."
+          }
+        ]
+      },
+      {
+        "rank": 5,
+        "name": "Ateljéns Pizza",
+        "url": "https://ateljenspizza.se",
+        "cuisine": "Artisanal Sourdough Pizza & Italian Small Plates",
+        "price_range": "$$",
+        "address": "Mathildatorget 1, 169 75 Solna",
+        "distance": "0.8 km",
+        "rating": 4.4,
+        "review_count": 184,
+        "signature_dish": "The 'Haga Norra Special' sourdough pizza with wild chanterelles, Västerbottensost, and wild garlic oil.",
+        "uvp": "Cozy, slow-fermented sourdough pizza joint and neighborhood bistro in Haga Norra, Solna.",
+        "metrics": {
+          "food_quality": 8.8,
+          "value": 8.5,
+          "ambiance": 8.0,
+          "service": 8.5,
+          "accessibility": 8.0,
+          "overall": 8.36
+        },
+        "swot": {
+          "strengths": "Superior sourdough crust fermentation, friendly local neighborhood feel, affordable Italian wine selection.",
+          "weaknesses": "Very small interior seating capacity, long wait times for take-away during peak hours.",
+          "opportunities": "Provide outdoor street seating during summer, introduce DIY pizza kits for home baking.",
+          "threats": "Rising cost of premium imported Italian ingredients (San Marzano tomatoes, Caputo flour)."
+        },
+        "pricing_model": "Artisanal Pizza (145 - 195 SEK) & Italian Smårätter",
+        "neighborhood_fit": "Fills a crucial gap in Haga Norra for a high-quality, laid-back evening neighborhood hangout for pizza and wine.",
+        "occasions": {
+          "Date Night": 8.0,
+          "Group Celebration": 7.0,
+          "Business Lunch": 6.0,
+          "Solo Dining": 9.0,
+          "Family Friendly": 9.0,
+          "Quick Lunch": 5.0,
+          "Weekend Brunch": 6.0,
+          "Late Night": 7.0,
+          "Special Dietary": 8.0
+        },
+        "guide": {
+          "title": "First Visit Guide for Ateljéns Pizza",
+          "first_5_minutes": "Step into this bustling, intimate pizzeria on Mathildatorget. The center of attention is the blazing copper pizza oven. The staff is young and casual. Find a stool at the high wooden counter or wait for a small table. Order a glass of natural Barbera wine while browsing the chalkboard menu.",
+          "insider_tips": "Try their white pizzas (bianco), particularly the Haga Norra Special which uses Swedish Västerbottensost instead of mozzarella. They offer gluten-free crusts that are surprisingly good. Take-away is fast but the crust is best eaten fresh out of the copper oven."
+        },
+        "scenario": {
+          "name": "Casual Mid-week Solo Pizza Night",
+          "persona": "A busy local resident looking for a quick, comforting, high-quality dinner after work.",
+          "plan": "Walk in at 6:30 PM. Grab a stool by the window counter. Order the Haga Norra Special pizza and a local Swedish craft beer. Watch the pizzas being stretched and baked in the wood oven, and enjoy a quick, delicious meal."
+        },
+        "quizzes": [
+          {
+            "question": "What is unique about the crust of Ateljéns Pizza?",
+            "options": ["It is made entirely from mashed potatoes and starch", "It utilizes slow-fermented, wild yeast sourdough starter", "It is fried in olive oil before baking", "It is imported par-baked directly from Rome daily"],
+            "correct": 1,
+            "explanation": "Ateljéns Pizza slow-ferments its dough for up to 48 hours using a wild yeast sourdough starter, giving the crust its characteristic airy texture, crispness, and tangy flavor."
+          }
+        ]
+      }
+    ];
+
+    const blogArticle = `# Feasting on Fire: How Emberlin Redefines Modern Stockholm Gastronomy
+
+The Stockholm culinary scene has always danced between the clean, minimal lines of Nordic classicism and the bold rustic traditions of open-fire cooking. In 2026, a new titan has emerged at Stureplan that merges these two philosophies into a high-energy dining performance: **Emberlin** (https://emberlin-restaurant.se).
+
+Conceived by the world-renowned **Frantzén Group**, Emberlin is not just another restaurant; it is a sensory theater. Centered around a massive, custom-built copper hearth, the kitchen cooks exclusively over birch wood and charcoal, bringing ancient smoke profiles to refined modern plates.
+
+### The Star of Stockholm's Culinary Week
+
+During our Phase A and B pipeline reviews, Emberlin scored an unprecedented **9.42 out of 10** in our quantitative rating matrix, leading in food quality and ambiance. The signature dish — **Smoked bone marrow with grilled langoustine and charred beef fat vinaigrette** — encapsulates the entire ethos. It is rich, smoky, delicate, and deeply rooted in Swedish culinary heritage.
+
+But Solna and Stockholm are seeing a broader culinary revival. Our top five selections for the week showcase a diverse food ecosystem:
+
+*   **Restaurang Asplund (Solna):** Delivering Swedish-Asian fusion inside an architectural landmark, proving corporate lunches can be both high-design and delicious.
+*   **Ulriksdals Trädgårdscafé (Solna):** Serving outstanding organic, vegetarian farm-to-table dishes inside a historic greenhouse, surrounded by the gardens where the vegetables were picked hours prior.
+*   **Brasserie Astrid (Stockholm):** Combining French brasserie comfort with gorgeous waterfront sunset views over the Slussen canal.
+*   **Ateljéns Pizza (Solna):** Fermenting sourdough for 48 hours to create the ultimate airy, crispy neighborhood pizza in Haga Norra.
+
+### Raising the Bar on Quality
+
+The pipeline maintains a strict quality standard. During this run, the operations team auto-failed and bypassed **Sluskiga Skeden (The Dirty Spoon)** in Solna due to critical hygiene violations. By enforcing these gates, the Everyday Dining Guide guarantees that every recommendation is safe, sanitary, and of the highest caliber.`;
+
+    const adCopy = {
+      "one_pager_headline": "Dine over open embers. Experience Emberlin, the Frantzén Group's newest Stureplan sensation. Reclaim your weekend with Stockholm's top dining guides.",
+      "cta": "Book the ultimate wood-fired culinary experience today at Emberlin"
+    };
+
+    const socialPosts = {
+      "linkedin": "🚀 Stockholm's restaurant scene continues to innovate. In our latest Operations Guide, we highlight the buzziest new openings and neighborhood gems in Stockholm & Solna. From Emberlin (the Frantzén Group's stunning new wood-fired theater in Stureplan) to organic vegetarian buffets in historic greenhouses, and functionalist architectural dining spots, we evaluate them across food quality, value, ambiance, service, and accessibility. Check out our comprehensive dining curriculum and interactive culinary quiz to plan your team's next client dinner or weekend celebration. #StockholmDining #FoodTech #EverydayDining #B2BDining #SwedishGastronomy",
+      "twitter_x": "Wood-fire cooking meets modern luxury. 🪵🔥 Emberlin is Stockholm's hottest new grill by the Frantzén Group. Scoring 9.4/10 in our weekly matrix. 🧵 Here is our first-visit dining guide and our top 5 Stockholm & Solna picks: [link] #StockholmFood #FineDining",
+      "instagram_caption": "Sizzling over birch wood. 🥩🔥 Emberlin at Stureplan takes the top spot in this week's dining guide with its incredible wood-fired grill and raw bar. Check out our bio link for our first-visit tips, local Solna favorites, and our interactive culinary quiz! 🇸🇪🥂 #stockholmeats #solnafood #grillhouse #sourdoughpizza #greenhousecafe #foodtravels"
+    };
+
+    let activeTab = 'overview';
+    let activeSocialTab = 'linkedin';
+    let selectedRankIndex = 0;
+
+    function switchTab(tabId) {
+      document.getElementById('tab-overview').classList.add('hidden');
+      document.getElementById('tab-ranking').classList.add('hidden');
+      document.getElementById('tab-curriculum').classList.add('hidden');
+      document.getElementById('tab-marketing').classList.add('hidden');
+
+      document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+      const buttons = ['overview', 'ranking', 'curriculum', 'marketing'];
+      buttons.forEach(b => {
+        const btn = document.getElementById(`btn-${b}`);
+        if (b === tabId) {
+          btn.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all bg-brand-600 text-white shadow-md";
+        } else {
+          btn.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all text-slate-400 hover:bg-slate-900 hover:text-slate-100";
+        }
+      });
+      activeTab = tabId;
+    }
+
+    function switchSocialTab(platform) {
+      document.getElementById('btn-social-linkedin').className = "text-3xs font-bold px-2 py-1 rounded bg-slate-950 text-slate-450 hover:bg-slate-900";
+      document.getElementById('btn-social-x').className = "text-3xs font-bold px-2 py-1 rounded bg-slate-950 text-slate-450 hover:bg-slate-900";
+      document.getElementById('btn-social-instagram').className = "text-3xs font-bold px-2 py-1 rounded bg-slate-950 text-slate-450 hover:bg-slate-900";
+
+      document.getElementById(`btn-social-${platform}`).className = "text-3xs font-bold px-2 py-1 rounded bg-slate-900 text-brand-400 border border-brand-500/30";
+      
+      const socialText = document.getElementById('social-text');
+      if (platform === 'linkedin') {
+        socialText.innerText = socialPosts.linkedin;
+      } else if (platform === 'x') {
+        socialText.innerText = socialPosts.twitter_x;
+      } else if (platform === 'instagram') {
+        socialText.innerText = socialPosts.instagram_caption;
+      }
+      activeSocialTab = platform;
+    }
+
+    function selectRankedTool(idx) {
+      selectedRankIndex = idx;
+      const r = restaurants[idx];
+      document.getElementById('deep-dive-title').innerText = `${r.name} Deep Dive`;
+      document.getElementById('deep-dive-address').innerText = r.address;
+      document.getElementById('deep-dive-uvp').innerText = r.cuisine;
+      document.getElementById('swot-strengths').innerText = r.swot.strengths;
+      document.getElementById('swot-weaknesses').innerText = r.swot.weaknesses;
+      document.getElementById('swot-opportunities').innerText = r.swot.opportunities;
+      document.getElementById('swot-threats').innerText = r.swot.threats;
+      document.getElementById('deep-dive-pricing').innerText = r.pricing_model;
+      document.getElementById('deep-dive-fit').innerText = r.neighborhood_fit;
+
+      // Update row colors in table
+      for (let i = 0; i < restaurants.length; i++) {
+        const row = document.getElementById(`rank-row-${i}`);
+        if (i === idx) {
+          row.className = "hover:bg-slate-900/20 transition cursor-pointer bg-brand-900/10 text-white font-medium";
+        } else {
+          row.className = "hover:bg-slate-900/20 transition cursor-pointer text-slate-350";
+        }
+      }
+    }
+
+    function selectDay(dayIdx) {
+      // Highlight card
+      for (let i = 1; i <= 5; i++) {
+        const card = document.getElementById(`day-card-${i}`);
+        const header = card.querySelector('span:first-child');
+        const viewLink = card.querySelector('span:last-child');
+        if (i === dayIdx) {
+          card.className = "glass-panel p-4 rounded-xl flex flex-col justify-between cursor-pointer border-brand-500/50 bg-brand-900/5 text-white";
+          header.className = "text-2xs text-brand-400 font-bold uppercase";
+          viewLink.className = "text-2xs text-brand-300 font-semibold mt-4 block";
+        } else {
+          card.className = "glass-panel p-4 rounded-xl flex flex-col justify-between cursor-pointer hover:border-brand-500/30 transition bg-slate-900/10 text-slate-400";
+          header.className = "text-2xs text-slate-500 font-bold uppercase";
+          viewLink.className = "text-2xs text-slate-450 mt-4 block";
+        }
+      }
+
+      const mainContent = document.getElementById('curriculum-main-content');
+      if (dayIdx === 1) {
+        mainContent.innerHTML = `
+          <h4 class="font-bold text-base text-slate-200">Day 1 (Monday): Discovery & Highlights</h4>
+          <p class="text-xs text-slate-355 leading-relaxed">
+            Welcome to the Stockholm & Solna Dining Guide! This week's discovery focus maps five outstanding dining spots from Stureplan to Haga Norra. Our pipeline analyzed multiple local food logs and review portals to locate highly rated, trending establishments.
+          </p>
+          <div class="p-4 bg-slate-900/40 rounded-lg border border-slate-800 space-y-3">
+            <h5 class="text-xs font-bold text-slate-300">This Week's Top Contenders:</h5>
+            <ol class="list-decimal list-inside space-y-1.5 text-2xs text-slate-350 font-semibold">
+              <li><strong>Emberlin</strong> (Stureplan, Stockholm) — Score: 9.42/10 (Grill/Raw Bar)</li>
+              <li><strong>Restaurang Asplund</strong> (Solna) — Score: 9.00/10 (Swedish-Asian fusion)</li>
+              <li><strong>Ulriksdals Trädgårdscafé</strong> (Solna) — Score: 8.86/10 (Greenhouse vegetarian)</li>
+              <li><strong>Brasserie Astrid</strong> (Stockholm) — Score: 8.60/10 (Waterfront brasserie)</li>
+              <li><strong>Ateljéns Pizza</strong> (Solna) — Score: 8.36/10 (Sourdough pizza)</li>
+            </ol>
+          </div>
+        `;
+      } else if (dayIdx === 2) {
+        mainContent.innerHTML = `
+          <h4 class="font-bold text-base text-slate-200">Day 2-3 (Tue-Wed): Exploration Guides</h4>
+          <p class="text-xs text-slate-350 leading-relaxed">
+            Let's dive deep into our top recommendation guides compiled by the dining agents:
+          </p>
+          <div class="space-y-4">
+            <div class="p-4 bg-slate-900/30 border border-slate-850 rounded-lg">
+              <h5 class="text-xs font-bold text-brand-300">Restaurang Asplund — Modernist Landmark</h5>
+              <p class="text-2xs text-slate-300 mt-1 leading-relaxed">
+                <strong>Your First 5 Minutes:</strong> Enter the functionalist brick building. Grab a lunch tray, order the weekly Swedish-Asian bowl (like Gochujang-glazed pork belly), and help yourself to the fresh salad table. Sourdough and fika coffee are complimentary with lunch!
+              </p>
+              <p class="text-3xs text-brand-400 mt-2"><strong>Insider Tip:</strong> Arrive at 11:15 AM or after 12:45 PM to bypass the main corporate office rush.</p>
+            </div>
+            <div class="p-4 bg-slate-900/30 border border-slate-850 rounded-lg">
+              <h5 class="text-xs font-bold text-brand-300">Ateljéns Pizza — Haga Norra Sourdough</h5>
+              <p class="text-2xs text-slate-300 mt-1 leading-relaxed">
+                <strong>Your First 5 Minutes:</strong> Step into the warm, compact neighborhood parlor. Pull up a high stool at the window counter, order a glass of organic Barbera, and browse the chalkboard specials. Enjoy watching the dough stretch and bake in the copper fire oven.
+              </p>
+              <p class="text-3xs text-brand-400 mt-2"><strong>Insider Tip:</strong> Try the Haga Norra Special with Swedish Västerbottensost cheese, chanterelles, and wild garlic oil.</p>
+            </div>
+          </div>
+        `;
+      } else if (dayIdx === 3) {
+        mainContent.innerHTML = `
+          <h4 class="font-bold text-base text-slate-200">Day 4 (Thursday): Dining Scenarios</h4>
+          <p class="text-xs text-slate-350 leading-relaxed">
+            Planning the perfect outing? Our agents designed custom scenarios for different diner profiles:
+          </p>
+          <div class="space-y-3 text-2xs text-slate-350">
+            <div class="p-3 bg-slate-900/30 rounded border border-slate-850">
+              <strong class="text-slate-200 block mb-1">Emberlin Anniversary Celebration</strong>
+              <p class="text-slate-400">Book counter seats around the open grill. Enjoy raw bar oysters followed by wood-fired langoustines and custom cocktail pairings as you watch the flames rise.</p>
+            </div>
+            <div class="p-3 bg-slate-900/30 rounded border border-slate-850">
+              <strong class="text-slate-200 block mb-1">Solna Corporate Lunch at Asplund</strong>
+              <p class="text-slate-400">Arrange a table by the window at 11:30 AM. Perfect for a casual client catch-up or team networking lunch in a bright functionalist setting.</p>
+            </div>
+            <div class="p-3 bg-slate-900/30 rounded border border-slate-850">
+              <strong class="text-slate-200 block mb-1">Family Weekend Harvest fika at Ulriksdals</strong>
+              <p class="text-slate-400">Visit the garden beds first. Let the children enjoy picking seasonal fruits and flowers, then sit under the greenhouse grapevines with fresh bakery buns and organic tea.</p>
+            </div>
+          </div>
+        `;
+      } else if (dayIdx === 4) {
+        mainContent.innerHTML = `
+          <h4 class="font-bold text-base text-slate-200">Day 5 (Friday): Celebration & Interactive Quiz</h4>
+          <p class="text-xs text-slate-350 leading-relaxed">
+            Wrap up the week by testing your dining and cuisine knowledge on the sidebar quiz. Read the explanations to master the culinary details!
+          </p>
+          <div class="p-4 bg-brand-900/10 border border-brand-500/20 rounded-lg text-2xs text-brand-300">
+            <strong>Weekend Mission:</strong> Grab a walk-in spot at the Emberlin raw bar or secure a terrace slot at Brasserie Astrid to toast the sunset over Slussen.
+          </div>
+        `;
+      } else if (dayIdx === 5) {
+        mainContent.innerHTML = `
+          <h4 class="font-bold text-base text-slate-200">Weekend Must-Visits</h4>
+          <p class="text-xs text-slate-350 leading-relaxed">
+            Relax and indulge over the weekend with these top aesthetic spots:
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 text-2xs">
+            <div class="p-4 bg-slate-900/30 border border-slate-850 rounded-lg space-y-1">
+              <strong class="text-emerald-400 block font-bold">Ulriksdals Trädgårdscafé</strong>
+              <p class="text-slate-300">Organic vegetarian buffet inside a massive glass greenhouse palace garden. A serene escape in Solna.</p>
+              <p class="text-3xs text-slate-500">Buffet: Mon-Fri 11:30-14:15 | Bakery: Weekends</p>
+            </div>
+            <div class="p-4 bg-slate-900/30 border border-slate-850 rounded-lg space-y-1">
+              <strong class="text-cyan-400 block font-bold">Brasserie Astrid</strong>
+              <p class="text-slate-300">Slussen waterfront dining spanning three gorgeous glass-window levels. Sunset dinner and late-night drinks.</p>
+              <p class="text-3xs text-slate-500">A La Carte | Waterfront Terrace | Weekend DJs</p>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function renderRankingsTable() {
+      const tbody = document.getElementById('ranking-table-body');
+      tbody.innerHTML = restaurants.map((r, idx) => `
+        <tr id="rank-row-${idx}" class="hover:bg-slate-900/20 transition cursor-pointer ${idx === 0 ? 'bg-brand-900/10 text-white font-medium' : ''}" onclick="selectRankedTool(${idx})">
+          <td class="p-3 font-bold ${idx === 0 ? 'text-brand-400' : 'text-slate-400'}">#${r.rank}</td>
+          <td class="p-3">
+            <span class="font-bold">${r.name}</span>
+            ${idx === 0 ? '<span class="ml-1.5 w-1.5 h-1.5 inline-block rounded-full bg-brand-400 animate-ping"></span>' : ''}
+          </td>
+          <td class="p-3 text-slate-400 font-medium">${r.cuisine}</td>
+          <td class="p-3 text-center font-semibold text-slate-200">${r.metrics.food_quality}</td>
+          <td class="p-3 text-center text-slate-350 font-medium">${r.metrics.value}</td>
+          <td class="p-3 text-center text-slate-350 font-medium">${r.metrics.ambiance}</td>
+          <td class="p-3 text-right font-bold text-brand-300">${r.metrics.overall}</td>
+        </tr>
+      `).join('');
+    }
+
+    function initQuiz() {
+      const quizDiv = document.getElementById('quiz-container');
+      const allQuizzes = [];
+      restaurants.forEach((r, rIdx) => {
+        r.quizzes.forEach((q, qIdx) => {
+          allQuizzes.push({
+            rName: r.name,
+            qText: q.question,
+            opts: q.options,
+            ansIdx: q.correct,
+            expText: q.explanation
+          });
+        });
+      });
+
+      quizDiv.innerHTML = allQuizzes.map((q, idx) => `
+        <div class="p-4 bg-slate-900/60 border border-slate-800 rounded-lg space-y-2 text-2xs">
+          <div class="flex justify-between items-center text-3xs text-slate-500 uppercase font-bold">
+            <span>Question ${idx + 1}</span>
+            <span class="font-bold text-brand-400">${q.rName}</span>
+          </div>
+          <p class="font-bold text-slate-250">${q.qText}</p>
+          <div class="grid grid-cols-1 gap-1.5 mt-2">
+            ${q.opts.map((opt, oidx) => `
+              <button onclick="checkAnswer(${idx}, ${oidx})" id="quiz-btn-${idx}-${oidx}" class="w-full text-left p-2 bg-slate-950 border border-slate-850 hover:border-brand-500 rounded transition text-slate-350 hover:text-slate-100">
+                ${opt}
+              </button>
+            `).join('')}
+          </div>
+          <p id="quiz-exp-${idx}" class="hidden text-3xs p-2 bg-slate-950 rounded border mt-2 leading-relaxed font-semibold"></p>
+        </div>
+      `).join('');
+
+      window.quizDataList = allQuizzes;
+    }
+
+    function checkAnswer(qidx, oidx) {
+      const q = window.quizDataList[qidx];
+      const explanationP = document.getElementById(`quiz-exp-${qidx}`);
+      
+      for (let i = 0; i < q.opts.length; i++) {
+        const btn = document.getElementById(`quiz-btn-${qidx}-${i}`);
+        btn.disabled = true;
+        if (i === q.ansIdx) {
+          btn.className = "w-full text-left p-2 bg-emerald-500/10 border border-emerald-500/50 rounded text-emerald-400 font-bold";
+        } else if (i === oidx) {
+          btn.className = "w-full text-left p-2 bg-rose-500/10 border border-rose-500/50 rounded text-rose-400 font-bold";
+        } else {
+          btn.className = "w-full text-left p-2 bg-slate-950 border border-slate-900 rounded text-slate-650 opacity-40";
+        }
+      }
+      
+      explanationP.classList.remove('hidden');
+      if (oidx === q.ansIdx) {
+        explanationP.className = "text-3xs p-2 bg-emerald-950/20 text-emerald-400 border border-emerald-500/20 rounded mt-2 leading-relaxed font-semibold";
+        explanationP.innerHTML = `<strong>Correct!</strong> ${q.expText}`;
+      } else {
+        explanationP.className = "text-3xs p-2 bg-rose-950/20 text-rose-400 border border-rose-500/20 rounded mt-2 leading-relaxed font-semibold";
+        explanationP.innerHTML = `<strong>Incorrect.</strong> ${q.expText}`;
+      }
+    }
+
+    function loadMarketingTexts() {
+      document.getElementById('blog-text').innerText = blogArticle;
+      document.getElementById('ad-headline').innerText = adCopy.one_pager_headline;
+      document.getElementById('ad-cta').innerText = adCopy.cta;
+      switchSocialTab('linkedin');
+    }
+
+    // Chart Configuration on Load
+    document.addEventListener("DOMContentLoaded", () => {
+      renderRankingsTable();
+      initQuiz();
+      selectDay(1);
+      loadMarketingTexts();
+
+      // Doughnut occasion chart
+      const ctxOccasion = document.getElementById('occasionChart').getContext('2d');
+      new Chart(ctxOccasion, {
+        type: 'doughnut',
+        data: {
+          labels: ['Date Night', 'Family Friendly', 'Business Lunch', 'Weekend Brunch', 'Special Dietary'],
+          datasets: [{
+            data: [9.8, 8.0, 9.5, 9.8, 10.0],
+            backgroundColor: [
+              'rgba(139, 92, 246, 0.7)', // Purple
+              'rgba(244, 63, 94, 0.7)',  // Rose
+              'rgba(245, 158, 11, 0.7)',  // Amber
+              'rgba(6, 182, 212, 0.7)',   // Cyan
+              'rgba(16, 185, 129, 0.7)'   // Emerald
+            ],
+            borderColor: '#020617',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: {
+                color: '#94a3b8',
+                font: { size: 9 },
+                boxWidth: 10
+              }
+            }
+          }
+        }
+      });
+
+      // Radar comparison chart
+      const ctxComp = document.getElementById('comparisonChart').getContext('2d');
+      new Chart(ctxComp, {
+        type: 'radar',
+        data: {
+          labels: ['Food Quality', 'Value', 'Ambiance', 'Service', 'Accessibility'],
+          datasets: [
+            {
+              label: 'Emberlin',
+              data: [9.8, 8.5, 10.0, 9.8, 9.0],
+              fill: true,
+              backgroundColor: 'rgba(139, 92, 246, 0.2)',
+              borderColor: 'rgba(139, 92, 246, 0.8)',
+              pointBackgroundColor: 'rgba(139, 92, 246, 1)',
+              pointBorderColor: '#fff',
+            },
+            {
+              label: 'Restaurang Asplund',
+              data: [9.2, 9.5, 8.8, 9.0, 8.5],
+              fill: true,
+              backgroundColor: 'rgba(6, 182, 212, 0.1)',
+              borderColor: 'rgba(6, 182, 212, 0.8)',
+              pointBackgroundColor: 'rgba(6, 182, 212, 1)',
+              pointBorderColor: '#fff',
+            },
+            {
+              label: 'Ulriksdals Trädgårdscafé',
+              data: [9.5, 8.5, 9.8, 8.5, 8.0],
+              fill: true,
+              backgroundColor: 'rgba(16, 185, 129, 0.05)',
+              borderColor: 'rgba(16, 185, 129, 0.6)',
+              pointBackgroundColor: 'rgba(16, 185, 129, 1)',
+              pointBorderColor: '#fff',
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            r: {
+              angleLines: { color: 'rgba(255, 255, 255, 0.05)' },
+              grid: { color: 'rgba(255, 255, 255, 0.05)' },
+              pointLabels: {
+                color: '#94a3b8',
+                font: { size: 8 }
+              },
+              ticks: {
+                backdropColor: 'transparent',
+                color: '#475569',
+                font: { size: 7 },
+                stepSize: 2
+              },
+              min: 0,
+              max: 10
+            }
+          },
+          plugins: {
+            legend: {
+              labels: {
+                color: '#94a3b8',
+                font: { size: 8 },
+                boxWidth: 8
+              }
+            }
+          }
+        }
+      });
+    });
+
+    // Render Lucide Icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>

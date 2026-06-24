@@ -1,0 +1,73 @@
+{
+  "pipeline_metadata": {
+    "run_id": "UUID-string",
+    "timestamp": "ISO-8601-date",
+    "epicenter": {
+      "coordinates": "lat,lng",
+      "neighborhood": "string"
+    },
+    "radius_km": 5,
+    "user_intent": "string"
+  },
+  "scout_output": {
+    "raw_discovery_log": [
+      {
+        "name": "string",
+        "address": "string",
+        "coordinates": "lat,lng",
+        "distance_km": 0.0,
+        "cuisine_type": "string",
+        "price_range": "$|$$|$$$|$$$$",
+        "average_rating": 0.0,
+        "review_count": 0,
+        "signature_dish": "string",
+        "flags": ["temporary_closure", "inconsistent_reviews", "no_hygiene_rating"]
+      }
+    ]
+  },
+  "ranking_output": {
+    "ranked_shortlist": [
+      {
+        "rank": 0,
+        "name": "string",
+        "composite_score": 0.0,
+        "score_breakdown": {
+          "overall_rating": 0.0,
+          "review_velocity": 0.0,
+          "intent_relevance": 0.0
+        },
+        "rationale": "string"
+      }
+    ]
+  },
+  "logistics_output": {
+    "operational_logs": [
+      {
+        "name": "string",
+        "travel_times": {
+          "walking_minutes": 0,
+          "driving_minutes": 0,
+          "transit_minutes": 0
+        },
+        "timing": {
+          "peak_hours": "string",
+          "optimal_arrival": "string",
+          "estimated_wait_minutes": 0
+        },
+        "reservation_policy": "walk-in|same-day|advance-booking",
+        "booking_contact": "string",
+        "parking": "string",
+        "dietary_accommodations": ["vegan", "gluten-free", "halal", "kosher"],
+        "wheelchair_accessible": true,
+        "current_status": "open|closed|seasonal"
+      }
+    ]
+  },
+  "final_guide": {
+    "curated_dining_guide": "markdown_string",
+    "scouts_pick": {
+      "name": "string",
+      "reason": "string"
+    }
+  }
+}
