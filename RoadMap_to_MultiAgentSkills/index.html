@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roadmap to Multi-Agent Skills</title>
+    <!-- Chart.js for rendering the analytics chart dynamically -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #1e1e1e;
+            --card-bg: #2d2d2d;
+            --accent-color: #2ed573;
+            --text-color: #f1f2f6;
+            --text-muted: #a4b0be;
+            --border-color: #3f3f3f;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            max-width: 800px;
+        }
+
+        h1 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .container {
+            display: flex;
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        .roadmap-column {
+            flex: 1;
+            min-width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .dashboard-column {
+            flex: 1.2;
+            min-width: 380px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            height: fit-content;
+        }
+
+        .step-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .step-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-color);
+            box-shadow: 0 4px 12px rgba(46, 213, 115, 0.2);
+        }
+
+        .step-card.active {
+            border-color: var(--accent-color);
+            background-color: #253a2f;
+        }
+
+        .step-num {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            opacity: 0.3;
+        }
+
+        .step-card.active .step-num {
+            opacity: 1;
+        }
+
+        h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.2rem;
+        }
+
+        .step-card p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        /* Interactive Dashboard Styles */
+        .dash-header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dash-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .status-badge {
+            background-color: #1e1e1e;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .interactive-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        select, input[type="range"] {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 1rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn-simulate {
+            background-color: var(--accent-color);
+            color: #111;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-simulate:hover {
+            background-color: #26af5f;
+        }
+
+        .chart-container {
+            position: relative;
+            margin-top: 10px;
+            height: 220px;
+            width: 100%;
+        }
+
+        .console-box {
+            background-color: #151515;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            color: #5af78e;
+            height: 100px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Roadmap to Multi-Agent Skills</h1>
+        <p class="subtitle">An interactive guide inspired by the Sooezy Academy curriculum. Click on the pipeline phases below to simulate agent operations in real-time.</p>
+    </header>
+
+    <div class="container">
+        <!-- Left Side: Interactive Roadmap Steps -->
+        <div class="roadmap-column">
+            <div class="step-card active" onclick="activateStep(1)">
+                <div class="step-num">01</div>
+                <h3>Phase 1: Mindset & Conceptual Planning</h3>
+                <p>Step away from the screen, relax, and think through the ecosystem. Grab pen and paper to map out your agent pipeline structure manually before writing any scripts.</p>
+            </div>
+
+            <div class="step-card" onclick="activateStep(2)">
+                <div class="step-num">02</div>
+                <h3>Phase 2: Establish the Orchestrator</h3>
+                <p>Define the operational guidelines, rules, and sequencing logic. Set up the dependencies to prevent downstream agents from executing until data handoffs are validated.</p>
+            </div>
+
+            <div class="step-card" onclick="activateStep(3)">
+                <div class="step-num">03</div>
+                <h3>Phase 3: Populate Individual Agent Prompts</h3>
+                <p>Use generative AI to enrich agent personas. Build highly distinct Markdown system prompts and include structural parameters for visual or dynamic dashboard modules.</p>
+            </div>
+
+            <div class="step-card" onclick="activateStep(4)">
+                <div class="step-num">04</div>
+                <h3>Phase 4: Run the Multi-Agent Pipeline</h3>
+                <p>Execute the master process via CLI tools. Watch your custom-tailored swarm handle workflows in parallel while consuming tokens efficiently to compile results.</p>
+            </div>
+        </div>
+
+        <!-- Right Side: Live Dashboard Simulator -->
+        <div class="dashboard-column">
+            <div class="dash-header">
+                <div class="dash-title" id="dashTitle">Ecosystem Simulator</div>
+                <div class="status-badge" id="statusBadge">Idle</div>
+            </div>
+
+            <div class="interactive-section">
+                <!-- User input options reminiscent of the class demos -->
+                <div class="control-group">
+                    <label for="workflowSelect">Select Target Domain Scenario:</label>
+                    <select id="workflowSelect" onchange="logScenarioChange()">
+                        <option value="software">AI Tools for Software Development & Tech Workflows</option>
+                        <option value="culinary">Local Culinary & Restaurant Recommendation Engine</option>
+                        <option value="gaming">Dungeons & Dragons Digital Playbook & Rules Dashboard</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="agentSlider">Parallel Swarm Scale (Active Agents): <span id="agentCountText">6</span></label>
+                    <input type="range" id="agentSlider" min="2" max="14" value="6" oninput="updateAgentCount()">
+                </div>
+
+                <button class="btn-simulate" onclick="runSimulation()">Initiate Swarm Pipeline</button>
+
+                <div class="control-group">
+                    <label>Live Agent Telemetry Stream:</label>
+                    <div class="console-box" id="consoleOutput">System normalized. Select a phase on the roadmap or run the swarm to stream multi-agent logs...</div>
+                </div>
+
+                <!-- Dynamic Data Visualizer Component -->
+                <div class="control-group">
+                    <label>Swarm Operational Breakdown:</label>
+                    <div class="chart-container">
+                        <canvas id="analyticsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize dynamic Chart.js container
+        const ctx = document.getElementById('analyticsChart').getContext('2d');
+        let analyticsChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Research', 'Ranking', 'Content Compilation', 'Dashboard Config'],
+                datasets: [{
+                    label: 'Token Weight Allocation (%)',
+                    data: [35, 25, 20, 20],
+                    backgroundColor: ['#2ed573', '#1e90ff', '#ffa502', '#ff4757'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { grid: { color: '#333' }, ticks: { color: '#a4b0be' }, beginAtZero: true, max: 100 },
+                    x: { grid: { display: false }, ticks: { color: '#a4b0be' } }
+                }
+            }
+        });
+
+        // Toggle selected styling across roadmap cards
+        function activateStep(stepNum) {
+            document.querySelectorAll('.step-card').forEach((card, index) => {
+                if (index === stepNum - 1) {
+                    card.classList.add('active');
+                } else {
+                    card.classList.remove('active');
+                }
+            });
+
+            const consoleElement = document.getElementById('consoleOutput');
+            const statusBadge = document.getElementById('statusBadge');
+
+            // Interactive simulation feedback based on chosen roadmap card
+            switch(stepNum) {
+                case 1:
+                    statusBadge.innerText = "Ideation Phase";
+                    statusBadge.style.color = "#ffa502";
+                    statusBadge.style.borderColor = "#ffa502";
+                    consoleElement.innerText = "[SYSTEM] UI Context Shift: Conceptual Planning Active.\n[LOG] Architecting abstract pipeline layout via local scratchpad design.";
+                    updateChartData([10, 10, 10, 10]);
+                    break;
+                case 2:
+                    statusBadge.innerText = "Orchestrating";
+                    statusBadge.style.color = "#1e90ff";
+                    statusBadge.style.borderColor = "#1e90ff";
+                    consoleElement.innerText = "[ORCHESTRATOR] Initializing hierarchy schema verification...\n[RULE] Agent_02 (Ranking) payload state on hold until Agent_01 outputs data arrays.";
+                    updateChartData([50, 20, 15, 15]);
+                    break;
+                case 3:
+                    statusBadge.innerText = "Provisioning";
+                    statusBadge.style.color = "#ff4757";
+                    statusBadge.style.borderColor = "#ff4757";
+                    consoleElement.innerText = "[PROMPT ENGINE] Generating individualized .md configuration models.\n[SYSTEM] Injecting system parameters for real-time tracking interface elements.";
+                    updateChartData([20, 40, 20, 20]);
+                    break;
+                case 4:
+                    statusBadge.innerText = "CLI Active";
+                    statusBadge.style.color = "#2ed573";
+                    statusBadge.style.borderColor = "#2ed573";
+                    consoleElement.innerText = "[CLI] multi-agent execution pipeline started.\n[PROCESS] Allocating multi-threaded channels for parallel token workflows.";
+                    updateChartData([30, 25, 25, 20]);
+                    break;
+            }
+        }
+
+        function updateAgentCount() {
+            const count = document.getElementById('agentSlider').value;
+            document.getElementById('agentCountText').innerText = count;
+        }
+
+        function logScenarioChange() {
+            const domain = document.getElementById('workflowSelect').value;
+            const consoleElement = document.getElementById('consoleOutput');
+            consoleElement.innerText = `[TARGET ADJUSTMENT] Scenario domain set to: ${domain.toUpperCase()}\n[SYSTEM] Re-indexing target context boundaries inside orchestration variables...`;
+        }
+
+        function updateChartData(dataArray) {
+            analyticsChart.data.datasets[0].data = dataArray;
+            analyticsChart.update();
+        }
+
+        // Simulates parallel orchestration execution stream
+        function runSimulation() {
+            const consoleElement = document.getElementById('consoleOutput');
+            const statusBadge = document.getElementById('statusBadge');
+            const selectedDomain = document.getElementById('workflowSelect').options[document.getElementById('workflowSelect').selectedIndex].text;
+            const agentCount = document.getElementById('agentSlider').value;
+
+            statusBadge.innerText = "Processing";
+            statusBadge.style.color = "#2ed573";
+            statusBadge.style.borderColor = "#2ed573";
+            
+            consoleElement.innerText = `[SWARM START] Launching multi-agent environment with ${agentCount} instances...\n[CONTEXT] ${selectedDomain}\n[CONNECTING] Querying live parameters...`;
+
+            setTimeout(() => {
+                consoleElement.innerText += `\n[PARALLEL EXECUTION] Specialized nodes parsing records simultaneously...`;
+                updateChartData([40, 30, 15, 15]);
+            }, 800);
+
+            setTimeout(() => {
+                consoleElement.innerText += `\n[COMPILE SUCCESS] Outputs combined! Interface structural compilation verified via local file server.`;
+                statusBadge.innerText = "Completed";
+                updateChartData([25, 25, 25, 25]);
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
