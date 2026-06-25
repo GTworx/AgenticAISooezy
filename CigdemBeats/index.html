@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SonicPulse - Concert Finder & Event Dashboard</title>
+  <meta name="description" content="Check ongoing and upcoming concerts globally with our modern event finder dashboard.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Left Sidebar -->
+    <aside class="sidebar">
+      <div class="logo-section">
+        <div class="logo-icon"><i class="fa-solid fa-waveform-lines"></i>SP</div>
+        <h1 class="logo-text">SonicPulse</h1>
+      </div>
+
+      <!-- Live Search Mode Settings -->
+      <div class="sidebar-section">
+        <h3 class="section-title">Developer Integration</h3>
+        <div class="settings-panel">
+          <p style="font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4;">
+            To fetch live data from Ticketmaster, enter your developer API key:
+          </p>
+          <input type="password" id="api-key-input" class="settings-input" placeholder="Ticketmaster API Key..." aria-label="Ticketmaster API Key">
+          <button id="save-key-btn" class="btn"><i class="fa-solid fa-key"></i>Save Key</button>
+        </div>
+      </div>
+
+      <!-- Search History -->
+      <div class="sidebar-section">
+        <h3 class="section-title">Recent Cities</h3>
+        <ul class="history-list" id="search-history">
+          <!-- Populated dynamically -->
+        </ul>
+      </div>
+
+      <!-- Favorites / Saved Shows -->
+      <div class="sidebar-section" style="flex-grow: 1;">
+        <h3 class="section-title">My Saved Shows</h3>
+        <div class="favorites-list" id="favorites-container">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <div style="font-size: 0.65rem; color: var(--text-muted); text-align: center;">
+        SonicPulse v1.0.0 &bull; Local Mode
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-dashboard">
+      <!-- Search Header -->
+      <header class="search-header">
+        <div class="search-bar-container">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" id="search-bar" class="search-input" placeholder="Search concerts by city or country (e.g. Düsseldorf, Spain...)" aria-label="Search concerts by city or country">
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button id="search-btn" class="btn"><i class="fa-solid fa-arrow-right"></i>Search</button>
+        </div>
+      </header>
+
+      <!-- Filter Row -->
+      <div class="filters-row">
+        <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); margin-right: 0.5rem;">GENRE:</span>
+        <button class="filter-chip active" data-genre="all">All Genres</button>
+        <button class="filter-chip" data-genre="rock">Rock & Metal</button>
+        <button class="filter-chip" data-genre="pop">Pop & Dance</button>
+        <button class="filter-chip" data-genre="electronic">Electronic</button>
+        <button class="filter-chip" data-genre="latin">Latin / Reggaeton</button>
+      </div>
+
+      <!-- Hero Banner -->
+      <section class="city-hero" id="hero-banner">
+        <div class="hero-content">
+          <div class="hero-tag" id="hero-tag">Live Music Feed</div>
+          <h2 class="hero-title" id="hero-title">Explore Global Concerts</h2>
+          <p class="hero-subtitle" id="hero-subtitle">Type a city or country to check ongoing and upcoming shows. We support full Ticketmaster integration or local fallback data.</p>
+        </div>
+      </section>
+
+      <!-- Concert Cards List -->
+      <section class="concert-grid" id="concerts-container">
+        <!-- Loader skeletons or cards will be injected here -->
+      </section>
+    </main>
+  </div>
+
+  <!-- Detail Modal -->
+  <div class="modal-overlay" id="detail-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <img id="modal-img" class="modal-header-img" src="" alt="Event cover">
+        <button class="modal-close" id="modal-close" aria-label="Close modal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <span class="filter-chip active" id="modal-genre" style="display: inline-block; margin-bottom: 0.5rem; pointer-events: none;">Music</span>
+        <h3 class="hero-title" id="modal-title" style="font-size: 1.6rem; margin-bottom: 0.5rem;">Concert Name</h3>
+        
+        <div class="modal-meta-row">
+          <div class="modal-meta-item">
+            <i class="fa-regular fa-calendar"></i>
+            <span id="modal-date">Date</span>
+          </div>
+          <div class="modal-meta-item">
+            <i class="fa-regular fa-clock"></i>
+            <span id="modal-time">Time</span>
+          </div>
+          <div class="modal-meta-item">
+            <i class="fa-solid fa-location-dot"></i>
+            <span id="modal-venue">Venue</span>
+          </div>
+          <div class="modal-meta-item">
+            <i class="fa-solid fa-tag"></i>
+            <span id="modal-price">Price</span>
+          </div>
+        </div>
+
+        <p class="modal-desc" id="modal-desc">Detailed concert description and artist details.</p>
+
+        <div style="display: flex; gap: 10px;">
+          <a id="modal-ticket-link" href="#" target="_blank" class="btn" style="flex-grow: 1; text-decoration: none;">
+            <i class="fa-solid fa-ticket"></i> Get Official Tickets
+          </a>
+          <button id="modal-fav-btn" class="btn btn-secondary"><i class="fa-regular fa-heart"></i> Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">
+    <i class="fa-solid fa-circle-check"></i>
+    <span id="toast-message">Success!</span>
+  </div>
+
+  <!-- Scripts -->
+  <script src="mockData.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
